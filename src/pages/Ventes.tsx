@@ -83,7 +83,7 @@ export default function Ventes() {
             <div className="bg-primary px-5 py-3">
               <h3 className="text-primary-foreground font-semibold text-sm">Projections par Année</h3>
             </div>
-            <FinTable cols={projCols} rows={projRows} compact />
+            <FinTable cols={projCols} rows={projRows} compact exportName="Ventes_Projections" />
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@ export default function Ventes() {
         <div className="bg-primary px-5 py-3">
           <h3 className="text-primary-foreground font-semibold text-sm">Détail des Produits & Services (Activité Normale 100%)</h3>
         </div>
-        <FinTable cols={cols} rows={allRows} />
+        <FinTable cols={cols} rows={allRows} exportName="Ventes_Detail" />
       </div>
     </div>
   );

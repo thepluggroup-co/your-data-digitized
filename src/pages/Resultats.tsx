@@ -77,7 +77,7 @@ export default function Resultats() {
         <div className="bg-primary px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Compte de Résultat Détaillé</h2>
         </div>
-        <FinTable cols={cols} rows={rows} compact />
+        <FinTable cols={cols} rows={rows} compact exportName="Compte_de_Resultat" />
       </div>
     </div>
   );
