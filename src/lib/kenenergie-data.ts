@@ -343,11 +343,212 @@ export const planFinancement: Record<number, {
   },
 };
 
-// ======= OUVERTURE DE CAPITAL & LEVÉE DE FONDS =======
+// ======= OUVERTURE DE CAPITAL & VALORISATION (Algorithme THE PLUG) =======
+
+// Paramètres de valorisation
+export const capitalConfig = {
+  capitalTotal: 6_410_000_000, // Capital social 10M + Augmentation 400M + CC Associés 1000M + Emprunt 5000M
+  capitalSocial: 10_000_000,
+  augmentationCapital: 400_000_000,
+  comptesCourantsAssocies: 1_000_000_000,
+  empruntBancaireLT: 5_000_000_000,
+  valeurNominaleAction: 10_000,
+  get nombreActions() { return (this.capitalSocial + this.augmentationCapital) / this.valeurNominaleAction; }, // 41 000 actions
+  coefficientNature: 1.5, // Coefficient de valorisation des apports en nature
+  tauxDistribution: 0.00, // 0% distribution (réserves)
+  investissementTotal: 6_719_350_000,
+  besoinFondsRoulement: 1_370_319_634,
+  get totalBesoinsDurables() { return this.investissementTotal + this.besoinFondsRoulement; },
+};
+
+// ======= TABLEAU D'ACTIONNARIAT =======
+export interface Actionnaire {
+  id: number;
+  nom: string;
+  profil: string;
+  apportNumeraire: number;
+  apportNature: number; // Actifs amortissables
+  valeurActionsNature: number; // Nature × coeff 1.5
+  nbActions: number;
+  pctCapital: number;
+  valeurNominaleActions: number;
+  primeApport: number;
+  typeActions: string;
+  codeActions: string;
+  droitsClauses: string;
+}
+
+export const actionnaires: Actionnaire[] = [
+  {
+    id: 1, nom: "Fondateur / Promoteur (KENGOUM NGASSA)", profil: "Institutionnel",
+    apportNumeraire: 10_000_000, apportNature: 80_000_000, // Charges immobilisées
+    valeurActionsNature: 120_000_000, nbActions: 13_000, pctCapital: 31.71,
+    valeurNominaleActions: 130_000_000, primeApport: 40_000_000,
+    typeActions: "Actions Fondateur (AF)", codeActions: "AF",
+    droitsClauses: "Veto stratégique — incessibles 5 ans",
+  },
+  {
+    id: 2, nom: "Directeur Général des Opérations", profil: "Technique & Management",
+    apportNumeraire: 5_000_000, apportNature: 112_500_000, // Matériel & mobilier bureau
+    valeurActionsNature: 168_750_000, nbActions: 17_375, pctCapital: 42.38,
+    valeurNominaleActions: 173_750_000, primeApport: 56_250_000,
+    typeActions: "Actions Performance (AP)", codeActions: "AP",
+    droitsClauses: "Vote double — vesting 4 ans",
+  },
+  {
+    id: 3, nom: "Directeur Technique (CTO Infrastructure)", profil: "Technique",
+    apportNumeraire: 3_000_000, apportNature: 50_000_000, // Immobilisations incorporelles
+    valeurActionsNature: 75_000_000, nbActions: 7_800, pctCapital: 19.02,
+    valeurNominaleActions: 78_000_000, primeApport: 25_000_000,
+    typeActions: "Actions Performance (AP)", codeActions: "AP",
+    droitsClauses: "Vote double — vesting 4 ans",
+  },
+  {
+    id: 4, nom: "Directeur Administratif & Financier", profil: "Financier",
+    apportNumeraire: 3_000_000, apportNature: 50_000_000, // Immobilisations financières
+    valeurActionsNature: 75_000_000, nbActions: 7_800, pctCapital: 19.02,
+    valeurNominaleActions: 78_000_000, primeApport: 25_000_000,
+    typeActions: "Actions Ordinaires B", codeActions: "B",
+    droitsClauses: "Vote simple — bonus DSCR",
+  },
+  {
+    id: 5, nom: "Directeur Commercial & Développement", profil: "Commercial",
+    apportNumeraire: 2_000_000, apportNature: 0,
+    valeurActionsNature: 0, nbActions: 200, pctCapital: 0.49,
+    valeurNominaleActions: 2_000_000, primeApport: 0,
+    typeActions: "Actions Ordinaires B", codeActions: "B",
+    droitsClauses: "Vote simple — commission CA",
+  },
+  {
+    id: 6, nom: "Investisseur Financier Tour A", profil: "Financier",
+    apportNumeraire: 400_000_000, apportNature: 0,
+    valeurActionsNature: 0, nbActions: 40_000, pctCapital: 97.56,
+    valeurNominaleActions: 400_000_000, primeApport: 0,
+    typeActions: "Actions Ordinaires A", codeActions: "A",
+    droitsClauses: "Proportionnel — tag along — anti-dilution",
+  },
+  {
+    id: 7, nom: "Banque Partenaire (BGFI / Afriland / SCB)", profil: "Créancier",
+    apportNumeraire: 0, apportNature: 0,
+    valeurActionsNature: 0, nbActions: 0, pctCapital: 0,
+    valeurNominaleActions: 0, primeApport: 0,
+    typeActions: "—", codeActions: "—",
+    droitsClauses: "Créancier privilégié — DSCR covenant",
+  },
+  {
+    id: 8, nom: "ENEO / EDC / Partenaire Institutionnel", profil: "Institutionnel",
+    apportNumeraire: 0, apportNature: 0,
+    valeurActionsNature: 0, nbActions: 0, pctCapital: 0,
+    valeurNominaleActions: 0, primeApport: 0,
+    typeActions: "Actions Privilégiées (APr)", codeActions: "APr",
+    droitsClauses: "Consultatif — dividende préférentiel 5%",
+  },
+  {
+    id: 9, nom: "BAD / SFI / Proparco (DFI)", profil: "Développement",
+    apportNumeraire: 0, apportNature: 0,
+    valeurActionsNature: 0, nbActions: 0, pctCapital: 0,
+    valeurNominaleActions: 0, primeApport: 0,
+    typeActions: "—", codeActions: "—",
+    droitsClauses: "Co-financement vert — garanties partielles",
+  },
+  {
+    id: 10, nom: "Pool Techniciens & Chefs d'Équipe", profil: "Opérationnel",
+    apportNumeraire: 0, apportNature: 0,
+    valeurActionsNature: 0, nbActions: 0, pctCapital: 0,
+    valeurNominaleActions: 0, primeApport: 0,
+    typeActions: "Actions Collaboration (ACo)", codeActions: "ACo",
+    droitsClauses: "Stock-options N+2 — vesting conditionnel",
+  },
+];
+
+// ======= NOMENCLATURE DES CATÉGORIES D'ACTIONS =======
+export interface CategorieActions {
+  code: string;
+  nom: string;
+  titulaires: string;
+  vote: string;
+  dividende: string;
+  liquidation: string;
+  cession: string;
+  condition: string;
+}
+
+export const categoriesActions: CategorieActions[] = [
+  { code: "AF", nom: "Actions Fondateur", titulaires: "Fondateur/Promoteur", vote: "Veto", dividende: "Normal", liquidation: "Rang 1", cession: "Incessibles 5 ans", condition: "Contrôle décisions stratégiques" },
+  { code: "AP", nom: "Actions Performance", titulaires: "DG, CTO", vote: "Double (2×)", dividende: "Normal+bonus", liquidation: "Rang 2", cession: "Vesting 4 ans", condition: "Conditionnées présence & objectifs" },
+  { code: "A", nom: "Ordinaires A", titulaires: "Investisseur Tour A", vote: "Proportionnel", dividende: "Prioritaire", liquidation: "Rang 3", cession: "Tag Along", condition: "TRI min 25% garanti — anti-dilution" },
+  { code: "B", nom: "Ordinaires B", titulaires: "DAF, Dir. Commercial", vote: "Simple", dividende: "Normal", liquidation: "Rang 4", cession: "Libre", condition: "Bonus DSCR > 1,5×" },
+  { code: "APr", nom: "Privilégiées", titulaires: "Institutionnel", vote: "Consultatif", dividende: "5% garanti", liquidation: "Rang 5", cession: "Rachat N+5", condition: "Dividende préférentiel — pas de vote" },
+  { code: "ACo", nom: "Collaboration", titulaires: "Techniciens, Pool", vote: "Consultatif", dividende: "Normal", liquidation: "Rang 6", cession: "Stock-opt N+2", condition: "Conditionnées 65% activité N+2" },
+];
+
+// ======= APPORTS PROGRESSIFS (proportionnels aux taux d'activité) =======
+export interface ApportProgressif {
+  acteur: string;
+  nature: string;
+  apportN: number;   // 40%
+  apportN2: number;  // 63%
+  apportN4: number;  // 100%
+  categorie: "interne" | "externe" | "strategique";
+}
+
+export const apportsProgressifs: ApportProgressif[] = [
+  // Internes
+  { acteur: "FONDATEUR / PROMOTEUR", nature: "Capital + CC + réseau institutionnel", apportN: 52_000_000, apportN2: 84_500_000, apportN4: 130_000_000, categorie: "interne" },
+  { acteur: "DIRECTEUR GÉNÉRAL", nature: "Management opérationnel + actifs mobiliers", apportN: 69_500_000, apportN2: 112_937_500, apportN4: 173_750_000, categorie: "interne" },
+  { acteur: "CTO INFRASTRUCTURE", nature: "Actifs incorporels (R&D, brevets, logiciels)", apportN: 31_200_000, apportN2: 50_700_000, apportN4: 78_000_000, categorie: "interne" },
+  { acteur: "DAF", nature: "Ingénierie financière, accès crédit bancaire", apportN: 31_200_000, apportN2: 50_700_000, apportN4: 78_000_000, categorie: "interne" },
+  { acteur: "DIR. COMMERCIAL", nature: "Portefeuille clients, contrats cadres", apportN: 800_000, apportN2: 1_300_000, apportN4: 2_000_000, categorie: "interne" },
+  // Externes
+  { acteur: "INVESTISSEUR TOUR A", nature: "Augmentation capital (cash) + garanties", apportN: 160_000_000, apportN2: 300_000_000, apportN4: 400_000_000, categorie: "externe" },
+  { acteur: "BANQUE PARTENAIRE", nature: "Crédit LT 5 Mds FCFA / 8% — différé 12 mois", apportN: 5_000_000_000, apportN2: 4_151_840_707, apportN4: 1_164_340_954, categorie: "externe" },
+  { acteur: "ENEO / EDC / ARSEL", nature: "Contrats cadres maintenance & infrastructure", apportN: 0, apportN2: 0, apportN4: 0, categorie: "externe" },
+  // Stratégiques
+  { acteur: "BAD / SFI / PROPARCO", nature: "Co-financement vert centrales solaires", apportN: 0, apportN2: 0, apportN4: 0, categorie: "strategique" },
+  { acteur: "POOL TECHNICIENS (225)", nature: "Expertise métier + exécution chantiers", apportN: 0, apportN2: 0, apportN4: 0, categorie: "strategique" },
+  { acteur: "COLLECTIVITÉS / MAIRIES", nature: "Commandes électrification + partenariats locaux", apportN: 0, apportN2: 0, apportN4: 0, categorie: "strategique" },
+];
+
+// ======= GOUVERNANCE =======
+export interface OrganeGouvernance {
+  organe: string;
+  composition: string;
+  frequence: string;
+  attributions: string;
+}
+
+export const gouvernance: OrganeGouvernance[] = [
+  { organe: "ASSEMBLÉE GÉNÉRALE", composition: "Tous les actionnaires", frequence: "1×/an + convocation extraordinaire si > 25% du capital", attributions: "Approbation comptes annuels, distribution dividendes, augmentation de capital, modifications statutaires" },
+  { organe: "CONSEIL D'ADMINISTRATION", composition: "Fondateur (Pdt), Investisseur (1 siège), Institutionnel (observateur) — 3 membres + 1 observateur", frequence: "Trimestrielle", attributions: "Validation stratégie, approbation budgets > 500 M FCFA, recrutement DG, relations bancaires" },
+  { organe: "COMITÉ DE DIRECTION (CODIR)", composition: "DG, CTO, DAF, Dir. Commercial, 4 Dir. Opérationnels", frequence: "Mensuelle", attributions: "Pilotage opérationnel, suivi KPIs, alertes bancaires DSCR, reporting SYSCOHADA" },
+  { organe: "COMITÉ D'AUDIT & RISQUES", composition: "DAF (Président), Investisseur (1 membre), Expert externe", frequence: "Semestrielle", attributions: "Contrôle interne, conformité OHADA, validation dossiers bancaires et états financiers" },
+  { organe: "COMITÉ TECHNIQUE", composition: "CTO, 4 Responsables de pôles, Chefs d'équipe terrain", frequence: "Trimestrielle", attributions: "Validation plans de chantier, normes sécurité, gestion du matériel d'exploitation" },
+];
+
+// ======= ROI PAR PROFIL =======
+export interface ProfilROI {
+  acteur: string;
+  apportTotal: number;
+  dividendesCumules: number;
+  plusValueEstimee: number;
+  retourTotal: number;
+  roiPct: number;
+  delaiRetour: string;
+}
+
+export const roiParProfil: ProfilROI[] = [
+  { acteur: "Fondateur / Promoteur", apportTotal: 130_000_000, dividendesCumules: 0, plusValueEstimee: 2_585_000_000, retourTotal: 2_585_000_000, roiPct: 1988.5, delaiRetour: "< 3 ans" },
+  { acteur: "Investisseur Tour A", apportTotal: 400_000_000, dividendesCumules: 0, plusValueEstimee: 7_950_000_000, retourTotal: 7_950_000_000, roiPct: 1987.5, delaiRetour: "< 3 ans" },
+  { acteur: "DG Opérationnel", apportTotal: 173_750_000, dividendesCumules: 0, plusValueEstimee: 3_452_000_000, retourTotal: 3_452_000_000, roiPct: 1987.1, delaiRetour: "< 3 ans" },
+  { acteur: "CTO Infrastructure", apportTotal: 78_000_000, dividendesCumules: 0, plusValueEstimee: 1_550_000_000, retourTotal: 1_550_000_000, roiPct: 1987.2, delaiRetour: "< 4 ans" },
+  { acteur: "DAF", apportTotal: 78_000_000, dividendesCumules: 0, plusValueEstimee: 1_550_000_000, retourTotal: 1_550_000_000, roiPct: 1987.2, delaiRetour: "< 4 ans" },
+  { acteur: "Banque Partenaire", apportTotal: 5_000_000_000, dividendesCumules: 1_453_279_680, plusValueEstimee: 0, retourTotal: 1_453_279_680, roiPct: 29.1, delaiRetour: "5 ans (intérêts)" },
+];
+
 export const besoinsDurables = {
   investissementTotal: 6_719_350_000,
   besoinFondsRoulement: 1_370_319_634,
-  totalBesoinsDurables: 8_089_669_634,
+  get totalBesoinsDurables() { return this.investissementTotal + this.besoinFondsRoulement; },
 };
 
 export const structureFinancement = {
@@ -360,66 +561,6 @@ export const structureFinancement = {
   ratioEndettement: 0.62,
   ratioFondsPropres: 0.17,
 };
-
-export interface Stakeholder {
-  categorie: string;
-  acteur: string;
-  contribution: string;
-  montant: number;
-  type: "equity" | "debt" | "grant" | "operational";
-  description: string;
-}
-
-export const stakeholders: Stakeholder[] = [
-  {
-    categorie: "Actionnaires Fondateurs",
-    acteur: "KENGOUM NGASSA & Associés",
-    contribution: "Capital social + Augmentation",
-    montant: 410_000_000,
-    type: "equity",
-    description: "Apports en capital et augmentation pour couvrir les besoins initiaux et démontrer l'engagement des fondateurs",
-  },
-  {
-    categorie: "Associés / Investisseurs Privés",
-    acteur: "Comptes courants d'associés",
-    contribution: "Quasi-fonds propres",
-    montant: 1_000_000_000,
-    type: "equity",
-    description: "Financement flexible sous forme de comptes courants, proportionnel aux besoins en fonds de roulement",
-  },
-  {
-    categorie: "Banques & Institutions Financières",
-    acteur: "Banque commerciale (BGFI, Afriland, SCB)",
-    contribution: "Emprunt LT à 8%",
-    montant: 5_000_000_000,
-    type: "debt",
-    description: "Financement principal des investissements lourds (matériel d'exploitation, transport, constructions)",
-  },
-  {
-    categorie: "Institutions de Développement",
-    acteur: "BAD / SFI / Proparco",
-    contribution: "Co-financement & garanties",
-    montant: 0,
-    type: "grant",
-    description: "Potentiel de co-financement pour les projets d'électrification rurale et d'énergies renouvelables",
-  },
-  {
-    categorie: "Partenaires Stratégiques",
-    acteur: "ENEO / EDC / ARSEL",
-    contribution: "Contrats cadres & partenariats",
-    montant: 0,
-    type: "operational",
-    description: "Sécurisation du chiffre d'affaires via des contrats de maintenance et d'infrastructure",
-  },
-  {
-    categorie: "Fonds d'Investissement Climat",
-    acteur: "GCF / AfDB Climate Fund",
-    contribution: "Subventions & financement vert",
-    montant: 0,
-    type: "grant",
-    description: "Éligibilité aux financements verts pour les centrales solaires et mini-réseaux",
-  },
-];
 
 // ======= UTILS =======
 export function formatFcfa(val: number, compact = false): string {
