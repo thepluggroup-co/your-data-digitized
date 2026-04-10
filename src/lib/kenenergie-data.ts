@@ -281,6 +281,146 @@ export const investissements = [
 ];
 export const totalInvestissement = { global: 6_719_350_000, an: [5_289_354_583, 0, 1_095_952_917, 0, 334_042_500] };
 
+// ======= PLAN DE FINANCEMENT =======
+export const planFinancement: Record<number, {
+  // Ressources
+  caf: number;
+  capitalSocial: number;
+  augmentationCapital: number;
+  empruntsLT: number;
+  comptesCourantsAssocies: number;
+  subventions: number;
+  totalRessources: number;
+  // Emplois
+  investissements: number;
+  remboursementEmprunt: number;
+  dividendes: number;
+  variationBFR: number;
+  totalEmplois: number;
+  // Solde
+  soldePeriode: number;
+  tresorerieCumulee: number;
+}> = {
+  2027: {
+    caf: 1_313_856_753, capitalSocial: 10_000_000, augmentationCapital: 400_000_000,
+    empruntsLT: 5_000_000_000, comptesCourantsAssocies: 1_000_000_000, subventions: 0,
+    totalRessources: 7_723_856_753,
+    investissements: 5_289_354_583, remboursementEmprunt: 0, dividendes: 0, variationBFR: 0,
+    totalEmplois: 5_289_354_583,
+    soldePeriode: 2_434_502_170, tresorerieCumulee: 2_434_502_170,
+  },
+  2028: {
+    caf: 1_679_682_466, capitalSocial: 0, augmentationCapital: 0,
+    empruntsLT: 0, comptesCourantsAssocies: 0, subventions: 0,
+    totalRessources: 1_679_682_466,
+    investissements: 0, remboursementEmprunt: 848_159_294, dividendes: 500_000, variationBFR: 814_103_437,
+    totalEmplois: 1_662_762_731,
+    soldePeriode: 16_919_735, tresorerieCumulee: 2_451_421_905,
+  },
+  2029: {
+    caf: 2_200_417_284, capitalSocial: 0, augmentationCapital: 0,
+    empruntsLT: 0, comptesCourantsAssocies: 0, subventions: 0,
+    totalRessources: 2_200_417_284,
+    investissements: 1_095_952_917, remboursementEmprunt: 918_074_895, dividendes: 500_000, variationBFR: 309_822_469,
+    totalEmplois: 2_324_350_281,
+    soldePeriode: -123_932_997, tresorerieCumulee: 2_327_488_908,
+  },
+  2030: {
+    caf: 2_810_030_401, capitalSocial: 0, augmentationCapital: 0,
+    empruntsLT: 0, comptesCourantsAssocies: 0, subventions: 0,
+    totalRessources: 2_810_030_401,
+    investissements: 0, remboursementEmprunt: 993_753_793, dividendes: 500_000, variationBFR: 245_569_723,
+    totalEmplois: 1_239_823_516,
+    soldePeriode: 1_570_206_885, tresorerieCumulee: 3_897_695_793,
+  },
+  2031: {
+    caf: 3_568_446_191, capitalSocial: 0, augmentationCapital: 0,
+    empruntsLT: 0, comptesCourantsAssocies: 0, subventions: 0,
+    totalRessources: 3_568_446_191,
+    investissements: 334_042_500, remboursementEmprunt: 1_075_671_064, dividendes: 500_000, variationBFR: 310_824_005,
+    totalEmplois: 1_721_037_569,
+    soldePeriode: 1_847_408_622, tresorerieCumulee: 5_745_104_415,
+  },
+};
+
+// ======= OUVERTURE DE CAPITAL & LEVÉE DE FONDS =======
+export const besoinsDurables = {
+  investissementTotal: 6_719_350_000,
+  besoinFondsRoulement: 1_370_319_634,
+  totalBesoinsDurables: 8_089_669_634,
+};
+
+export const structureFinancement = {
+  capitalSocial: { montant: 10_000_000, pctTotal: 0.12 },
+  augmentationCapital: { montant: 400_000_000, pctTotal: 4.95 },
+  comptesCourantsAssocies: { montant: 1_000_000_000, pctTotal: 12.36 },
+  empruntBancaire: { montant: 5_000_000_000, pctTotal: 61.81 },
+  autofinancement: { montant: 1_679_669_634, pctTotal: 20.76 },
+  totalRessourcesDurables: 8_089_669_634,
+  ratioEndettement: 0.62,
+  ratioFondsPropres: 0.17,
+};
+
+export interface Stakeholder {
+  categorie: string;
+  acteur: string;
+  contribution: string;
+  montant: number;
+  type: "equity" | "debt" | "grant" | "operational";
+  description: string;
+}
+
+export const stakeholders: Stakeholder[] = [
+  {
+    categorie: "Actionnaires Fondateurs",
+    acteur: "KENGOUM NGASSA & Associés",
+    contribution: "Capital social + Augmentation",
+    montant: 410_000_000,
+    type: "equity",
+    description: "Apports en capital et augmentation pour couvrir les besoins initiaux et démontrer l'engagement des fondateurs",
+  },
+  {
+    categorie: "Associés / Investisseurs Privés",
+    acteur: "Comptes courants d'associés",
+    contribution: "Quasi-fonds propres",
+    montant: 1_000_000_000,
+    type: "equity",
+    description: "Financement flexible sous forme de comptes courants, proportionnel aux besoins en fonds de roulement",
+  },
+  {
+    categorie: "Banques & Institutions Financières",
+    acteur: "Banque commerciale (BGFI, Afriland, SCB)",
+    contribution: "Emprunt LT à 8%",
+    montant: 5_000_000_000,
+    type: "debt",
+    description: "Financement principal des investissements lourds (matériel d'exploitation, transport, constructions)",
+  },
+  {
+    categorie: "Institutions de Développement",
+    acteur: "BAD / SFI / Proparco",
+    contribution: "Co-financement & garanties",
+    montant: 0,
+    type: "grant",
+    description: "Potentiel de co-financement pour les projets d'électrification rurale et d'énergies renouvelables",
+  },
+  {
+    categorie: "Partenaires Stratégiques",
+    acteur: "ENEO / EDC / ARSEL",
+    contribution: "Contrats cadres & partenariats",
+    montant: 0,
+    type: "operational",
+    description: "Sécurisation du chiffre d'affaires via des contrats de maintenance et d'infrastructure",
+  },
+  {
+    categorie: "Fonds d'Investissement Climat",
+    acteur: "GCF / AfDB Climate Fund",
+    contribution: "Subventions & financement vert",
+    montant: 0,
+    type: "grant",
+    description: "Éligibilité aux financements verts pour les centrales solaires et mini-réseaux",
+  },
+];
+
 // ======= UTILS =======
 export function formatFcfa(val: number, compact = false): string {
   if (compact) {
