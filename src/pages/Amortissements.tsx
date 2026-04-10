@@ -61,7 +61,7 @@ export default function Amortissements() {
         <div className="bg-primary px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Plan d'amortissement détaillé</h2>
         </div>
-        <FinTable cols={cols} rows={rows} compact />
+        <FinTable cols={cols} rows={rows} compact exportName="Amortissements" />
       </div>
     </div>
   );

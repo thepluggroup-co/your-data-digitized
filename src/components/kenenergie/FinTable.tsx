@@ -1,4 +1,8 @@
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 interface Col {
   key: string;
@@ -10,9 +14,9 @@ interface Col {
 
 interface Row {
   [key: string]: string | number | boolean | undefined;
-  _section?: boolean; // section title row
-  _total?: boolean;   // totals row
-  _sub?: boolean;     // sub-item (indented)
+  _section?: boolean;
+  _total?: boolean;
+  _sub?: boolean;
 }
 
 interface FinTableProps {
@@ -20,11 +24,41 @@ interface FinTableProps {
   rows: Row[];
   className?: string;
   compact?: boolean;
+  exportName?: string;
 }
 
-export default function FinTable({ cols, rows, className, compact }: FinTableProps) {
+function exportToExcel(cols: Col[], rows: Row[], name: string) {
+  const data = rows.map((row) => {
+    if (row._section) return { [cols[0].label]: row._label };
+    const obj: Record<string, string | number | boolean | undefined> = {};
+    for (const col of cols) {
+      obj[col.label] = row[col.key];
+    }
+    return obj;
+  });
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, name.slice(0, 31));
+  const buf = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  saveAs(new Blob([buf], { type: "application/octet-stream" }), `${name}.xlsx`);
+}
+
+export default function FinTable({ cols, rows, className, compact, exportName }: FinTableProps) {
+  const fileName = exportName || "export";
+
   return (
     <div className={cn("overflow-x-auto rounded-lg border border-border", className)}>
+      <div className="flex justify-end px-3 py-2 border-b border-border/50 bg-muted/30">
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-1.5 text-xs"
+          onClick={() => exportToExcel(cols, rows, fileName)}
+        >
+          <Download className="h-3.5 w-3.5" />
+          Exporter Excel
+        </Button>
+      </div>
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr>

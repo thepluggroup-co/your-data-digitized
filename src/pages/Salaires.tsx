@@ -59,7 +59,7 @@ export default function Salaires() {
         <div className="bg-primary px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Détail des Salaires par Poste</h2>
         </div>
-        <FinTable cols={cols} rows={rows} />
+        <FinTable cols={cols} rows={rows} exportName="Salaires" />
       </div>
     </div>
   );
