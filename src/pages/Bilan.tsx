@@ -59,7 +59,7 @@ export default function Bilan() {
         <div className="bg-primary px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Bilan Consolidé</h2>
         </div>
-        <FinTable cols={cols} rows={actifRows} compact />
+        <FinTable cols={cols} rows={actifRows} compact exportName="Bilan_Previsionnel" />
       </div>
     </div>
   );

@@ -72,7 +72,7 @@ export default function Charges() {
         <div className="bg-primary px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Détail des Charges par Année</h2>
         </div>
-        <FinTable cols={cols} rows={rows} compact />
+        <FinTable cols={cols} rows={rows} compact exportName="Charges_Exploitation" />
       </div>
     </div>
   );
