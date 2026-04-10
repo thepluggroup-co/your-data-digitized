@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard, TrendingUp, BarChart3, Settings, FileText,
-  Building2, PiggyBank, Wallet, CreditCard, Users, ChevronLeft, ChevronRight, Zap
+  Building2, PiggyBank, Wallet, CreditCard, Users, ChevronLeft, ChevronRight, Zap, Landmark
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +17,7 @@ const navItems = [
   { to: "/resultats", icon: PiggyBank, label: "Résultats" },
   { to: "/bilan", icon: Wallet, label: "Bilan" },
   { to: "/emprunt", icon: CreditCard, label: "Emprunt" },
+  { to: "/plan-financement", icon: Landmark, label: "Plan Financement" },
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
