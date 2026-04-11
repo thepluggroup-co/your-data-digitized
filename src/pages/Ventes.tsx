@@ -1,6 +1,7 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
-import { ventesNormales, ventesParAnnee, YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { ventesNormales, YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { useParametres } from "@/contexts/ParametresContext";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 const COLORS = ["hsl(220,60%,22%)", "hsl(186,72%,38%)", "hsl(142,60%,42%)", "hsl(38,85%,50%)"];
@@ -13,6 +14,8 @@ const polesParts = [
 ];
 
 export default function Ventes() {
+  const { computed } = useParametres();
+  const ventesParAnnee = computed.ventesParAnnee;
   const cols = [
     { key: "label", label: "Produit / Service", align: "left" as const },
     { key: "qte", label: "Qté", align: "right" as const },

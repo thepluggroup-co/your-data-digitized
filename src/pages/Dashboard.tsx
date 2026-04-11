@@ -2,28 +2,33 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { TrendingUp, DollarSign, PiggyBank, Target, Zap, Activity } from "lucide-react";
 import KpiCard from "@/components/kenenergie/KpiCard";
 import PageHeader from "@/components/kenenergie/PageHeader";
-import { companyInfo, ventesParAnnee, resultats, formatFcfa, scenarios, YEARS } from "@/lib/kenenergie-data";
-
-const chartData = YEARS.map((y) => ({
-  annee: y.toString(),
-  ventes: Math.round(ventesParAnnee[y].total / 1e9 * 100) / 100,
-  benefice: Math.round(resultats[y].beneficeNet / 1e9 * 100) / 100,
-  caf: Math.round(resultats[y].caf / 1e9 * 100) / 100,
-}));
-
-const poleData = YEARS.map((y) => ({
-  annee: y.toString(),
-  Infra: Math.round(ventesParAnnee[y].infra / 1e6),
-  Production: Math.round(ventesParAnnee[y].prod / 1e6),
-  Services: Math.round(ventesParAnnee[y].services / 1e6),
-  Innovation: Math.round(ventesParAnnee[y].innovation / 1e6),
-}));
+import { companyInfo, formatFcfa, scenarios, YEARS } from "@/lib/kenenergie-data";
+import { useParametres } from "@/contexts/ParametresContext";
 
 const tooltipStyle = { fontSize: 12, borderRadius: 8, border: "1px solid #e2e8f0" };
 
 export default function Dashboard() {
+  const { computed } = useParametres();
+  const { ventesParAnnee, resultats } = computed;
+
+  const chartData = YEARS.map((y) => ({
+    annee: y.toString(),
+    ventes: Math.round(ventesParAnnee[y].total / 1e9 * 100) / 100,
+    benefice: Math.round(resultats[y].beneficeNet / 1e9 * 100) / 100,
+    caf: Math.round(resultats[y].caf / 1e9 * 100) / 100,
+  }));
+
+  const poleData = YEARS.map((y) => ({
+    annee: y.toString(),
+    Infra: Math.round(ventesParAnnee[y].infra / 1e6),
+    Production: Math.round(ventesParAnnee[y].prod / 1e6),
+    Services: Math.round(ventesParAnnee[y].services / 1e6),
+    Innovation: Math.round(ventesParAnnee[y].innovation / 1e6),
+  }));
+
   const lastYear = resultats[2031];
   const firstYear = resultats[2027];
+  const cafCumul = YEARS.reduce((s, y) => s + resultats[y].caf, 0);
 
   return (
     <div className="space-y-6">
@@ -33,7 +38,6 @@ export default function Dashboard() {
         badge="Modèle 2027–2031"
       />
 
-      {/* Company info bar */}
       <div className="bg-primary text-primary-foreground rounded-xl px-5 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
         <div><p className="text-primary-foreground/60 text-xs mb-0.5">Promoteur</p><p className="font-semibold">{companyInfo.promoteur}</p></div>
         <div><p className="text-primary-foreground/60 text-xs mb-0.5">Forme juridique</p><p className="font-semibold">{companyInfo.formeJuridique}</p></div>
@@ -41,17 +45,15 @@ export default function Dashboard() {
         <div><p className="text-primary-foreground/60 text-xs mb-0.5">Délai de remboursement</p><p className="font-semibold">4 ans</p></div>
       </div>
 
-      {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
         <KpiCard label="CA N+4" value={formatFcfa(lastYear.ventes, true)} sub="Pleine capacité" icon={TrendingUp} color="primary" />
         <KpiCard label="Bénéfice N" value={formatFcfa(firstYear.beneficeNet, true)} sub="Année 1" icon={DollarSign} color="positive" />
         <KpiCard label="Bénéfice N+4" value={formatFcfa(lastYear.beneficeNet, true)} sub="Pleine capacité" icon={PiggyBank} color="accent" />
-        <KpiCard label="CAF Cumul" value="8.15 Mds" sub="5 ans" icon={Activity} color="accent" />
+        <KpiCard label="CAF Cumul" value={formatFcfa(cafCumul, true)} sub="5 ans" icon={Activity} color="accent" />
         <KpiCard label="TIR" value="34.87%" sub="Taux interne" icon={Target} color="warning" />
         <KpiCard label="Seuil rentabilité" value="45.97%" sub="Du CA" icon={Zap} color="primary" />
       </div>
 
-      {/* Charts row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
           <h3 className="text-sm font-semibold mb-4 text-foreground">Évolution du CA & Bénéfice net (Mds FCFA)</h3>
@@ -87,7 +89,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Scenario Summary */}
       <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
         <h3 className="text-sm font-semibold mb-4 text-foreground">Synthèse de Scénarios</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

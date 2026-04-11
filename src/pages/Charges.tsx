@@ -1,8 +1,9 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
-import { chargesExploitation, YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { useParametres } from "@/contexts/ParametresContext";
 
-const labels: { key: keyof typeof chargesExploitation[2027]; label: string }[] = [
+const labels: { key: string; label: string }[] = [
   { key: "achatsMP", label: "Achats Matières Premières" },
   { key: "autresAchats", label: "Autres Achats" },
   { key: "transport", label: "Transport" },
@@ -16,6 +17,9 @@ const labels: { key: keyof typeof chargesExploitation[2027]; label: string }[] =
 ];
 
 export default function Charges() {
+  const { computed } = useParametres();
+  const { chargesExploitation, ventesParAnnee } = computed;
+
   const cols = [
     { key: "label", label: "Élément de charge", align: "left" as const },
     ...YEARS.map((y) => ({ key: y.toString(), label: y.toString(), align: "right" as const })),
@@ -23,12 +27,11 @@ export default function Charges() {
 
   const rows: any[] = labels.map(({ key, label }) => ({
     label,
-    ...Object.fromEntries(YEARS.map((y) => [y.toString(), formatFcfa(chargesExploitation[y][key])])),
+    ...Object.fromEntries(YEARS.map((y) => [y.toString(), formatFcfa((chargesExploitation[y] as any)[key])])),
     _total: key === "total",
     _sub: key !== "total",
   }));
 
-  // Taux de croissance
   rows.push({
     label: "Taux de croissance charges",
     ...Object.fromEntries(YEARS.map((y, i) => {
@@ -40,9 +43,7 @@ export default function Charges() {
   });
 
   const margeData = YEARS.map((y) => {
-    const ventes = [3_471_200_000, 4_366_769_600, 5_493_396_157, 6_910_692_365, 8_693_650_995];
-    const vi = YEARS.indexOf(y);
-    const marge = ((ventes[vi] - chargesExploitation[y].total) / ventes[vi] * 100).toFixed(1);
+    const marge = ((ventesParAnnee[y].total - chargesExploitation[y].total) / ventesParAnnee[y].total * 100).toFixed(1);
     return { annee: y, marge };
   });
 

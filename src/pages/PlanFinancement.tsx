@@ -1,10 +1,11 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
 import {
-  planFinancement, besoinsDurables, structureFinancement,
+  besoinsDurables, structureFinancement,
   actionnaires, categoriesActions, apportsProgressifs, gouvernance, roiParProfil,
   capitalConfig, YEARS, formatFcfa,
 } from "@/lib/kenenergie-data";
+import { useParametres } from "@/contexts/ParametresContext";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import {
   Users, Landmark, HandCoins, Building2, Shield, TrendingUp,
@@ -30,6 +31,9 @@ const codeColors: Record<string, string> = {
 };
 
 export default function PlanFinancement() {
+  const { computed } = useParametres();
+  const planFinancement = computed.planFinancement;
+
   // ====== Plan de Financement Table ======
   const pfCols = [
     { key: "label", label: "Rubrique", align: "left" as const },

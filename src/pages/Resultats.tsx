@@ -1,18 +1,22 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
 import KpiCard from "@/components/kenenergie/KpiCard";
-import { resultats, YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { useParametres } from "@/contexts/ParametresContext";
 import { TrendingUp, PiggyBank, Activity, Target } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
 
-const chartData = YEARS.map((y) => ({
-  annee: y.toString(),
-  "Bénéfice net (M)": Math.round(resultats[y].beneficeNet / 1e6),
-  "CAF (M)": Math.round(resultats[y].caf / 1e6),
-  "Impôts (M)": Math.round(resultats[y].impots / 1e6),
-}));
-
 export default function Resultats() {
+  const { computed } = useParametres();
+  const { resultats } = computed;
+
+  const chartData = YEARS.map((y) => ({
+    annee: y.toString(),
+    "Bénéfice net (M)": Math.round(resultats[y].beneficeNet / 1e6),
+    "CAF (M)": Math.round(resultats[y].caf / 1e6),
+    "Impôts (M)": Math.round(resultats[y].impots / 1e6),
+  }));
+
   const cols = [
     { key: "label", label: "Rubrique", align: "left" as const },
     ...YEARS.map((y) => ({ key: y.toString(), label: y.toString(), align: "right" as const })),
@@ -33,7 +37,7 @@ export default function Resultats() {
     makeRow("Bénéfice d'exploitation", (y) => resultats[y].beneficeExploitation, { total: true }),
     makeRow("Intérêts", (y) => resultats[y].interets, { sub: true }),
     makeRow("Bénéfice brut", (y) => resultats[y].beneficeBrut, { total: true }),
-    makeRow("Impôts sur le bénéfice (33%)", (y) => resultats[y].impots, { sub: true }),
+    makeRow("Impôts sur le bénéfice", (y) => resultats[y].impots, { sub: true }),
     makeRow("BÉNÉFICE NET", (y) => resultats[y].beneficeNet, { total: true }),
     { _section: true, _label: "CAPACITÉ D'AUTOFINANCEMENT" },
     makeRow("Capacité d'autofinancement (CAF)", (y) => resultats[y].caf, { total: true }),
