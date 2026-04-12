@@ -27,6 +27,15 @@ export interface EditableParams {
   tauxAutresAchats: number;
   tauxTransport: number;
   tauxServicesExt: number;
+  // Détail services extérieurs (sous-taux du tauxServicesExt)
+  tauxLoyer: number;
+  tauxAssurances: number;
+  tauxMaintenance: number;
+  tauxHonoraires: number;
+  tauxTelecom: number;
+  tauxPublicite: number;
+  tauxFormation: number;
+  tauxDeplacements: number;
   tauxImpotsTaxes: number;
   tauxAutresCharges: number;
   tauxCommissionsVentes: number;
@@ -47,6 +56,14 @@ const defaultParams: EditableParams = {
   tauxAutresAchats: 0.00146,
   tauxTransport: 0.0173,
   tauxServicesExt: 0.1815,
+  tauxLoyer: 0.045,
+  tauxAssurances: 0.018,
+  tauxMaintenance: 0.032,
+  tauxHonoraires: 0.035,
+  tauxTelecom: 0.015,
+  tauxPublicite: 0.022,
+  tauxFormation: 0.008,
+  tauxDeplacements: 0.0065,
   tauxImpotsTaxes: 0.0069,
   tauxAutresCharges: 0.0294,
   tauxCommissionsVentes: 0.05,
