@@ -27,6 +27,15 @@ export interface EditableParams {
   tauxAutresAchats: number;
   tauxTransport: number;
   tauxServicesExt: number;
+  // Détail services extérieurs (sous-taux du tauxServicesExt)
+  tauxLoyer: number;
+  tauxAssurances: number;
+  tauxMaintenance: number;
+  tauxHonoraires: number;
+  tauxTelecom: number;
+  tauxPublicite: number;
+  tauxFormation: number;
+  tauxDeplacements: number;
   tauxImpotsTaxes: number;
   tauxAutresCharges: number;
   tauxCommissionsVentes: number;
@@ -47,6 +56,14 @@ const defaultParams: EditableParams = {
   tauxAutresAchats: 0.00146,
   tauxTransport: 0.0173,
   tauxServicesExt: 0.1815,
+  tauxLoyer: 0.045,
+  tauxAssurances: 0.018,
+  tauxMaintenance: 0.032,
+  tauxHonoraires: 0.035,
+  tauxTelecom: 0.015,
+  tauxPublicite: 0.022,
+  tauxFormation: 0.008,
+  tauxDeplacements: 0.0065,
   tauxImpotsTaxes: 0.0069,
   tauxAutresCharges: 0.0294,
   tauxCommissionsVentes: 0.05,
@@ -56,7 +73,7 @@ const defaultParams: EditableParams = {
 // ======= Computed Financial Model =======
 export interface ComputedModel {
   ventesParAnnee: Record<number, { infra: number; prod: number; services: number; innovation: number; total: number; txActivite: number }>;
-  chargesExploitation: Record<number, { achatsMP: number; autresAchats: number; transport: number; servicesExt: number; impotsTaxes: number; autresCharges: number; chargesPersonnel: number; amortissements: number; fraisFinanciers: number; total: number }>;
+  chargesExploitation: Record<number, { achatsMP: number; autresAchats: number; transport: number; servicesExt: number; loyer: number; assurances: number; maintenance: number; honoraires: number; telecom: number; publicite: number; formation: number; deplacements: number; impotsTaxes: number; autresCharges: number; chargesPersonnel: number; amortissements: number; fraisFinanciers: number; total: number }>;
   resultats: Record<number, { ventes: number; coutExploitation: number; amortissements: number; beneficeExploitation: number; interets: number; beneficeBrut: number; impots: number; beneficeNet: number; dividendes: number; reserves: number; caf: number; tir: number; resultatNetVentes: number; resultatBrutVentes: number }>;
   bilan: Record<number, { actifImmo: number; actifCirculant: number; tresorerieActif: number; totalActif: number; capitauxPropres: number; dettesFinancieres: number; passifCirculant: number; tresoreriePassif: number; totalPassif: number }>;
   planFinancement: Record<number, { caf: number; capitalSocial: number; augmentationCapital: number; empruntsLT: number; comptesCourantsAssocies: number; subventions: number; totalRessources: number; investissements: number; remboursementEmprunt: number; dividendes: number; variationBFR: number; totalEmplois: number; soldePeriode: number; tresorerieCumulee: number }>;
@@ -139,13 +156,21 @@ function computeModel(p: EditableParams, salairesData: SalaryEntry[]): ComputedM
     const achatsMP = Math.round(ca * p.tauxMatierePremiere);
     const autresAchats = Math.round(ca * p.tauxAutresAchats);
     const transport = Math.round(ca * p.tauxTransport);
-    const servicesExt = Math.round(ca * p.tauxServicesExt);
+    const loyer = Math.round(ca * p.tauxLoyer);
+    const assurances = Math.round(ca * p.tauxAssurances);
+    const maintenance = Math.round(ca * p.tauxMaintenance);
+    const honoraires = Math.round(ca * p.tauxHonoraires);
+    const telecom = Math.round(ca * p.tauxTelecom);
+    const publicite = Math.round(ca * p.tauxPublicite);
+    const formation = Math.round(ca * p.tauxFormation);
+    const deplacements = Math.round(ca * p.tauxDeplacements);
+    const servicesExt = loyer + assurances + maintenance + honoraires + telecom + publicite + formation + deplacements;
     const impotsTaxes = Math.round(ca * p.tauxImpotsTaxes);
     const autresCharges = Math.round(ca * p.tauxAutresCharges);
     const amort = totalAmortissement.annees[i];
     const fraisFin = interetsByYear[y];
     const total = achatsMP + autresAchats + transport + servicesExt + impotsTaxes + autresCharges + chargesPersonnel + amort + fraisFin;
-    chargesExploitation[y] = { achatsMP, autresAchats, transport, servicesExt, impotsTaxes, autresCharges, chargesPersonnel, amortissements: amort, fraisFinanciers: fraisFin, total };
+    chargesExploitation[y] = { achatsMP, autresAchats, transport, servicesExt, loyer, assurances, maintenance, honoraires, telecom, publicite, formation, deplacements, impotsTaxes, autresCharges, chargesPersonnel, amortissements: amort, fraisFinanciers: fraisFin, total };
   });
 
   // ---- RESULTATS ----
