@@ -10,7 +10,7 @@ const chargeLabels: { key: string; label: string; paramKey?: string }[] = [
   { key: "achatsMP", label: "Achats Matières Premières", paramKey: "tauxMatierePremiere" },
   { key: "autresAchats", label: "Autres Achats", paramKey: "tauxAutresAchats" },
   { key: "transport", label: "Transport", paramKey: "tauxTransport" },
-  { key: "servicesExt", label: "Services Extérieurs", paramKey: "tauxServicesExt" },
+  { key: "servicesExt", label: "Services Extérieurs (total)" },
   { key: "impotsTaxes", label: "Impôts et Taxes", paramKey: "tauxImpotsTaxes" },
   { key: "autresCharges", label: "Autres Charges", paramKey: "tauxAutresCharges" },
   { key: "chargesPersonnel", label: "Charges de Personnel" },
@@ -19,22 +19,48 @@ const chargeLabels: { key: string; label: string; paramKey?: string }[] = [
   { key: "total", label: "TOTAL DES CHARGES" },
 ];
 
+const servicesExtDetail: { key: string; label: string; paramKey: string }[] = [
+  { key: "loyer", label: "Loyer & Charges locatives", paramKey: "tauxLoyer" },
+  { key: "assurances", label: "Assurances", paramKey: "tauxAssurances" },
+  { key: "maintenance", label: "Maintenance & Entretien", paramKey: "tauxMaintenance" },
+  { key: "honoraires", label: "Honoraires & Conseil", paramKey: "tauxHonoraires" },
+  { key: "telecom", label: "Télécom & Internet", paramKey: "tauxTelecom" },
+  { key: "publicite", label: "Publicité & Communication", paramKey: "tauxPublicite" },
+  { key: "formation", label: "Formation", paramKey: "tauxFormation" },
+  { key: "deplacements", label: "Déplacements & Missions", paramKey: "tauxDeplacements" },
+];
+
 export default function Charges() {
   const { computed, params, updateParam } = useParametres();
   const { chargesExploitation, ventesParAnnee } = computed;
   const [showTaux, setShowTaux] = useState(false);
+  const [showServicesDetail, setShowServicesDetail] = useState(false);
 
   const cols = [
     { key: "label", label: "Élément de charge", align: "left" as const },
     ...YEARS.map((y) => ({ key: y.toString(), label: y.toString(), align: "right" as const })),
   ];
 
-  const rows: any[] = chargeLabels.map(({ key, label }) => ({
-    label,
-    ...Object.fromEntries(YEARS.map((y) => [y.toString(), formatFcfa((chargesExploitation[y] as any)[key])])),
-    _total: key === "total",
-    _sub: key !== "total",
-  }));
+  // Build rows with services ext detail inserted after the servicesExt line
+  const rows: any[] = [];
+  chargeLabels.forEach(({ key, label }) => {
+    rows.push({
+      label,
+      ...Object.fromEntries(YEARS.map((y) => [y.toString(), formatFcfa((chargesExploitation[y] as any)[key])])),
+      _total: key === "total",
+      _sub: key !== "total" && key !== "servicesExt",
+    });
+    // Insert sub-detail after servicesExt
+    if (key === "servicesExt") {
+      servicesExtDetail.forEach(({ key: sk, label: sl }) => {
+        rows.push({
+          label: `  ↳ ${sl}`,
+          ...Object.fromEntries(YEARS.map((y) => [y.toString(), formatFcfa((chargesExploitation[y] as any)[sk])])),
+          _sub: true,
+        });
+      });
+    }
+  });
 
   rows.push({
     label: "Taux de croissance charges",
@@ -85,22 +111,59 @@ export default function Charges() {
           {showTaux ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
         </button>
         {showTaux && (
-          <div className="p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {editableTaux.map(({ label, paramKey }) => (
-              <div key={paramKey}>
-                <label className="text-xs text-muted-foreground block mb-1">{label}</label>
-                <div className="flex items-center gap-1">
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={((params as any)[paramKey!] * 100).toFixed(2)}
-                    onChange={e => updateParam(paramKey as any, parseFloat(e.target.value) / 100 || 0)}
-                    className="font-mono text-sm h-8"
-                  />
-                  <span className="text-xs text-muted-foreground">%</span>
+          <div className="p-4 space-y-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {editableTaux.map(({ label, paramKey }) => (
+                <div key={paramKey}>
+                  <label className="text-xs text-muted-foreground block mb-1">{label}</label>
+                  <div className="flex items-center gap-1">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={((params as any)[paramKey!] * 100).toFixed(2)}
+                      onChange={e => updateParam(paramKey as any, parseFloat(e.target.value) / 100 || 0)}
+                      className="font-mono text-sm h-8"
+                    />
+                    <span className="text-xs text-muted-foreground">%</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Services Extérieurs detail panel */}
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+        <button
+          onClick={() => setShowServicesDetail(!showServicesDetail)}
+          className="w-full flex items-center justify-between px-5 py-3 bg-accent/10 hover:bg-accent/15 transition-colors"
+        >
+          <h3 className="text-sm font-semibold text-foreground">🔧 Détail Services Extérieurs (% du CA)</h3>
+          {showServicesDetail ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+        </button>
+        {showServicesDetail && (
+          <div className="p-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {servicesExtDetail.map(({ label, paramKey }) => (
+                <div key={paramKey}>
+                  <label className="text-xs text-muted-foreground block mb-1">{label}</label>
+                  <div className="flex items-center gap-1">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={((params as any)[paramKey] * 100).toFixed(2)}
+                      onChange={e => updateParam(paramKey as any, parseFloat(e.target.value) / 100 || 0)}
+                      className="font-mono text-sm h-8"
+                    />
+                    <span className="text-xs text-muted-foreground">%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              Total Services Ext. = {((params.tauxLoyer + params.tauxAssurances + params.tauxMaintenance + params.tauxHonoraires + params.tauxTelecom + params.tauxPublicite + params.tauxFormation + params.tauxDeplacements) * 100).toFixed(2)}% du CA
+            </p>
           </div>
         )}
       </div>

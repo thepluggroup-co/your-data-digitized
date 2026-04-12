@@ -2,9 +2,10 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard, TrendingUp, BarChart3, Settings, FileText,
-  Building2, PiggyBank, Wallet, CreditCard, Users, ChevronLeft, ChevronRight, Zap, Landmark, Target
+  Building2, PiggyBank, Wallet, CreditCard, Users, ChevronLeft, ChevronRight, Landmark, Target
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logoThePlug from "@/assets/logo-the-plug.png";
 
 const navItems = [
   { to: "/", icon: LayoutDashboard, label: "Tableau de Bord" },
@@ -33,11 +34,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           collapsed ? "w-16" : "w-56"
         )}
       >
-        {/* Logo */}
-        <div className={cn("flex items-center gap-3 px-4 py-5 border-b border-sidebar-border", collapsed && "justify-center px-2")}>
-          <div className="w-8 h-8 rounded-lg bg-sidebar-primary flex items-center justify-center flex-shrink-0">
-            <Zap className="w-4 h-4 text-white" />
-          </div>
+        {/* Logo THE PLUG */}
+        <div className={cn("flex items-center gap-3 px-4 py-4 border-b border-sidebar-border", collapsed && "justify-center px-2")}>
+          <img src={logoThePlug} alt="THE PLUG" className={cn("flex-shrink-0 object-contain", collapsed ? "w-10 h-10" : "w-12 h-12")} />
           {!collapsed && (
             <div>
               <div className="text-white font-bold text-sm leading-tight">KENENERGIE</div>
@@ -69,6 +68,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </NavLink>
           ))}
         </nav>
+
+        {/* Powered by THE PLUG */}
+        {!collapsed && (
+          <div className="px-4 py-2 border-t border-sidebar-border">
+            <p className="text-[9px] text-sidebar-foreground/40 text-center">Powered by THE PLUG</p>
+            <p className="text-[8px] text-sidebar-foreground/30 text-center">Connexion that drives innovation</p>
+          </div>
+        )}
 
         {/* Collapse toggle */}
         <button
