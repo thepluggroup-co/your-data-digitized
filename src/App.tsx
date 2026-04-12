@@ -15,6 +15,7 @@ import Resultats from "@/pages/Resultats";
 import Bilan from "@/pages/Bilan";
 import Emprunt from "@/pages/Emprunt";
 import PlanFinancement from "@/pages/PlanFinancement";
+import SeuilRentabilite from "@/pages/SeuilRentabilite";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/bilan" element={<Bilan />} />
             <Route path="/emprunt" element={<Emprunt />} />
             <Route path="/plan-financement" element={<PlanFinancement />} />
+            <Route path="/seuil-rentabilite" element={<SeuilRentabilite />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
