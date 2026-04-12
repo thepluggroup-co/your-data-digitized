@@ -4,6 +4,7 @@ import KpiCard from "@/components/kenenergie/KpiCard";
 import PageHeader from "@/components/kenenergie/PageHeader";
 import { companyInfo, formatFcfa, scenarios, YEARS } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
+import ExportPdfButton from "@/components/kenenergie/ExportPdfButton";
 
 const tooltipStyle = { fontSize: 12, borderRadius: 8, border: "1px solid #e2e8f0" };
 
@@ -32,11 +33,14 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Tableau de Bord - KENENERGIE SARL"
-        subtitle={`${companyInfo.activite} • ${companyInfo.ville}, ${companyInfo.pays}`}
-        badge="Modèle 2027–2031"
-      />
+      <div className="flex items-center justify-between">
+        <PageHeader
+          title="Tableau de Bord - KENENERGIE SARL"
+          subtitle={`${companyInfo.activite} • ${companyInfo.ville}, ${companyInfo.pays}`}
+          badge="Modèle 2027–2031"
+        />
+        <ExportPdfButton />
+      </div>
 
       <div className="bg-primary text-primary-foreground rounded-xl px-5 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
         <div><p className="text-primary-foreground/60 text-xs mb-0.5">Promoteur</p><p className="font-semibold">{companyInfo.promoteur}</p></div>
