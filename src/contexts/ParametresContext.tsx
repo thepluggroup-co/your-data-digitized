@@ -156,13 +156,21 @@ function computeModel(p: EditableParams, salairesData: SalaryEntry[]): ComputedM
     const achatsMP = Math.round(ca * p.tauxMatierePremiere);
     const autresAchats = Math.round(ca * p.tauxAutresAchats);
     const transport = Math.round(ca * p.tauxTransport);
-    const servicesExt = Math.round(ca * p.tauxServicesExt);
+    const loyer = Math.round(ca * p.tauxLoyer);
+    const assurances = Math.round(ca * p.tauxAssurances);
+    const maintenance = Math.round(ca * p.tauxMaintenance);
+    const honoraires = Math.round(ca * p.tauxHonoraires);
+    const telecom = Math.round(ca * p.tauxTelecom);
+    const publicite = Math.round(ca * p.tauxPublicite);
+    const formation = Math.round(ca * p.tauxFormation);
+    const deplacements = Math.round(ca * p.tauxDeplacements);
+    const servicesExt = loyer + assurances + maintenance + honoraires + telecom + publicite + formation + deplacements;
     const impotsTaxes = Math.round(ca * p.tauxImpotsTaxes);
     const autresCharges = Math.round(ca * p.tauxAutresCharges);
     const amort = totalAmortissement.annees[i];
     const fraisFin = interetsByYear[y];
     const total = achatsMP + autresAchats + transport + servicesExt + impotsTaxes + autresCharges + chargesPersonnel + amort + fraisFin;
-    chargesExploitation[y] = { achatsMP, autresAchats, transport, servicesExt, impotsTaxes, autresCharges, chargesPersonnel, amortissements: amort, fraisFinanciers: fraisFin, total };
+    chargesExploitation[y] = { achatsMP, autresAchats, transport, servicesExt, loyer, assurances, maintenance, honoraires, telecom, publicite, formation, deplacements, impotsTaxes, autresCharges, chargesPersonnel, amortissements: amort, fraisFinanciers: fraisFin, total };
   });
 
   // ---- RESULTATS ----
