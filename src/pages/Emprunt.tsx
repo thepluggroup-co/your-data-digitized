@@ -85,7 +85,7 @@ export default function Emprunt() {
       </div>
 
       <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-        <div className="bg-primary px-5 py-3">
+        <div className="header-gradient px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Tableau de Remboursement (20 versements trimestriels)</h2>
         </div>
         <FinTable cols={cols} rows={rows} compact exportName="Remboursement_Emprunt" />

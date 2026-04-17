@@ -35,7 +35,7 @@ export default function Bilan() {
 
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         {YEARS.map((y) => (
-          <div key={y} className="bg-card rounded-xl border border-border p-4 shadow-sm">
+          <div key={y} className="kpi-depth rounded-xl border border-border p-4">
             <p className="text-xs text-muted-foreground font-semibold mb-2">{y}</p>
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between">
@@ -56,7 +56,7 @@ export default function Bilan() {
       </div>
 
       <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-        <div className="bg-primary px-5 py-3">
+        <div className="header-gradient px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Bilan Consolidé</h2>
         </div>
         <FinTable cols={cols} rows={actifRows} compact exportName="Bilan_Previsionnel" />

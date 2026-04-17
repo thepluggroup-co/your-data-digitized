@@ -1,0 +1,1458 @@
+[
+  {
+    "id": "d_1776248682002_6m4luf",
+    "nom": "LA REFERENCE DOCUMENTAIRE SA",
+    "client": "PIERRE PROMBO",
+    "description": "BUSINESS PLAN 2027 - 2031",
+    "createdAt": "2026-04-15T10:24:42.002Z",
+    "updatedAt": "2026-04-17T17:11:28.864Z",
+    "data": {
+      "params": {
+        "capitalSocial": 10000000,
+        "augmentationCapital": 400000000,
+        "endettementLT": 5000000000,
+        "comptesCourantsAssocies": 1000000000,
+        "txInteretEmpruntLT": 0.08,
+        "tauxImpotSocietes": 0.33,
+        "txDistributionBenefices": 0,
+        "niveauxActivite": [
+          0.4,
+          0.5,
+          0.63,
+          0.8,
+          1
+        ],
+        "tauxAugmentationSalaires": 0.02,
+        "tauxMatierePremiere": 0.0311,
+        "tauxAutresAchats": 0.00146,
+        "tauxTransport": 0.0173,
+        "tauxServicesExt": 0.1815,
+        "tauxLoyer": 0.045,
+        "tauxAssurances": 0.018,
+        "tauxMaintenance": 0.032,
+        "tauxHonoraires": 0.035,
+        "tauxTelecom": 0.015,
+        "tauxPublicite": 0.022,
+        "tauxFormation": 0.008,
+        "tauxDeplacements": 0.0065,
+        "tauxImpotsTaxes": 0.0069,
+        "tauxAutresCharges": 0.0294,
+        "tauxCommissionsVentes": 0.05,
+        "tauxChargesSociales": 0.2,
+        "fixedAchatsMP": 0,
+        "fixedAutresAchats": 0,
+        "fixedTransport": 0,
+        "fixedLoyer": 0,
+        "fixedAssurances": 0,
+        "fixedMaintenance": 0,
+        "fixedHonoraires": 0,
+        "fixedTelecom": 0,
+        "fixedPublicite": 0,
+        "fixedFormation": 0,
+        "fixedDeplacements": 0,
+        "fixedImpotsTaxes": 0,
+        "fixedAutresCharges": 0
+      },
+      "salairesData": [
+        {
+          "poste": "Directeur Général",
+          "qte": 1,
+          "salaire": 1000000,
+          "montant": 1000000
+        },
+        {
+          "poste": "Directeurs opérationnels",
+          "qte": 4,
+          "salaire": 800000,
+          "montant": 3200000
+        },
+        {
+          "poste": "Responsables de sections",
+          "qte": 20,
+          "salaire": 600000,
+          "montant": 12000000
+        },
+        {
+          "poste": "Chef de service",
+          "qte": 20,
+          "salaire": 500000,
+          "montant": 10000000
+        },
+        {
+          "poste": "Agent administratif",
+          "qte": 24,
+          "salaire": 400000,
+          "montant": 9600000
+        },
+        {
+          "poste": "Chef d'équipe",
+          "qte": 24,
+          "salaire": 300000,
+          "montant": 7200000
+        },
+        {
+          "poste": "Technicien spécialisé",
+          "qte": 50,
+          "salaire": 250000,
+          "montant": 12500000
+        },
+        {
+          "poste": "Agent Commercial",
+          "qte": 15,
+          "salaire": 200000,
+          "montant": 3000000
+        },
+        {
+          "poste": "Agent de production",
+          "qte": 32,
+          "salaire": 200000,
+          "montant": 6400000
+        },
+        {
+          "poste": "Agent de service",
+          "qte": 20,
+          "salaire": 150000,
+          "montant": 3000000
+        },
+        {
+          "poste": "Ouvrier non qualifié",
+          "qte": 15,
+          "salaire": 100000,
+          "montant": 1500000
+        }
+      ],
+      "ventesData": {
+        "poleInfrastructure": {
+          "label": "Pôle Infrastructure",
+          "produits": [
+            {
+              "label": "Réseaux électriques (BT/HTA/HTB)",
+              "qte": 10,
+              "pu": 160000000,
+              "montant": 1600000000,
+              "unite": "Km"
+            },
+            {
+              "label": "Entretien des postes",
+              "qte": 80,
+              "pu": 4800000,
+              "montant": 384000000,
+              "unite": "POSTES"
+            },
+            {
+              "label": "Bâtiments et génie civil",
+              "qte": 12000,
+              "pu": 20000,
+              "montant": 240000000,
+              "unite": "m²"
+            },
+            {
+              "label": "Installations électriques intérieures",
+              "qte": 120,
+              "pu": 2000000,
+              "montant": 240000000,
+              "unite": "lots"
+            },
+            {
+              "label": "Rénovations et maintenance",
+              "qte": 80,
+              "pu": 2000000,
+              "montant": 160000000,
+              "unite": "chantiers"
+            }
+          ]
+        },
+        "poleProduction": {
+          "label": "Pôle Production Énergétiques",
+          "produits": [
+            {
+              "label": "Kits solaires résidentiels",
+              "qte": 3000,
+              "pu": 315000,
+              "montant": 945000000,
+              "unite": "UNITE"
+            },
+            {
+              "label": "Centrales et mini-réseaux",
+              "qte": 8,
+              "pu": 180000000,
+              "montant": 1440000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Systèmes hybrides",
+              "qte": 1000,
+              "pu": 400000,
+              "montant": 400000000,
+              "unite": "KWC"
+            },
+            {
+              "label": "Maintenance de centrales",
+              "qte": 8,
+              "pu": 25000000,
+              "montant": 200000000,
+              "unite": "CONTRATS"
+            }
+          ]
+        },
+        "poleServices": {
+          "label": "Pôle Services",
+          "produits": [
+            {
+              "label": "Ventes de fournitures électriques",
+              "qte": 450,
+              "pu": 2500000,
+              "montant": 1125000000,
+              "unite": "Tonnes"
+            },
+            {
+              "label": "Mutation des transformateurs",
+              "qte": 1000,
+              "pu": 200000,
+              "montant": 200000000,
+              "unite": "UNITE"
+            },
+            {
+              "label": "Appareillage et petit matériel",
+              "qte": 1000,
+              "pu": 200000,
+              "montant": 200000000,
+              "unite": "lots"
+            },
+            {
+              "label": "Éclairage et luminaires",
+              "qte": 1200,
+              "pu": 120000,
+              "montant": 144000000,
+              "unite": "lots"
+            },
+            {
+              "label": "Maintenance réseaux (ENEO)",
+              "qte": 12,
+              "pu": 25000000,
+              "montant": 300000000,
+              "unite": "CONTRATS"
+            },
+            {
+              "label": "Conseil et assistance technique",
+              "qte": 100,
+              "pu": 600000,
+              "montant": 60000000,
+              "unite": "PROJET"
+            }
+          ]
+        },
+        "poleInnovation": {
+          "label": "Pôle Innovation",
+          "produits": [
+            {
+              "label": "Études et ingénierie",
+              "qte": 80,
+              "pu": 8000000,
+              "montant": 640000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Audits et diagnostics",
+              "qte": 50,
+              "pu": 1500000,
+              "montant": 75000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Développement de solutions",
+              "qte": 8,
+              "pu": 15000000,
+              "montant": 120000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Sécurité et protection des installations",
+              "qte": 25,
+              "pu": 5000000,
+              "montant": 125000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Formation technique (Academy)",
+              "qte": 20,
+              "pu": 4000000,
+              "montant": 80000000,
+              "unite": "SESSIONS"
+            }
+          ]
+        }
+      },
+      "investData": [
+        {
+          "intitule": "Charges immobilisées",
+          "global": 80000000,
+          "an": [
+            60000000,
+            0,
+            16000000,
+            0,
+            4000000
+          ]
+        },
+        {
+          "intitule": "Immobilisations incorporelles",
+          "global": 50000000,
+          "an": [
+            37500000,
+            0,
+            10000000,
+            0,
+            2500000
+          ]
+        },
+        {
+          "intitule": "Constructions et agencements",
+          "global": 716000000,
+          "an": [
+            543400000,
+            0,
+            136800000,
+            0,
+            35800000
+          ]
+        },
+        {
+          "intitule": "Immobilisations Financières",
+          "global": 50000000,
+          "an": [
+            39583333,
+            0,
+            7916667,
+            0,
+            2500000
+          ]
+        },
+        {
+          "intitule": "Matériel de transport",
+          "global": 825000000,
+          "an": [
+            653125000,
+            0,
+            130625000,
+            0,
+            41250000
+          ]
+        },
+        {
+          "intitule": "Matériel et mobilier de bureau",
+          "global": 112500000,
+          "an": [
+            89062500,
+            0,
+            17812500,
+            0,
+            5625000
+          ]
+        },
+        {
+          "intitule": "Matériel d'exploitation",
+          "global": 4222500000,
+          "an": [
+            3342812500,
+            0,
+            668562500,
+            0,
+            211125000
+          ]
+        },
+        {
+          "intitule": "Autres Matériels d'exploitation",
+          "global": 52500000,
+          "an": [
+            43020833,
+            0,
+            8604167,
+            0,
+            875000
+          ]
+        },
+        {
+          "intitule": "Imprévus & Inflation (10%)",
+          "global": 610850000,
+          "an": [
+            480850417,
+            0,
+            99632083,
+            0,
+            30367500
+          ]
+        }
+      ],
+      "amortData": [
+        {
+          "intitule": "Charges immobilisées",
+          "valeurTotale": 80000000,
+          "taux": 0.2,
+          "annees": [
+            12000000,
+            12000000,
+            15200000,
+            15200000,
+            15200000
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Frais d'établissement",
+          "valeurTotale": 50000000,
+          "taux": 0.2,
+          "annees": [
+            7500000,
+            7500000,
+            9500000,
+            9500000,
+            9500000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Charges à répartir",
+          "valeurTotale": 30000000,
+          "taux": 0.2,
+          "annees": [
+            4500000,
+            4500000,
+            5700000,
+            5700000,
+            5700000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Immobilisations incorporelles",
+          "valeurTotale": 50000000,
+          "taux": 0.2,
+          "annees": [
+            7500000,
+            7500000,
+            9500000,
+            9500000,
+            9500000
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Recherche & Développement",
+          "valeurTotale": 10000000,
+          "taux": 0.2,
+          "annees": [
+            1500000,
+            1500000,
+            1900000,
+            1900000,
+            1900000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Brevets, Licences, Logiciels",
+          "valeurTotale": 40000000,
+          "taux": 0.2,
+          "annees": [
+            6000000,
+            6000000,
+            7600000,
+            7600000,
+            7600000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Constructions et agencements",
+          "valeurTotale": 716000000,
+          "taux": 0,
+          "annees": [
+            19840000,
+            19840000,
+            23040000,
+            23040000,
+            24320000
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Terrain",
+          "valeurTotale": 300000000,
+          "taux": 0,
+          "annees": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Constructions",
+          "valeurTotale": 320000000,
+          "taux": 0.05,
+          "annees": [
+            12000000,
+            12000000,
+            15200000,
+            15200000,
+            15200000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Installations & aménagements",
+          "valeurTotale": 96000000,
+          "taux": 0.1,
+          "annees": [
+            7840000,
+            7840000,
+            7840000,
+            7840000,
+            9120000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Matériel de transport",
+          "valeurTotale": 825000000,
+          "taux": 0.2,
+          "annees": [
+            130625000,
+            130625000,
+            130625000,
+            130625000,
+            130625000
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Véhicules Berline",
+          "valeurTotale": 85000000,
+          "taux": 0.2,
+          "annees": [
+            13458333,
+            13458333,
+            13458333,
+            13458333,
+            13458333
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Véhicules Pick-up",
+          "valeurTotale": 115000000,
+          "taux": 0.2,
+          "annees": [
+            18208333,
+            18208333,
+            18208333,
+            18208333,
+            18208333
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Fourgonnettes",
+          "valeurTotale": 135000000,
+          "taux": 0.2,
+          "annees": [
+            21375000,
+            21375000,
+            21375000,
+            21375000,
+            21375000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Camions 30T",
+          "valeurTotale": 490000000,
+          "taux": 0.2,
+          "annees": [
+            77583333,
+            77583333,
+            77583333,
+            77583333,
+            77583333
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Matériel et mobilier de bureau",
+          "valeurTotale": 112500000,
+          "taux": 0.2,
+          "annees": [
+            17812500,
+            17812500,
+            21058333,
+            21058333,
+            21058333
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Matériel Informatique",
+          "valeurTotale": 40000000,
+          "taux": 0.2,
+          "annees": [
+            6333333,
+            6333333,
+            7600000,
+            7600000,
+            7600000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Mobilier de bureau",
+          "valeurTotale": 25000000,
+          "taux": 0.2,
+          "annees": [
+            3958333,
+            3958333,
+            4750000,
+            4750000,
+            4750000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Équipement showroom",
+          "valeurTotale": 37500000,
+          "taux": 0.2,
+          "annees": [
+            5937500,
+            5937500,
+            7125000,
+            7125000,
+            7125000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Matériel d'exploitation",
+          "valeurTotale": 4222500000,
+          "taux": 0.1,
+          "annees": [
+            334281250,
+            334281250,
+            398247917,
+            398247917,
+            398247917
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Outillage électrique professionnel",
+          "valeurTotale": 40000000,
+          "taux": 0.1,
+          "annees": [
+            3166667,
+            3166667,
+            3800000,
+            3800000,
+            3800000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Matériel de chantier",
+          "valeurTotale": 4000000000,
+          "taux": 0.1,
+          "annees": [
+            316666667,
+            316666667,
+            380000000,
+            380000000,
+            380000000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Équipements de sécurité (EPI)",
+          "valeurTotale": 150000000,
+          "taux": 0.1,
+          "annees": [
+            11875000,
+            11875000,
+            11875000,
+            11875000,
+            11875000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Groupe électrogène",
+          "valeurTotale": 12500000,
+          "taux": 0.1,
+          "annees": [
+            989583,
+            989583,
+            989583,
+            989583,
+            989583
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Matériel de topographie",
+          "valeurTotale": 20000000,
+          "taux": 0.1,
+          "annees": [
+            1583333,
+            1583333,
+            1583333,
+            1583333,
+            1583333
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Imprévus & Inflation (10%)",
+          "valeurTotale": 610850000,
+          "taux": 0.2,
+          "annees": [
+            96170083,
+            96170083,
+            116096500,
+            116096500,
+            116096500
+          ],
+          "isSubLine": false
+        }
+      ]
+    },
+    "syncedAt": "2026-04-17T17:12:33.608Z"
+  },
+  {
+    "id": "d_1776236903376_0nxfgg",
+    "nom": "Nouveau dossier",
+    "client": "",
+    "description": "",
+    "createdAt": "2026-04-15T07:08:23.376Z",
+    "updatedAt": "2026-04-15T07:27:51.915Z",
+    "data": {
+      "params": {
+        "capitalSocial": 500000000,
+        "augmentationCapital": 1500000000,
+        "endettementLT": 4000000000,
+        "comptesCourantsAssocies": 1500000000,
+        "txInteretEmpruntLT": 0.07,
+        "tauxImpotSocietes": 0.33,
+        "txDistributionBenefices": 0,
+        "niveauxActivite": [
+          0.55,
+          0.65,
+          0.75,
+          0.88,
+          1
+        ],
+        "tauxAugmentationSalaires": 0.02,
+        "tauxMatierePremiere": 0.0311,
+        "tauxAutresAchats": 0.00146,
+        "tauxTransport": 0.0173,
+        "tauxServicesExt": 0.1815,
+        "tauxLoyer": 0.045,
+        "tauxAssurances": 0.018,
+        "tauxMaintenance": 0.032,
+        "tauxHonoraires": 0.035,
+        "tauxTelecom": 0.015,
+        "tauxPublicite": 0.022,
+        "tauxFormation": 0.008,
+        "tauxDeplacements": 0.0065,
+        "tauxImpotsTaxes": 0.0069,
+        "tauxAutresCharges": 0.0294,
+        "tauxCommissionsVentes": 0.05,
+        "tauxChargesSociales": 0.2,
+        "fixedAchatsMP": 0,
+        "fixedAutresAchats": 0,
+        "fixedTransport": 0,
+        "fixedLoyer": 0,
+        "fixedAssurances": 0,
+        "fixedMaintenance": 0,
+        "fixedHonoraires": 0,
+        "fixedTelecom": 0,
+        "fixedPublicite": 0,
+        "fixedFormation": 0,
+        "fixedDeplacements": 0,
+        "fixedImpotsTaxes": 0,
+        "fixedAutresCharges": 0
+      },
+      "salairesData": [
+        {
+          "poste": "Directeur Général",
+          "qte": 1,
+          "salaire": 1000000,
+          "montant": 1000000
+        },
+        {
+          "poste": "Directeurs opérationnels",
+          "qte": 4,
+          "salaire": 800000,
+          "montant": 3200000
+        },
+        {
+          "poste": "Responsables de sections",
+          "qte": 20,
+          "salaire": 600000,
+          "montant": 12000000
+        },
+        {
+          "poste": "Chef de service",
+          "qte": 20,
+          "salaire": 500000,
+          "montant": 10000000
+        },
+        {
+          "poste": "Agent administratif",
+          "qte": 24,
+          "salaire": 400000,
+          "montant": 9600000
+        },
+        {
+          "poste": "Chef d'équipe",
+          "qte": 24,
+          "salaire": 300000,
+          "montant": 7200000
+        },
+        {
+          "poste": "Technicien spécialisé",
+          "qte": 50,
+          "salaire": 250000,
+          "montant": 12500000
+        },
+        {
+          "poste": "Agent Commercial",
+          "qte": 15,
+          "salaire": 200000,
+          "montant": 3000000
+        },
+        {
+          "poste": "Agent de production",
+          "qte": 32,
+          "salaire": 200000,
+          "montant": 6400000
+        },
+        {
+          "poste": "Agent de service",
+          "qte": 20,
+          "salaire": 150000,
+          "montant": 3000000
+        },
+        {
+          "poste": "Ouvrier non qualifié",
+          "qte": 15,
+          "salaire": 100000,
+          "montant": 1500000
+        }
+      ],
+      "ventesData": {
+        "poleInfrastructure": {
+          "label": "Pôle Infrastructure",
+          "produits": [
+            {
+              "label": "Réseaux électriques (BT/HTA/HTB)",
+              "qte": 10,
+              "pu": 160000000,
+              "montant": 1600000000,
+              "unite": "Km"
+            },
+            {
+              "label": "Entretien des postes",
+              "qte": 80,
+              "pu": 4800000,
+              "montant": 384000000,
+              "unite": "POSTES"
+            },
+            {
+              "label": "Bâtiments et génie civil",
+              "qte": 12000,
+              "pu": 20000,
+              "montant": 240000000,
+              "unite": "m²"
+            },
+            {
+              "label": "Installations électriques intérieures",
+              "qte": 120,
+              "pu": 2000000,
+              "montant": 240000000,
+              "unite": "lots"
+            },
+            {
+              "label": "Rénovations et maintenance",
+              "qte": 80,
+              "pu": 2000000,
+              "montant": 160000000,
+              "unite": "chantiers"
+            }
+          ]
+        },
+        "poleProduction": {
+          "label": "Pôle Production Énergétiques",
+          "produits": [
+            {
+              "label": "Kits solaires résidentiels",
+              "qte": 3000,
+              "pu": 315000,
+              "montant": 945000000,
+              "unite": "UNITE"
+            },
+            {
+              "label": "Centrales et mini-réseaux",
+              "qte": 8,
+              "pu": 180000000,
+              "montant": 1440000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Systèmes hybrides",
+              "qte": 1000,
+              "pu": 400000,
+              "montant": 400000000,
+              "unite": "KWC"
+            },
+            {
+              "label": "Maintenance de centrales",
+              "qte": 8,
+              "pu": 25000000,
+              "montant": 200000000,
+              "unite": "CONTRATS"
+            }
+          ]
+        },
+        "poleServices": {
+          "label": "Pôle Services",
+          "produits": [
+            {
+              "label": "Ventes de fournitures électriques",
+              "qte": 450,
+              "pu": 2500000,
+              "montant": 1125000000,
+              "unite": "Tonnes"
+            },
+            {
+              "label": "Mutation des transformateurs",
+              "qte": 1000,
+              "pu": 200000,
+              "montant": 200000000,
+              "unite": "UNITE"
+            },
+            {
+              "label": "Appareillage et petit matériel",
+              "qte": 1000,
+              "pu": 200000,
+              "montant": 200000000,
+              "unite": "lots"
+            },
+            {
+              "label": "Éclairage et luminaires",
+              "qte": 1200,
+              "pu": 120000,
+              "montant": 144000000,
+              "unite": "lots"
+            },
+            {
+              "label": "Maintenance réseaux (ENEO)",
+              "qte": 12,
+              "pu": 25000000,
+              "montant": 300000000,
+              "unite": "CONTRATS"
+            },
+            {
+              "label": "Conseil et assistance technique",
+              "qte": 100,
+              "pu": 600000,
+              "montant": 60000000,
+              "unite": "PROJET"
+            }
+          ]
+        },
+        "poleInnovation": {
+          "label": "Pôle Innovation",
+          "produits": [
+            {
+              "label": "Études et ingénierie",
+              "qte": 80,
+              "pu": 8000000,
+              "montant": 640000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Audits et diagnostics",
+              "qte": 50,
+              "pu": 1500000,
+              "montant": 75000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Développement de solutions",
+              "qte": 8,
+              "pu": 15000000,
+              "montant": 120000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Sécurité et protection des installations",
+              "qte": 25,
+              "pu": 5000000,
+              "montant": 125000000,
+              "unite": "PROJET"
+            },
+            {
+              "label": "Formation technique (Academy)",
+              "qte": 20,
+              "pu": 4000000,
+              "montant": 80000000,
+              "unite": "SESSIONS"
+            }
+          ]
+        }
+      },
+      "investData": [
+        {
+          "intitule": "Charges immobilisées",
+          "global": 80000000,
+          "an": [
+            60000000,
+            0,
+            16000000,
+            0,
+            4000000
+          ]
+        },
+        {
+          "intitule": "Immobilisations incorporelles",
+          "global": 50000000,
+          "an": [
+            37500000,
+            0,
+            10000000,
+            0,
+            2500000
+          ]
+        },
+        {
+          "intitule": "Constructions et agencements",
+          "global": 716000000,
+          "an": [
+            543400000,
+            0,
+            136800000,
+            0,
+            35800000
+          ]
+        },
+        {
+          "intitule": "Immobilisations Financières",
+          "global": 50000000,
+          "an": [
+            39583333,
+            0,
+            7916667,
+            0,
+            2500000
+          ]
+        },
+        {
+          "intitule": "Matériel de transport",
+          "global": 825000000,
+          "an": [
+            653125000,
+            0,
+            130625000,
+            0,
+            41250000
+          ]
+        },
+        {
+          "intitule": "Matériel et mobilier de bureau",
+          "global": 112500000,
+          "an": [
+            89062500,
+            0,
+            17812500,
+            0,
+            5625000
+          ]
+        },
+        {
+          "intitule": "Matériel d'exploitation",
+          "global": 4222500000,
+          "an": [
+            3342812500,
+            0,
+            668562500,
+            0,
+            211125000
+          ]
+        },
+        {
+          "intitule": "Autres Matériels d'exploitation",
+          "global": 52500000,
+          "an": [
+            43020833,
+            0,
+            8604167,
+            0,
+            875000
+          ]
+        },
+        {
+          "intitule": "Imprévus & Inflation (10%)",
+          "global": 610850000,
+          "an": [
+            480850417,
+            0,
+            99632083,
+            0,
+            30367500
+          ]
+        }
+      ],
+      "amortData": [
+        {
+          "intitule": "Charges immobilisées",
+          "valeurTotale": 80000000,
+          "taux": 0.2,
+          "annees": [
+            12000000,
+            12000000,
+            15200000,
+            15200000,
+            15200000
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Frais d'établissement",
+          "valeurTotale": 50000000,
+          "taux": 0.2,
+          "annees": [
+            7500000,
+            7500000,
+            9500000,
+            9500000,
+            9500000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Charges à répartir",
+          "valeurTotale": 30000000,
+          "taux": 0.2,
+          "annees": [
+            4500000,
+            4500000,
+            5700000,
+            5700000,
+            5700000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Immobilisations incorporelles",
+          "valeurTotale": 50000000,
+          "taux": 0.2,
+          "annees": [
+            7500000,
+            7500000,
+            9500000,
+            9500000,
+            9500000
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Recherche & Développement",
+          "valeurTotale": 10000000,
+          "taux": 0.2,
+          "annees": [
+            1500000,
+            1500000,
+            1900000,
+            1900000,
+            1900000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Brevets, Licences, Logiciels",
+          "valeurTotale": 40000000,
+          "taux": 0.2,
+          "annees": [
+            6000000,
+            6000000,
+            7600000,
+            7600000,
+            7600000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Constructions et agencements",
+          "valeurTotale": 716000000,
+          "taux": 0,
+          "annees": [
+            19840000,
+            19840000,
+            23040000,
+            23040000,
+            24320000
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Terrain",
+          "valeurTotale": 300000000,
+          "taux": 0,
+          "annees": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Constructions",
+          "valeurTotale": 320000000,
+          "taux": 0.05,
+          "annees": [
+            12000000,
+            12000000,
+            15200000,
+            15200000,
+            15200000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Installations & aménagements",
+          "valeurTotale": 96000000,
+          "taux": 0.1,
+          "annees": [
+            7840000,
+            7840000,
+            7840000,
+            7840000,
+            9120000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Matériel de transport",
+          "valeurTotale": 825000000,
+          "taux": 0.2,
+          "annees": [
+            130625000,
+            130625000,
+            130625000,
+            130625000,
+            130625000
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Véhicules Berline",
+          "valeurTotale": 85000000,
+          "taux": 0.2,
+          "annees": [
+            13458333,
+            13458333,
+            13458333,
+            13458333,
+            13458333
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Véhicules Pick-up",
+          "valeurTotale": 115000000,
+          "taux": 0.2,
+          "annees": [
+            18208333,
+            18208333,
+            18208333,
+            18208333,
+            18208333
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Fourgonnettes",
+          "valeurTotale": 135000000,
+          "taux": 0.2,
+          "annees": [
+            21375000,
+            21375000,
+            21375000,
+            21375000,
+            21375000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Camions 30T",
+          "valeurTotale": 490000000,
+          "taux": 0.2,
+          "annees": [
+            77583333,
+            77583333,
+            77583333,
+            77583333,
+            77583333
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Matériel et mobilier de bureau",
+          "valeurTotale": 112500000,
+          "taux": 0.2,
+          "annees": [
+            17812500,
+            17812500,
+            21058333,
+            21058333,
+            21058333
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Matériel Informatique",
+          "valeurTotale": 40000000,
+          "taux": 0.2,
+          "annees": [
+            6333333,
+            6333333,
+            7600000,
+            7600000,
+            7600000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Mobilier de bureau",
+          "valeurTotale": 25000000,
+          "taux": 0.2,
+          "annees": [
+            3958333,
+            3958333,
+            4750000,
+            4750000,
+            4750000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Équipement showroom",
+          "valeurTotale": 37500000,
+          "taux": 0.2,
+          "annees": [
+            5937500,
+            5937500,
+            7125000,
+            7125000,
+            7125000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Matériel d'exploitation",
+          "valeurTotale": 4222500000,
+          "taux": 0.1,
+          "annees": [
+            334281250,
+            334281250,
+            398247917,
+            398247917,
+            398247917
+          ],
+          "isSubLine": false
+        },
+        {
+          "intitule": "  Outillage électrique professionnel",
+          "valeurTotale": 40000000,
+          "taux": 0.1,
+          "annees": [
+            3166667,
+            3166667,
+            3800000,
+            3800000,
+            3800000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Matériel de chantier",
+          "valeurTotale": 4000000000,
+          "taux": 0.1,
+          "annees": [
+            316666667,
+            316666667,
+            380000000,
+            380000000,
+            380000000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Équipements de sécurité (EPI)",
+          "valeurTotale": 150000000,
+          "taux": 0.1,
+          "annees": [
+            11875000,
+            11875000,
+            11875000,
+            11875000,
+            11875000
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Groupe électrogène",
+          "valeurTotale": 12500000,
+          "taux": 0.1,
+          "annees": [
+            989583,
+            989583,
+            989583,
+            989583,
+            989583
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "  Matériel de topographie",
+          "valeurTotale": 20000000,
+          "taux": 0.1,
+          "annees": [
+            1583333,
+            1583333,
+            1583333,
+            1583333,
+            1583333
+          ],
+          "isSubLine": true
+        },
+        {
+          "intitule": "Imprévus & Inflation (10%)",
+          "valeurTotale": 610850000,
+          "taux": 0.2,
+          "annees": [
+            96170083,
+            96170083,
+            116096500,
+            116096500,
+            116096500
+          ],
+          "isSubLine": false
+        }
+      ]
+    },
+    "syncedAt": "2026-04-17T17:07:44.314Z"
+  }
+]

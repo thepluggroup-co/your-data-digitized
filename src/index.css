@@ -57,16 +57,26 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-family: 'Inter', system-ui, sans-serif;
+    /* Gradient mesh background */
+    background-color: hsl(220 20% 97%);
+    background-image:
+      radial-gradient(ellipse at 15% 8%,  hsl(220 60% 22% / 0.05) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 90%, hsl(186 72% 38% / 0.06) 0%, transparent 55%),
+      radial-gradient(ellipse at 60% 20%, hsl(142 60% 35% / 0.03) 0%, transparent 40%);
   }
 }
 
+/* ──────────────────────────────────────────────────────────────
+   TYPOGRAPHY & NUMERIC UTILITIES
+────────────────────────────────────────────────────────────── */
 @layer utilities {
   .text-positive { color: hsl(var(--positive)); }
   .text-negative { color: hsl(var(--negative)); }
-  .text-warning { color: hsl(var(--warning)); }
+  .text-warning  { color: hsl(var(--warning)); }
 
   .num-cell {
     font-family: 'IBM Plex Mono', monospace;
@@ -94,4 +104,185 @@
     color: hsl(var(--primary));
     background-color: hsl(220 60% 22% / 0.07);
   }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   3D CARD DEPTH SYSTEM
+────────────────────────────────────────────────────────────── */
+@layer utilities {
+
+  /* Base card — subtle multi-layer shadow for depth */
+  .card-depth {
+    box-shadow:
+      0 1px 2px  hsl(220 60% 12% / 0.04),
+      0 3px 8px  hsl(220 60% 12% / 0.06),
+      0 8px 24px hsl(220 60% 12% / 0.05),
+      inset 0 1px 0 hsl(0 0% 100% / 0.80);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+
+  .card-depth:hover {
+    transform: translateY(-3px) scale(1.005);
+    box-shadow:
+      0 2px 4px  hsl(220 60% 12% / 0.06),
+      0 8px 20px hsl(220 60% 12% / 0.10),
+      0 20px 48px hsl(220 60% 12% / 0.08),
+      inset 0 1px 0 hsl(0 0% 100% / 0.90);
+  }
+
+  /* KPI card — floating animation + shimmer border */
+  .kpi-depth {
+    background: hsl(var(--card));
+    box-shadow:
+      0 2px 6px  hsl(220 60% 12% / 0.06),
+      0 6px 16px hsl(220 60% 12% / 0.08),
+      inset 0 1px 0 hsl(0 0% 100% / 0.90);
+    transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-depth::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .kpi-depth:hover {
+    transform: translateY(-5px) scale(1.015);
+    box-shadow:
+      0 4px 12px hsl(220 60% 12% / 0.10),
+      0 16px 40px hsl(220 60% 12% / 0.12),
+      0 0 0 1px hsl(var(--accent) / 0.15),
+      inset 0 1px 0 hsl(0 0% 100% / 0.95);
+  }
+
+  /* Primary KPI (dark background) */
+  .kpi-primary-depth {
+    background: linear-gradient(135deg,
+      hsl(220 60% 22%) 0%,
+      hsl(220 60% 28%) 50%,
+      hsl(220 58% 24%) 100%);
+    box-shadow:
+      0 4px 12px hsl(220 60% 12% / 0.25),
+      0 12px 32px hsl(220 60% 12% / 0.20),
+      inset 0 1px 0 hsl(0 0% 100% / 0.12),
+      inset 0 -1px 0 hsl(0 0% 0% / 0.15);
+    transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease;
+  }
+
+  .kpi-primary-depth:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow:
+      0 8px 24px hsl(220 60% 12% / 0.35),
+      0 24px 56px hsl(220 60% 12% / 0.25),
+      inset 0 1px 0 hsl(0 0% 100% / 0.18);
+  }
+
+  /* Glass panel */
+  .glass-panel {
+    background: hsl(0 0% 100% / 0.75);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid hsl(0 0% 100% / 0.55);
+    box-shadow:
+      0 4px 16px hsl(220 60% 12% / 0.08),
+      0 1px 3px  hsl(220 60% 12% / 0.05),
+      inset 0 1px 0 hsl(0 0% 100% / 0.90);
+  }
+
+  /* Section header gradient */
+  .header-gradient {
+    background: linear-gradient(135deg,
+      hsl(220 60% 22%) 0%,
+      hsl(222 58% 26%) 50%,
+      hsl(186 72% 30%) 100%);
+    box-shadow:
+      0 2px 8px  hsl(220 60% 12% / 0.20),
+      0 4px 16px hsl(220 60% 12% / 0.12),
+      inset 0 1px 0 hsl(0 0% 100% / 0.10);
+  }
+
+  /* Table row 3D lift */
+  .row-lift {
+    transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+  }
+
+  .row-lift:hover {
+    background: hsl(220 60% 22% / 0.035) !important;
+    box-shadow: inset 3px 0 0 hsl(var(--accent));
+  }
+
+  /* Nav item active glow */
+  .nav-glow {
+    background: linear-gradient(90deg,
+      hsl(186 72% 38%) 0%,
+      hsl(186 70% 34%) 100%);
+    box-shadow:
+      0 2px 10px hsl(186 72% 38% / 0.45),
+      inset 0 1px 0 hsl(0 0% 100% / 0.15);
+  }
+
+  /* Sidebar glass depth */
+  .sidebar-depth {
+    background: linear-gradient(170deg,
+      hsl(220 62% 20%) 0%,
+      hsl(220 60% 17%) 60%,
+      hsl(220 58% 15%) 100%);
+    box-shadow:
+      4px 0 24px hsl(220 60% 8% / 0.22),
+      inset -1px 0 0 hsl(0 0% 100% / 0.05),
+      inset  1px 0 0 hsl(0 0% 0%  / 0.08);
+  }
+
+  /* Shimmer highlight on badges */
+  .badge-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .badge-shine::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      hsl(0 0% 100% / 0.35) 50%,
+      transparent 100%);
+    animation: badge-shimmer 3s ease-in-out infinite;
+  }
+
+  /* Float pulse for accent KPIs */
+  .float-anim {
+    animation: float-gentle 4s ease-in-out infinite;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   KEYFRAMES
+────────────────────────────────────────────────────────────── */
+@keyframes float-gentle {
+  0%,  100% { transform: translateY(0px); }
+  50%        { transform: translateY(-5px); }
+}
+
+/* translateX avoids Layout/Paint — only triggers Composite */
+@keyframes badge-shimmer {
+  0%          { transform: translateX(-200%); }
+  40%, 100%   { transform: translateX(360%); }
+}
+
+/* filter is GPU-composited; avoids Paint regression from box-shadow */
+@keyframes glow-pulse {
+  0%,  100% { filter: drop-shadow(0 0 4px  hsl(186 72% 38% / 0.30)); }
+  50%        { filter: drop-shadow(0 0 12px hsl(186 72% 38% / 0.65)); }
+}
+
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

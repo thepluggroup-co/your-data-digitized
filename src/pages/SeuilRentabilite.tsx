@@ -61,7 +61,7 @@ export default function SeuilRentabilite() {
         {YEARS.map(y => {
           const s = seuilRentabilite[y];
           return (
-            <div key={y} className="bg-card rounded-xl border border-border p-4 shadow-sm text-center">
+            <div key={y} className="kpi-depth rounded-xl border border-border p-4 text-center">
               <p className="text-xs text-muted-foreground mb-1">Point mort {y}</p>
               <p className="text-xl font-bold text-primary font-mono">{s.pointMortJours}j</p>
               <p className="text-xs text-muted-foreground">{s.pointMortMois} mois</p>
@@ -75,7 +75,7 @@ export default function SeuilRentabilite() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
+        <div className="kpi-depth rounded-xl border border-border p-5">
           <h3 className="text-sm font-semibold mb-4 text-foreground">CA vs Seuil de Rentabilité (Mds FCFA)</h3>
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -90,7 +90,7 @@ export default function SeuilRentabilite() {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
+        <div className="kpi-depth rounded-xl border border-border p-5">
           <h3 className="text-sm font-semibold mb-4 text-foreground">Point Mort (jours) par année</h3>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={pointMortData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -115,7 +115,7 @@ export default function SeuilRentabilite() {
         {YEARS.map(y => {
           const ms = seuilRentabilite[y].margeSecurite;
           return (
-            <div key={y} className="bg-card rounded-xl border border-border p-3 shadow-sm text-center">
+            <div key={y} className="kpi-depth rounded-xl border border-border p-3 text-center">
               <p className="text-xs text-muted-foreground mb-0.5">Marge sécurité {y}</p>
               <p className={`text-lg font-bold font-mono ${ms > 30 ? "text-positive" : ms > 10 ? "text-warning" : "text-destructive"}`}>
                 {ms.toFixed(1)}%
@@ -127,7 +127,7 @@ export default function SeuilRentabilite() {
 
       {/* Table */}
       <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-        <div className="bg-primary px-5 py-3">
+        <div className="header-gradient px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Détail du Seuil de Rentabilité</h2>
         </div>
         <FinTable cols={cols} rows={rows} compact exportName="Seuil_Rentabilite" />

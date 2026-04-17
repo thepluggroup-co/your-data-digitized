@@ -61,7 +61,7 @@ export default function FinTable({ cols, rows, className, compact, exportName }:
       </div>
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr>
+          <tr className="header-gradient">
             {cols.map((col) => (
               <th
                 key={col.key}
@@ -92,12 +92,12 @@ export default function FinTable({ cols, rows, className, compact, exportName }:
               <tr
                 key={i}
                 className={cn(
-                  "border-t border-border/50 transition-colors",
+                  "border-t border-border/50 row-lift",
                   row._total
                     ? "bg-primary/8 font-semibold border-t-2 border-primary/20"
                     : i % 2 === 0
-                    ? "bg-white hover:bg-secondary/40"
-                    : "bg-background hover:bg-secondary/40"
+                    ? "bg-white"
+                    : "bg-muted/20"
                 )}
               >
                 {cols.map((col) => {

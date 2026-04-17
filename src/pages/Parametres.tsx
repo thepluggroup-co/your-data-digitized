@@ -1,15 +1,17 @@
+import { useState } from "react";
 import { useParametres } from "@/contexts/ParametresContext";
 import PageHeader from "@/components/kenenergie/PageHeader";
-import { formatPct, companyInfo } from "@/lib/kenenergie-data";
+import { formatPct, companyInfo, YEARS, formatFcfa } from "@/lib/kenenergie-data";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, RefreshCw, X, CheckCircle2, TrendingUp, Landmark, BarChart3, ShieldCheck } from "lucide-react";
+import ExportDossierComplet from "@/components/kenenergie/ExportDossierComplet";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-      <div className="bg-primary px-5 py-3">
+      <div className="header-gradient px-5 py-3">
         <h2 className="text-primary-foreground font-semibold text-sm uppercase tracking-wide">{title}</h2>
       </div>
       <div className="p-5">{children}</div>
@@ -65,8 +67,127 @@ function PctSlider({ label, value, onChange, min = 0, max = 1, step = 0.01 }: { 
 
 const yearLabels = ["N (2027)", "N+1 (2028)", "N+2 (2029)", "N+3 (2030)", "N+4 (2031)"];
 
+// ── Sync Report Modal ─────────────────────────────────────────────────────────
+function SyncReportModal({ onClose }: { onClose: () => void }) {
+  const { computed, activeDossier } = useParametres();
+  const { resultats, bilan, banking, vanTirMetrics, planFinancement } = computed;
+
+  const lastY = YEARS[YEARS.length - 1];
+  const firstY = YEARS[0];
+  const cafCumul = YEARS.reduce((s, y) => s + resultats[y].caf, 0);
+  const avgDSCR = YEARS.reduce((s, y) => s + banking[y].dscrEbe, 0) / YEARS.length;
+  const allGreen = YEARS.every(y => banking[y].dscrEbe >= 1.3 && banking[y].autonomie >= 0.2 && resultats[y].beneficeNet > 0);
+
+  const sections = [
+    {
+      icon: TrendingUp,
+      label: "Activité & Résultats",
+      items: [
+        { k: "CA N (2027)", v: formatFcfa(resultats[firstY].ventes, true) },
+        { k: `CA N+4 (${lastY})`, v: formatFcfa(resultats[lastY].ventes, true) },
+        { k: "Bénéfice net N+4", v: formatFcfa(resultats[lastY].beneficeNet, true) },
+        { k: "CAF cumulée 5 ans", v: formatFcfa(cafCumul, true) },
+        { k: "Marge nette N+4", v: resultats[lastY].resultatNetVentes.toFixed(1) + "%" },
+        { k: "Marge EBE N+4", v: banking[lastY].margeEbe.toFixed(1) + "%" },
+      ],
+    },
+    {
+      icon: Landmark,
+      label: "Structure Financière",
+      items: [
+        { k: "Capitaux propres N+4", v: formatFcfa(bilan[lastY].capitauxPropres, true) },
+        { k: "Dettes LT N+4", v: formatFcfa(bilan[lastY].dettesFinancieres, true) },
+        { k: "FRN N+4", v: formatFcfa(banking[lastY].frn, true) },
+        { k: "Autonomie N+4", v: (banking[lastY].autonomie * 100).toFixed(1) + "%" },
+        { k: "Trésorerie nette N+4", v: formatFcfa(banking[lastY].tresoNette, true) },
+      ],
+    },
+    {
+      icon: BarChart3,
+      label: "Ratios Bancaires",
+      items: [
+        { k: "DSCR moyen (EBE)", v: avgDSCR.toFixed(2) + "×" },
+        { k: "DSCR N (2027)", v: banking[firstY].dscrEbe.toFixed(2) + "×" },
+        { k: `DSCR N+4 (${lastY})`, v: banking[lastY].dscrEbe.toFixed(2) + "×" },
+        { k: "Levier N+4", v: vanTirMetrics.levier[lastY].toFixed(2) + "×" },
+        { k: "Dettes LT / CAF N+4", v: banking[lastY].dettesCaf.toFixed(2) + " ans" },
+      ],
+    },
+    {
+      icon: ShieldCheck,
+      label: "Indicateurs Projet",
+      items: [
+        { k: "TIR Projet", v: (vanTirMetrics.irr * 100).toFixed(2) + "%" },
+        { k: "VAN (8%)", v: formatFcfa(vanTirMetrics.van8, true) },
+        { k: "VAN (10%)", v: formatFcfa(vanTirMetrics.van10, true) },
+        { k: "Payback", v: vanTirMetrics.paybackYears.toFixed(1) + " ans" },
+        { k: "Investissement total", v: formatFcfa(vanTirMetrics.investissementTotal, true) },
+      ],
+    },
+  ];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-auto py-6">
+      <div className="glass-panel rounded-2xl shadow-2xl w-full max-w-3xl mx-4 p-6 animate-[slide-up-fade_0.2s_ease]">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-accent/15">
+              <RefreshCw className="w-5 h-5 text-accent" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-foreground">Rapport de Synchronisation</h2>
+              <p className="text-xs text-muted-foreground">
+                {activeDossier ? `Dossier : ${activeDossier.nom}` : "Aucun dossier actif"} • {new Date().toLocaleString("fr-FR")}
+              </p>
+            </div>
+          </div>
+          <button type="button" onClick={onClose} title="Fermer" aria-label="Fermer" className="p-2 rounded-lg hover:bg-muted/50 text-muted-foreground">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Verdict */}
+        <div className={`rounded-xl border px-4 py-3 flex items-center gap-3 mb-5 ${allGreen ? "bg-emerald-500/10 border-emerald-500/30" : "bg-amber-400/10 border-amber-400/30"}`}>
+          <CheckCircle2 className={`w-5 h-5 flex-shrink-0 ${allGreen ? "text-emerald-400" : "text-amber-300"}`} />
+          <div>
+            <p className={`text-sm font-bold ${allGreen ? "text-emerald-400" : "text-amber-300"}`}>
+              {allGreen ? "Synchronisation réussie — Projet conforme" : "Synchronisation réussie — Points d'attention détectés"}
+            </p>
+            <p className="text-xs text-muted-foreground">Toutes les tables ont été recalculées à partir des paramètres actuels</p>
+          </div>
+        </div>
+
+        {/* Report grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+          {sections.map(({ icon: Icon, label, items }) => (
+            <div key={label} className="kpi-depth rounded-xl border border-border p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Icon className="w-4 h-4 text-accent" />
+                <span className="text-xs font-bold text-foreground">{label}</span>
+              </div>
+              <div className="space-y-1">
+                {items.map(({ k, v }) => (
+                  <div key={k} className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">{k}</span>
+                    <span className="font-mono font-semibold text-foreground">{v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-end gap-2">
+          <Button type="button" variant="outline" onClick={onClose}>Fermer</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Parametres() {
   const { params, updateParam, resetParams } = useParametres();
+  const [showSync, setShowSync] = useState(false);
 
   const updateActivity = (idx: number, val: number) => {
     const next = [...params.niveauxActivite] as [number, number, number, number, number];
@@ -76,11 +197,18 @@ export default function Parametres() {
 
   return (
     <div className="space-y-6">
+      {showSync && <SyncReportModal onClose={() => setShowSync(false)} />}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <PageHeader title="Paramètres du Projet" subtitle="Modifiez les hypothèses — les projections se recalculent automatiquement" badge="⚡ Interactif" />
-        <Button variant="outline" size="sm" onClick={resetParams} className="gap-2">
-          <RotateCcw className="w-4 h-4" /> Réinitialiser
-        </Button>
+        <div className="flex gap-2 flex-wrap">
+          <ExportDossierComplet />
+          <Button variant="outline" size="sm" className="gap-2 border-accent/40 text-accent hover:bg-accent/10" onClick={() => setShowSync(true)}>
+            <RefreshCw className="w-4 h-4" /> Synchronisation Générale
+          </Button>
+          <Button variant="outline" size="sm" onClick={resetParams} className="gap-2">
+            <RotateCcw className="w-4 h-4" /> Réinitialiser
+          </Button>
+        </div>
       </div>
 
       {/* Identification (read-only) */}

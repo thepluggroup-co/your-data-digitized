@@ -96,7 +96,7 @@ export default function Salaires() {
       {/* Editable salary table */}
       {editMode ? (
         <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-          <div className="bg-primary px-5 py-3 flex items-center justify-between">
+          <div className="header-gradient px-5 py-3 flex items-center justify-between">
             <h2 className="text-primary-foreground font-semibold text-sm">Modifier les Salaires</h2>
             <Button size="sm" variant="secondary" onClick={addSalaire} className="gap-1 text-xs">
               <Plus className="h-3.5 w-3.5" /> Ajouter poste
@@ -145,7 +145,7 @@ export default function Salaires() {
         </div>
       ) : (
         <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-          <div className="bg-primary px-5 py-3">
+          <div className="header-gradient px-5 py-3">
             <h2 className="text-primary-foreground font-semibold text-sm">Détail des Salaires par Poste</h2>
           </div>
           <FinTable cols={cols} rows={rows} exportName="Salaires" />

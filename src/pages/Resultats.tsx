@@ -61,7 +61,7 @@ export default function Resultats() {
         <KpiCard label="Bénéfice Cumulé 5 ans" value={formatFcfa(cumul5ans, true)} sub="2027–2031" icon={Activity} color="accent" />
       </div>
 
-      <div className="bg-card rounded-xl border border-border p-5 shadow-sm">
+      <div className="kpi-depth rounded-xl border border-border p-5">
         <h3 className="text-sm font-semibold mb-4">Évolution du Bénéfice net et CAF (M FCFA)</h3>
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
@@ -78,7 +78,7 @@ export default function Resultats() {
       </div>
 
       <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-        <div className="bg-primary px-5 py-3">
+        <div className="header-gradient px-5 py-3">
           <h2 className="text-primary-foreground font-semibold text-sm">Compte de Résultat Détaillé</h2>
         </div>
         <FinTable cols={cols} rows={rows} compact exportName="Compte_de_Resultat" />

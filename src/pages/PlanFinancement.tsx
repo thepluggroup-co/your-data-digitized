@@ -146,7 +146,7 @@ export default function PlanFinancement() {
           { label: "TRI Projet", value: "34.87%", icon: "🏆" },
           { label: "Nb Actions", value: capitalConfig.nombreActions.toLocaleString("fr-FR"), icon: "🎯" },
         ].map(({ label, value, icon }) => (
-          <div key={label} className="bg-card rounded-xl border border-border p-4 shadow-sm text-center">
+          <div key={label} className="kpi-depth rounded-xl border border-border p-4 text-center">
             <p className="text-xs text-muted-foreground mb-1">{icon} {label}</p>
             <p className="text-sm font-bold text-primary font-mono">{value}</p>
           </div>
@@ -167,7 +167,7 @@ export default function PlanFinancement() {
         <TabsContent value="plan" className="space-y-6">
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
             {YEARS.map((y) => (
-              <div key={y} className="bg-card rounded-xl border border-border p-3 shadow-sm text-center">
+              <div key={y} className="kpi-depth rounded-xl border border-border p-3 text-center">
                 <p className="text-xs text-muted-foreground mb-0.5">Trésorerie {y}</p>
                 <p className={cn("text-sm font-bold font-mono", planFinancement[y].soldePeriode >= 0 ? "text-accent" : "text-destructive")}>
                   {formatFcfa(planFinancement[y].soldePeriode, true)}
@@ -177,7 +177,7 @@ export default function PlanFinancement() {
           </div>
 
           <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-            <div className="bg-primary px-5 py-3">
+            <div className="header-gradient px-5 py-3">
               <h2 className="text-primary-foreground font-semibold text-sm">Plan de Financement Prévisionnel (2027–2031)</h2>
             </div>
             <FinTable cols={pfCols} rows={pfRows} compact exportName="Plan_Financement" />
@@ -270,7 +270,7 @@ export default function PlanFinancement() {
 
             {/* Actionnariat Table */}
             <div className="lg:col-span-2 bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-              <div className="bg-primary px-5 py-3">
+              <div className="header-gradient px-5 py-3">
                 <h2 className="text-primary-foreground font-semibold text-sm">Tableau d'Actionnariat — Valorisation des Actifs en Actions</h2>
               </div>
               <FinTable cols={actCols} rows={actRows} compact exportName="Actionnariat_KENENERGIE" />
@@ -279,7 +279,7 @@ export default function PlanFinancement() {
 
           {/* Nomenclature des catégories d'actions */}
           <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-            <div className="bg-primary px-5 py-3">
+            <div className="header-gradient px-5 py-3">
               <h2 className="text-primary-foreground font-semibold text-sm">📋 Nomenclature des Catégories d'Actions — Droits & Conditions</h2>
             </div>
             <div className="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -312,7 +312,7 @@ export default function PlanFinancement() {
 
           {/* Actionnaires Cards */}
           <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-            <div className="bg-primary px-5 py-3">
+            <div className="header-gradient px-5 py-3">
               <h2 className="text-primary-foreground font-semibold text-sm flex items-center gap-2">
                 <Users className="w-4 h-4" /> Parties Prenantes — Passeport de Valeur
               </h2>
@@ -391,7 +391,7 @@ export default function PlanFinancement() {
               { label: "Année N+2 (63%)", val: apportsProgressifs.reduce((s, a) => s + a.apportN2, 0) },
               { label: "Année N+4 (100%)", val: apportsProgressifs.reduce((s, a) => s + a.apportN4, 0) },
             ].map(({ label, val }) => (
-              <div key={label} className="bg-card rounded-xl border border-border p-4 shadow-sm text-center">
+              <div key={label} className="kpi-depth rounded-xl border border-border p-4 text-center">
                 <p className="text-xs text-muted-foreground mb-1">{label}</p>
                 <p className="text-base font-bold text-primary font-mono">{formatFcfa(val, true)}</p>
               </div>
@@ -399,7 +399,7 @@ export default function PlanFinancement() {
           </div>
 
           <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-            <div className="bg-primary px-5 py-3">
+            <div className="header-gradient px-5 py-3">
               <h2 className="text-primary-foreground font-semibold text-sm">Plan d'Apport Progressif des Parties Prenantes</h2>
             </div>
             <FinTable cols={apCols} rows={apRows} compact exportName="Apports_Progressifs" />
@@ -409,7 +409,7 @@ export default function PlanFinancement() {
         {/* TAB 4: Gouvernance */}
         <TabsContent value="gouvernance" className="space-y-6">
           <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-            <div className="bg-primary px-5 py-3">
+            <div className="header-gradient px-5 py-3">
               <h2 className="text-primary-foreground font-semibold text-sm flex items-center gap-2">
                 <Shield className="w-4 h-4" /> Structure de Gouvernance
               </h2>
@@ -441,7 +441,7 @@ export default function PlanFinancement() {
         {/* TAB 5: ROI */}
         <TabsContent value="roi" className="space-y-6">
           <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-            <div className="bg-primary px-5 py-3">
+            <div className="header-gradient px-5 py-3">
               <h2 className="text-primary-foreground font-semibold text-sm flex items-center gap-2">
                 <TrendingUp className="w-4 h-4" /> Retour sur Investissement par Profil — Synthèse Comparative
               </h2>

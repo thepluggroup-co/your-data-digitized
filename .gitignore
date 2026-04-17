@@ -1,3 +1,8 @@
+# Server env & modules
+server/.env
+server/node_modules
+server/uploads
+
 # Logs
 logs
 *.log

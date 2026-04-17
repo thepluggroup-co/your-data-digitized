@@ -5,6 +5,7 @@ export type Year = typeof YEARS[number];
 
 export const companyInfo = {
   name: "KENENERGIE SARL",
+  platform: "THE PLUG FINANCE CO",
   promoteur: "KENGOUM NGASSA",
   formeJuridique: "SARL",
   telephone: "237 6 90 58 54 26",
