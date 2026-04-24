@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useParametres } from "@/contexts/ParametresContext";
 import PageHeader from "@/components/kenenergie/PageHeader";
-import { formatPct, companyInfo, YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { RotateCcw, RefreshCw, X, CheckCircle2, TrendingUp, Landmark, BarChart3, ShieldCheck } from "lucide-react";
+import { RotateCcw, RefreshCw, X, CheckCircle2, TrendingUp, Landmark, BarChart3, ShieldCheck, Sparkles } from "lucide-react";
 import ExportDossierComplet from "@/components/kenenergie/ExportDossierComplet";
+import SmartImportModal from "@/components/kenenergie/SmartImportModal";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -185,9 +186,25 @@ function SyncReportModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+function TextInput({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
+  return (
+    <div className="flex flex-col gap-1.5 py-2 border-b border-border/40 last:border-0">
+      <span className="text-xs font-medium text-muted-foreground">{label}</span>
+      <Input
+        type="text"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="h-8 text-sm"
+      />
+    </div>
+  );
+}
+
 export default function Parametres() {
   const { params, updateParam, resetParams } = useParametres();
   const [showSync, setShowSync] = useState(false);
+  const [showImport, setShowImport] = useState(false);
 
   const updateActivity = (idx: number, val: number) => {
     const next = [...params.niveauxActivite] as [number, number, number, number, number];
@@ -198,9 +215,13 @@ export default function Parametres() {
   return (
     <div className="space-y-6">
       {showSync && <SyncReportModal onClose={() => setShowSync(false)} />}
+      {showImport && <SmartImportModal onClose={() => setShowImport(false)} />}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <PageHeader title="Paramètres du Projet" subtitle="Modifiez les hypothèses — les projections se recalculent automatiquement" badge="⚡ Interactif" />
         <div className="flex gap-2 flex-wrap">
+          <Button variant="outline" size="sm" className="gap-2 border-accent/40 text-accent hover:bg-accent/10" onClick={() => setShowImport(true)}>
+            <Sparkles className="w-4 h-4" /> Importer via IA
+          </Button>
           <ExportDossierComplet />
           <Button variant="outline" size="sm" className="gap-2 border-accent/40 text-accent hover:bg-accent/10" onClick={() => setShowSync(true)}>
             <RefreshCw className="w-4 h-4" /> Synchronisation Générale
@@ -211,17 +232,20 @@ export default function Parametres() {
         </div>
       </div>
 
-      {/* Identification (read-only) */}
+      {/* Identification (editable, saved per dossier) */}
       <Section title="Identification de l'entreprise">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
-          <Row label="Raison Sociale" value={companyInfo.name} />
-          <Row label="Promoteur" value={companyInfo.promoteur} />
-          <Row label="Forme juridique" value={companyInfo.formeJuridique} />
-          <Row label="Ville" value={`${companyInfo.ville}, ${companyInfo.pays}`} />
-          <Row label="Téléphone" value={companyInfo.telephone} />
-          <Row label="E-mail" value={companyInfo.email} />
-          <Row label="Activité principale" value="Infrastructures Électriques BT/HTA/HTB" />
-          <Row label="Date du projet" value={companyInfo.dateProjet} />
+          <TextInput label="Raison Sociale" value={params.companyName} onChange={v => updateParam("companyName", v)} placeholder="ex: Mon Entreprise SARL" />
+          <TextInput label="Promoteur" value={params.companyPromoter} onChange={v => updateParam("companyPromoter", v)} placeholder="Nom du promoteur" />
+          <TextInput label="Forme juridique" value={params.companyFormeJuridique} onChange={v => updateParam("companyFormeJuridique", v)} placeholder="SARL, SA, SAS…" />
+          <TextInput label="Ville" value={params.companyVille} onChange={v => updateParam("companyVille", v)} placeholder="Douala" />
+          <TextInput label="Pays" value={params.companyPays} onChange={v => updateParam("companyPays", v)} placeholder="Cameroun" />
+          <TextInput label="Téléphone" value={params.companyTelephone} onChange={v => updateParam("companyTelephone", v)} placeholder="+237 6 00 00 00 00" />
+          <TextInput label="E-mail" value={params.companyEmail} onChange={v => updateParam("companyEmail", v)} placeholder="contact@entreprise.com" />
+          <TextInput label="Date du projet" value={params.companyDateProjet} onChange={v => updateParam("companyDateProjet", v)} placeholder="JJ/MM/AAAA" />
+          <div className="sm:col-span-2">
+            <TextInput label="Activité principale" value={params.companyActivite} onChange={v => updateParam("companyActivite", v)} placeholder="Secteur d'activité" />
+          </div>
         </div>
       </Section>
 

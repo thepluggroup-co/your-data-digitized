@@ -8,7 +8,7 @@
  *   // Exemple dossierData :
  *   {
  *     id: "d001",
- *     nom: "BP KENENERGIE 2027",
+ *     nom: "BP Mon Projet 2027",
  *     client: "KENGOUM NGASSA",
  *     montantDemande: 5000000000,
  *     ratios: {

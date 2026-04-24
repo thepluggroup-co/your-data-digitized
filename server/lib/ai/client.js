@@ -45,10 +45,10 @@ const DEFAULT_MODEL = "claude-sonnet-4-6";
 
 /** Limites max tokens par usage */
 const TOKEN_LIMITS = {
-  chat:    2500,
-  scoring: 1000,
-  report:  3000,
-  analyze: 2000,
+  chat:    4096,
+  scoring: 1500,
+  report:  4096,
+  analyze: 4096,
 };
 
 module.exports = { anthropic, getClient, reloadApiKey, DEFAULT_MODEL, TOKEN_LIMITS };

@@ -35,19 +35,21 @@ app.use((req, res, next) => {
 });
 
 // ── Routes IA (Phases 1–4) ────────────────────────────────────────────────────
-const chatRoutes      = require("./routes/ai/chat");
-const analyzeRoutes   = require("./routes/ai/analyze");
-const reportRoutes    = require("./routes/ai/reports");
-const alertsRoutes    = require("./routes/ai/alerts");
-const configRoutes    = require("./routes/ai/config");
-const dossierRoutes   = require("./routes/dossiers");
+const chatRoutes          = require("./routes/ai/chat");
+const analyzeRoutes       = require("./routes/ai/analyze");
+const reportRoutes        = require("./routes/ai/reports");
+const alertsRoutes        = require("./routes/ai/alerts");
+const configRoutes        = require("./routes/ai/config");
+const extractParamsRoutes = require("./routes/ai/extract-params");
+const dossierRoutes       = require("./routes/dossiers");
 
-app.use("/api/ai",       chatRoutes);
-app.use("/api/ai",       analyzeRoutes);
-app.use("/api/ai",       reportRoutes);
-app.use("/api/ai",       alertsRoutes);
+app.use("/api/ai",        chatRoutes);
+app.use("/api/ai",        analyzeRoutes);
+app.use("/api/ai",        reportRoutes);
+app.use("/api/ai",        alertsRoutes);
 app.use("/api/ai/config", configRoutes);
-app.use("/api/dossiers", dossierRoutes);
+app.use("/api/ai",        extractParamsRoutes);
+app.use("/api/dossiers",  dossierRoutes);
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get("/api/ai/health", (_req, res) => {

@@ -15,7 +15,7 @@
  *
  * // situation-client
  * {
- *   client: { nom: "KENENERGIE SARL", promoteur: "KENGOUM NGASSA", secteur: "Énergie" },
+ *   client: { nom: "Mon Entreprise SARL", promoteur: "Nom Promoteur", secteur: "Énergie" },
  *   dossier: { nom: "BP 2027-2031", montantDemande: 5000000000 },
  *   ratios: { dscr: 2.85, autonomie: 0.32, tir: 0.3487 },
  *   resultats: { beneficeNetN4: 1200000000, caGlobal: 18000000000 }
@@ -23,7 +23,7 @@
  *
  * // synthese-bancaire
  * {
- *   projet: { nom: "KENENERGIE SARL", secteur: "Infrastructure électrique", pays: "Cameroun" },
+ *   projet: { nom: "Mon Entreprise SARL", secteur: "Infrastructure électrique", pays: "Cameroun" },
  *   financement: { endettementLT: 5000000000, capitalSocial: 410000000 },
  *   ratios: { dscr: [2.85, 3.2, 3.8, 4.1, 4.5], levier: [4.1, 3.2, 2.5, 1.8, 0.5] },
  *   verdict: "BANCABLE", score: 78
@@ -38,7 +38,7 @@
 
 const { getClient, DEFAULT_MODEL, TOKEN_LIMITS } = require("./client");
 
-const REPORT_SYSTEM = `Tu es le rédacteur de rapports financiers de THE PLUG FINANCE CO (KENENERGIE SARL).
+const REPORT_SYSTEM = `Tu es le rédacteur de rapports financiers de THE PLUG FINANCE CO.
 Tes rapports sont professionnels, précis et destinés à des banquiers ou investisseurs institutionnels CEMAC.
 Rédige toujours en français, avec des chiffres en FCFA, et utilise le format Markdown structuré (titres ##, listes, tableaux).`;
 

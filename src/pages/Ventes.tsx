@@ -24,7 +24,7 @@ const LEGEND_DOT_CLS = [
 const POLE_KEYS: PoleKey[] = ["poleInfrastructure", "poleProduction", "poleServices", "poleInnovation"];
 
 export default function Ventes() {
-  const { computed, ventesData, updateVenteProduit, addVenteProduit, removeVenteProduit, resetVentes } = useParametres();
+  const { computed, ventesData, updateVenteProduit, addVenteProduit, removeVenteProduit, updatePoleLabel, resetVentes } = useParametres();
   const ventesParAnnee = computed.ventesParAnnee;
   const [editMode, setEditMode] = useState(false);
 
@@ -40,10 +40,10 @@ export default function Ventes() {
     ...YEARS.map(y => ({ key: y.toString(), label: y.toString(), align: "right" as const })),
   ];
   const projRows = [
-    { label: "Pôle Infrastructure", ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].infra)])), _sub: true },
-    { label: "Pôle Production Énergétiques", ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].prod)])), _sub: true },
-    { label: "Pôle Services", ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].services)])), _sub: true },
-    { label: "Pôle Innovation", ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].innovation)])), _sub: true },
+    { label: ventesData.poleInfrastructure.label, ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].infra)])), _sub: true },
+    { label: ventesData.poleProduction.label, ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].prod)])), _sub: true },
+    { label: ventesData.poleServices.label, ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].services)])), _sub: true },
+    { label: ventesData.poleInnovation.label, ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].innovation)])), _sub: true },
     { label: "CHIFFRE D'AFFAIRES GLOBAL", ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].total)])), _total: true },
     { label: "Taux d'activité", ...Object.fromEntries(YEARS.map(y => [y.toString(), (ventesParAnnee[y].txActivite * 100).toFixed(0) + "%"])) },
   ];
@@ -72,7 +72,8 @@ export default function Ventes() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <PageHeader title="Tableau des Ventes" subtitle="Activité normale (100%) et projections par année" />
+        <PageHeader title="Tableau des Ventes" subtitle="Activité normale (100%) et projections par année"
+          aiPrompt="Analyse les projections de ventes par pôle : réalisme des hypothèses, pôles à fort potentiel, risques de sous-performance ?" />
         <div className="flex gap-2">
           <Button
             type="button"
@@ -134,16 +135,21 @@ export default function Ventes() {
             const poleTotal = pole.produits.reduce((s, p) => s + p.qte * p.pu, 0);
             return (
               <div key={poleKey} className="bg-card rounded-xl border-2 border-border shadow-sm overflow-hidden">
-                <div className={`px-5 py-3 flex items-center justify-between ${POLE_HEADER_CLS[pi]}`}>
-                  <div>
-                    <h3 className="text-white font-semibold text-sm">{pole.label}</h3>
+                <div className={`px-5 py-3 flex items-center justify-between gap-3 ${POLE_HEADER_CLS[pi]}`}>
+                  <div className="flex-1 min-w-0">
+                    <input
+                      value={pole.label}
+                      onChange={e => updatePoleLabel(poleKey, e.target.value)}
+                      className="bg-transparent text-white font-semibold text-sm w-full border-b border-white/30 focus:border-white/70 focus:outline-none placeholder:text-white/50 pb-0.5"
+                      placeholder="Nom du pôle…"
+                    />
                     <p className="text-white/70 text-xs mt-0.5">Total : <span className="font-mono font-semibold text-white">{formatFcfa(poleTotal, true)}</span></p>
                   </div>
                   <Button
                     type="button"
                     size="sm"
                     variant="secondary"
-                    className="gap-1 text-xs"
+                    className="gap-1 text-xs flex-shrink-0"
                     onClick={() => addVenteProduit(poleKey)}
                   >
                     <Plus className="h-3.5 w-3.5" /> Ajouter ligne

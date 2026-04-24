@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { TrendingUp, DollarSign, PiggyBank, Target, Zap, Activity, FolderOpen, FolderPlus, ChevronRight, Save, Sparkles, Loader2, RefreshCw, AlertTriangle, ShieldCheck, ShieldAlert, ShieldX } from "lucide-react";
 import KpiCard from "@/components/kenenergie/KpiCard";
 import PageHeader from "@/components/kenenergie/PageHeader";
-import { companyInfo, formatFcfa, scenarios, YEARS } from "@/lib/kenenergie-data";
+import { formatFcfa, scenarios, YEARS } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import ExportPdfButton from "@/components/kenenergie/ExportPdfButton";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const tooltipStyle = { fontSize: 12, borderRadius: 8, border: "1px solid #e2e8f0
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { computed, activeDossier, allDossiers, isDirty, loadDossier, saveCurrentDossier } = useParametres();
+  const { computed, params, activeDossier, allDossiers, isDirty, loadDossier, saveCurrentDossier } = useParametres();
   const { ventesParAnnee, resultats } = computed;
 
   // ── Score IA ──────────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <PageHeader
           title="Tableau de Bord — THE PLUG FINANCE CO"
-          subtitle={`${companyInfo.name} • ${companyInfo.activite} • ${companyInfo.ville}, ${companyInfo.pays}`}
+          subtitle={`${params.companyName} • ${params.companyActivite} • ${params.companyVille}, ${params.companyPays}`}
           badge="Modèle 2027–2031"
         />
         <ExportPdfButton />
@@ -140,8 +140,8 @@ export default function Dashboard() {
       </div>
 
       <div className="kpi-primary-depth rounded-xl px-5 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Promoteur</p><p className="font-semibold">{companyInfo.promoteur}</p></div>
-        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Forme juridique</p><p className="font-semibold">{companyInfo.formeJuridique}</p></div>
+        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Promoteur</p><p className="font-semibold">{params.companyPromoter}</p></div>
+        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Forme juridique</p><p className="font-semibold">{params.companyFormeJuridique}</p></div>
         <div><p className="text-primary-foreground/60 text-xs mb-0.5">TIR du projet</p><p className="font-semibold text-accent">34.87%</p></div>
         <div><p className="text-primary-foreground/60 text-xs mb-0.5">Délai de remboursement</p><p className="font-semibold">4 ans</p></div>
       </div>

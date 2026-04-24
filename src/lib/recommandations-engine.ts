@@ -1,7 +1,7 @@
 /**
  * Moteur de recommandations financières — THE PLUG FINANCE CO
  * Analyse les points critiques et génère des ajustements paramétriques
- * spécifiquement calibrés pour KENENERGIE SARL (premier projet de référence)
+ * adaptés dynamiquement au projet actif
  */
 
 import { YEARS } from "@/lib/kenenergie-data";
@@ -133,7 +133,7 @@ export function analyzeAndRecommend(
       priority: 2,
       issueIds: ["DSCR_CRITICAL", "DSCR_MAJOR"],
       titre: "Accélérer la montée en charge opérationnelle",
-      detail: `Augmenter le niveau d'activité de l'année N de ${(params.niveauxActivite[0] * 100).toFixed(0)}% à ${(activiteSuggereN * 100).toFixed(0)}% (+15%) en mobilisant plus rapidement les équipes et la capacité installée. Pour KENENERGIE, cela signifie démarrer simultanément les chantiers Infra et Production dès le premier trimestre.`,
+      detail: `Augmenter le niveau d'activité de l'année N de ${(params.niveauxActivite[0] * 100).toFixed(0)}% à ${(activiteSuggereN * 100).toFixed(0)}% (+15%) en mobilisant plus rapidement les équipes et la capacité installée. Pour ${params.companyName || "ce projet"}, cela signifie démarrer simultanément les chantiers Infra et Production dès le premier trimestre.`,
       parametre: "niveauxActivite",
       valeurActuelle: params.niveauxActivite[0],
       valeurSuggeree: activiteSuggereN,
@@ -172,7 +172,7 @@ export function analyzeAndRecommend(
       priority: autonomieLow.length >= 3 ? 1 : 2,
       issueIds: ["AUTONOMIE_LOW"],
       titre: "Renforcer l'apport en fonds propres",
-      detail: `L'augmentation de capital actuelle de ${fmt(params.augmentationCapital)} est insuffisante face à l'endettement de ${fmt(params.endettementLT)}. Porter l'augmentation à ${fmt(augCapSuggere)} (ratio fonds propres/dette cible : 1/3) améliorerait structurellement l'autonomie. Pour KENENERGIE, cela peut passer par l'entrée d'un investisseur stratégique dans le secteur énergie ou un fonds d'investissement CEMAC.`,
+      detail: `L'augmentation de capital actuelle de ${fmt(params.augmentationCapital)} est insuffisante face à l'endettement de ${fmt(params.endettementLT)}. Porter l'augmentation à ${fmt(augCapSuggere)} (ratio fonds propres/dette cible : 1/3) améliorerait structurellement l'autonomie. Pour ${params.companyName || "ce projet"}, cela peut passer par l'entrée d'un investisseur stratégique ou un fonds d'investissement.`,
       parametre: "augmentationCapital",
       valeurActuelle: params.augmentationCapital,
       valeurSuggeree: augCapSuggere,
@@ -220,7 +220,7 @@ export function analyzeAndRecommend(
       priority: levierHigh.length > 0 ? 1 : 2,
       issueIds: ["LEVIER_HIGH", "LEVIER_WARN"],
       titre: "Optimiser la structure de financement (dette/capital)",
-      detail: `Pour KENENERGIE, une structure cible serait : 30% fonds propres (capital + augmentation), 50% dette LT, 20% quasi-fonds propres (comptes courants). Cela implique soit de réduire l'endettement LT à ${fmt(Math.round(params.endettementLT * 0.7 / 100_000_000) * 100_000_000)}, soit d'augmenter simultanément le capital à ${fmt(Math.round(params.augmentationCapital * 2 / 50_000_000) * 50_000_000)}.`,
+      detail: `Pour ${params.companyName || "ce projet"}, une structure cible serait : 30% fonds propres (capital + augmentation), 50% dette LT, 20% quasi-fonds propres (comptes courants). Cela implique soit de réduire l'endettement LT à ${fmt(Math.round(params.endettementLT * 0.7 / 100_000_000) * 100_000_000)}, soit d'augmenter simultanément le capital à ${fmt(Math.round(params.augmentationCapital * 2 / 50_000_000) * 50_000_000)}.`,
       impactAttendu: "Levier ramené à 2,5×–3,5× sur l'ensemble de la période",
       effort: "moyen terme",
       categorie: "solvabilite",
@@ -251,7 +251,7 @@ export function analyzeAndRecommend(
       priority: 2,
       issueIds: ["ICR_LOW"],
       titre: "Négocier un taux d'intérêt préférentiel",
-      detail: `Le taux actuel de ${(params.txInteretEmpruntLT * 100).toFixed(1)}% est dans la fourchette haute du marché CEMAC. En présentant un dossier complet avec garanties réelles (matériel d'exploitation, contrats clients), KENENERGIE peut viser un taux de ${(tauxSuggere * 100).toFixed(1)}% (-1,5 point), ce qui réduirait la charge annuelle de ~${fmt(params.endettementLT * 0.015)}.`,
+      detail: `Le taux actuel de ${(params.txInteretEmpruntLT * 100).toFixed(1)}% est dans la fourchette haute du marché CEMAC. En présentant un dossier complet avec garanties réelles (matériel d'exploitation, contrats clients), ${params.companyName || "ce projet"} peut viser un taux de ${(tauxSuggere * 100).toFixed(1)}% (-1,5 point), ce qui réduirait la charge annuelle de ~${fmt(params.endettementLT * 0.015)}.`,
       parametre: "txInteretEmpruntLT",
       valeurActuelle: params.txInteretEmpruntLT,
       valeurSuggeree: tauxSuggere,
@@ -285,7 +285,7 @@ export function analyzeAndRecommend(
       priority: 1,
       issueIds: ["FRN_NEG"],
       titre: "Réequilibrer le financement long terme / investissements",
-      detail: `Le FRN négatif résulte d'investissements non entièrement couverts par les ressources permanentes. Pour KENENERGIE, cela implique : (1) différer ${fmt(Math.abs(frnNeg[0]?.v ?? 0) * 0.3)} d'investissements en Matériel d'exploitation à N+2, (2) augmenter les ressources LT de la même proportion via un complément de dette ou de capital.`,
+      detail: `Le FRN négatif résulte d'investissements non entièrement couverts par les ressources permanentes. Pour ${params.companyName || "ce projet"}, cela implique : (1) différer ${fmt(Math.abs(frnNeg[0]?.v ?? 0) * 0.3)} d'investissements en Matériel d'exploitation à N+2, (2) augmenter les ressources LT de la même proportion via un complément de dette ou de capital.`,
       impactAttendu: "FRN positif dès N, amélioration du ratio d'équilibre bilan",
       effort: "immédiat",
       categorie: "liquidite",
@@ -354,7 +354,7 @@ export function analyzeAndRecommend(
       priority: 3,
       issueIds: ["GROWTH_LOW"],
       titre: "Réviser les niveaux d'activité pour une montée en charge plus rapide",
-      detail: `Les niveaux d'activité actuels (${params.niveauxActivite.map(v => (v * 100).toFixed(0) + "%").join(" → ")}) génèrent une progression trop lente. Pour KENENERGIE : (1) activer le pôle Innovation dès N+1 avec des contrats-cadres signés, (2) déployer le pôle Production à 70% dès N+2 via des partenariats avec les sociétés d'état camerounaises (AES-SONEL, ENEO), (3) viser une saturation à 90% dès N+3 plutôt que N+4.`,
+      detail: `Les niveaux d'activité actuels (${params.niveauxActivite.map(v => (v * 100).toFixed(0) + "%").join(" → ")}) génèrent une progression trop lente. Pour ${params.companyName || "ce projet"} : (1) activer le pôle Innovation dès N+1 avec des contrats-cadres signés, (2) déployer le pôle Production à 70% dès N+2, (3) viser une saturation à 90% dès N+3 plutôt que N+4.`,
       impactAttendu: "Croissance CA portée à 15%-25% p.a., seuil de rentabilité atteint dès N+1",
       effort: "court terme",
       categorie: "croissance",
@@ -412,7 +412,7 @@ export function analyzeAndRecommend(
       priority: 1,
       issueIds: ["RES_NET_NEG"],
       titre: "Rétablir la rentabilité — plan d'urgence",
-      detail: `Des pertes nettes sont incompatibles avec la bancabilité du projet. Actions immédiates : (1) Réduire le taux d'imposition effectif en optimisant les déductions fiscales admises (amortissements accélérés sur matériel d'exploitation), (2) Reporter les investissements non productifs en N+1/N+2, (3) Activer des contrats commerciaux pré-signés pour sécuriser le CA en N. KENENERGIE dispose d'un avantage : la zone OHADA offre des régimes d'incitation fiscale pour les entreprises d'énergie.`,
+      detail: `Des pertes nettes sont incompatibles avec la bancabilité du projet. Actions immédiates : (1) Réduire le taux d'imposition effectif en optimisant les déductions fiscales admises (amortissements accélérés sur matériel d'exploitation), (2) Reporter les investissements non productifs en N+1/N+2, (3) Activer des contrats commerciaux pré-signés pour sécuriser le CA en N. La zone OHADA offre des régimes d'incitation fiscale pour les entreprises du secteur.`,
       impactAttendu: "Résultat net positif dès N, capitaux propres préservés",
       effort: "immédiat",
       categorie: "rentabilite",
@@ -440,7 +440,7 @@ export function analyzeAndRecommend(
       priority: 2,
       issueIds: ["SEUIL_HIGH"],
       titre: "Réduire les charges fixes pour abaisser le seuil de rentabilité",
-      detail: `Les charges fixes (personnel, amortissements, frais financiers, services ext.) représentent une part trop élevée du CA potentiel. Pour KENENERGIE : (1) Adopter une structure salariale à forte composante variable (commissions sur projets), (2) Louer plutôt qu'acheter le matériel de bureau et les véhicules légers en N, (3) Mutualiser les locaux avec d'autres activités THE PLUG IT Solutions en phase de démarrage.`,
+      detail: `Les charges fixes (personnel, amortissements, frais financiers, services ext.) représentent une part trop élevée du CA potentiel. Pour ${params.companyName || "ce projet"} : (1) Adopter une structure salariale à forte composante variable (commissions sur projets), (2) Louer plutôt qu'acheter le matériel de bureau et les véhicules légers en N, (3) Mutualiser les locaux avec d'autres activités du groupe en phase de démarrage.`,
       impactAttendu: `Seuil de rentabilité abaissé à ≤ 60%, point mort atteint dès le mois 8 de l'année N`,
       effort: "immédiat",
       categorie: "charges",
@@ -458,13 +458,15 @@ export function analyzeAndRecommend(
     score >= 70 ? "BANCABLE" :
     score >= 40 ? "A_CONSOLIDER" : "NON_BANCABLE";
 
-  // ── Notes contextuelles KENENERGIE ───────────────────────────────────────
-  notes.push(`KENENERGIE SARL opère dans le secteur énergie CEMAC — les ratios de rentabilité devraient s'améliorer naturellement avec la montée en charge des pôles Production et Innovation.`);
+  // ── Notes contextuelles ───────────────────────────────────────────────────
+  notes.push(`${params.companyName || "Ce projet"} — les ratios de rentabilité devraient s'améliorer naturellement avec la montée en charge des pôles Production et Innovation.`);
   notes.push(`Le TIR de ${(vanTirMetrics.irr * 100).toFixed(2)}% est ${vanTirMetrics.irr >= 0.20 ? "attractif — argument fort en négociation bancaire" : vanTirMetrics.irr >= 0.15 ? "acceptable" : "insuffisant pour justifier le risque — chercher à l'améliorer via réduction des investissements initiaux"}.`);
   if (params.endettementLT > 3_000_000_000) {
     notes.push(`L'endettement de ${fmt(params.endettementLT)} nécessite une banque de financement structuré (BGFI, Ecobank Corporate, ou consortium de banques BEAC). Prévoir une note de crédit et des garanties réelles couvrant au moins 80% du montant.`);
   }
-  notes.push(`Atout KENENERGIE : secteur en forte demande (déficit électrique Cameroun/CEMAC estimé à 400 MW). Cet argument de marché doit figurer en tête du dossier bancaire.`);
+  if (params.companyName) {
+    notes.push(`Atout ${params.companyName} : préparer un argumentaire de marché solide à mettre en tête du dossier bancaire pour renforcer la crédibilité du projet.`);
+  }
 
   // Sort recommendations by priority
   recommandations.sort((a, b) => a.priority - b.priority);

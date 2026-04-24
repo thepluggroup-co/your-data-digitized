@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PageHeader from "@/components/kenenergie/PageHeader";
 import { useParametres } from "@/contexts/ParametresContext";
-import { YEARS, formatFcfa, companyInfo } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   Legend, LineChart, Line, ReferenceLine,
@@ -72,7 +72,7 @@ function VerdictBanner({ verdict, score }: { verdict: Verdict; score: number }) 
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function SyntheseBancaire() {
-  const { computed, activeDossier } = useParametres();
+  const { computed, params, activeDossier } = useParametres();
   const { resultats, bilan, chargesExploitation, banking, vanTirMetrics, planFinancement } = computed;
 
   const [genLoading, setGenLoading] = useState(false);
@@ -86,7 +86,7 @@ export default function SyntheseBancaire() {
       const res = await generateReport("synthese-bancaire", {
         banking, resultats, bilan, vanTirMetrics,
         years: YEARS,
-        companyInfo,
+        companyInfo: { name: params.companyName, promoteur: params.companyPromoter, activite: params.companyActivite, ville: params.companyVille, pays: params.companyPays },
       }, clientName);
       // Download as .md file
       const blob = new Blob([res.report], { type: "text/markdown;charset=utf-8" });
@@ -159,7 +159,7 @@ export default function SyntheseBancaire() {
     <div className="space-y-6">
       <PageHeader
         title="Synthèse Bancaire"
-        subtitle={`${companyInfo.name} • Analyse de bancabilité du projet 2027–2031`}
+        subtitle={`${params.companyName} • Analyse de bancabilité du projet 2027–2031`}
         badge="4 sections"
       />
 

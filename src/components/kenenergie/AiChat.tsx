@@ -18,11 +18,11 @@ import { useLocation } from "react-router-dom";
 import {
   Bot, X, Send, Loader2, Minimize2, ChevronDown, Sparkles,
   CheckCircle2, AlertCircle, Pencil, PinIcon, PinOff,
-  RotateCcw, Maximize2,
+  RotateCcw, Maximize2, Download,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useParametres }  from "@/contexts/ParametresContext";
-import type { EditableParams } from "@/contexts/ParametresContext";
+import type { EditableParams, VentesData, PoleKey, SalaryEntry, InvEntry, AmortEntry } from "@/contexts/ParametresContext";
 import { useAiPanel }     from "@/contexts/AiPanelContext";
 import { sendChat }       from "@/lib/ai-service";
 import type { ChatMessage } from "@/lib/ai-service";
@@ -121,11 +121,42 @@ function renderMd(text: string) {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
+const SPECIAL_LABELS: Record<string, string> = {
+  _ventes: "Ventes / Pôles d'activité",
+  _salaires: "Grille salariale",
+  _investissements: "Tableau d'investissements",
+  _amortissements: "Tableau d'amortissements",
+};
+
+function buildPatchFromExtracted(extracted: Record<string, unknown>): ParamPatch {
+  const patch: Record<string, unknown> = {};
+  for (const section of ["identification", "finances", "activite", "servicesExt"]) {
+    const obj = extracted[section] as Record<string, unknown> | undefined;
+    if (obj) Object.entries(obj).forEach(([k, v]) => { if (v != null) patch[k] = v; });
+  }
+  if (Array.isArray(extracted.salaires) && (extracted.salaires as unknown[]).length > 0)
+    patch._salaires = extracted.salaires;
+  const ventes = extracted.ventes as { poles?: { nom: string; cle: string; produits: unknown[] }[] } | null;
+  if (ventes?.poles?.length) {
+    const ventesObj: Record<string, unknown> = {};
+    for (const pole of ventes.poles)
+      ventesObj[pole.cle] = { label: pole.nom, produits: pole.produits };
+    patch._ventes = ventesObj;
+  }
+  if (Array.isArray(extracted.investissements) && (extracted.investissements as unknown[]).length > 0)
+    patch._investissements = extracted.investissements;
+  if (Array.isArray(extracted.amortissements) && (extracted.amortissements as unknown[]).length > 0)
+    patch._amortissements = extracted.amortissements;
+  return patch as ParamPatch;
+}
+
 function ApplyCard({ patch, params, onApply, onDismiss }: {
   patch: ParamPatch; params: EditableParams;
   onApply: () => void; onDismiss: () => void;
 }) {
-  const entries = Object.entries(patch) as [keyof EditableParams, unknown][];
+  const entries = Object.entries(patch);
+  const specialEntries = entries.filter(([k]) => k.startsWith("_"));
+  const scalarEntries  = entries.filter(([k]) => !k.startsWith("_")) as [keyof EditableParams, unknown][];
   return (
     <div className="mx-1 mb-3 rounded-xl border-2 border-accent/40 bg-accent/5 p-3 space-y-2.5">
       <div className="flex items-center gap-1.5">
@@ -135,7 +166,16 @@ function ApplyCard({ patch, params, onApply, onDismiss }: {
         </span>
       </div>
       <div className="space-y-1.5">
-        {entries.map(([key, val]) => (
+        {specialEntries.map(([key, val]) => (
+          <div key={key} className="rounded-lg bg-muted/30 border border-border/40 px-2.5 py-1.5">
+            <p className="text-[10px] font-semibold text-accent">{SPECIAL_LABELS[key] ?? key}</p>
+            <p className="text-[10px] text-muted-foreground">
+              {Array.isArray(val) ? `${(val as unknown[]).length} ligne${(val as unknown[]).length > 1 ? "s" : ""}` :
+               val && typeof val === "object" ? `${Object.keys(val).length} pôle${Object.keys(val).length > 1 ? "s" : ""}` : "—"}
+            </p>
+          </div>
+        ))}
+        {scalarEntries.map(([key, val]) => (
           <div key={key} className="rounded-lg bg-muted/30 border border-border/40 px-2.5 py-1.5">
             <p className="text-[10px] font-semibold">{PARAM_LABELS[key] ?? key}</p>
             <p className="text-[10px] text-muted-foreground font-mono">
@@ -179,7 +219,7 @@ function Bubble({ msg }: { msg: ChatMessage }) {
 // ── Core chat logic (shared between float and dock) ───────────────────────────
 
 export function AiChatCore({ mode }: { mode: "float" | "dock" }) {
-  const { computed, activeDossier, params, updateParam, saveCurrentDossier } = useParametres();
+  const { computed, activeDossier, params, updateParam, ventesData, salairesData, investData, amortData, setVentesData, setSalairesData, setInvestData, setAmortData, saveCurrentDossier, lastImportedFile } = useParametres();
   const { open, pinned, prefill, setOpen, setPinned, clearPrefill } = useAiPanel();
   const location = useLocation();
   const pageCtx  = getPageCtx(location.pathname);
@@ -218,11 +258,14 @@ export function AiChatCore({ mode }: { mode: "float" | "dock" }) {
       setUnread(0);
       if (isFirstOpen.current && history.length === 0) {
         isFirstOpen.current = false;
+        const fileNote = lastImportedFile
+          ? `\n\n📎 Fichier lié : **${lastImportedFile.fileName}** — je peux analyser ses données et les comparer au dossier.`
+          : "";
         setHistory([{
           role: "assistant",
           content: activeDossier
-            ? `Bonjour ! Je suis votre assistant financier IA.\n\nJ'ai accès au dossier **${activeDossier.nom}** et je suis sur la page **${pageCtx.icon} ${pageCtx.label}**.\n\nJe peux analyser vos indicateurs et **modifier les paramètres directement** si vous me le demandez.`
-            : `Bonjour ! Je suis votre assistant financier IA.\n\nPage actuelle : **${pageCtx.icon} ${pageCtx.label}**\n\nChargez un dossier pour que je puisse analyser vos données.`,
+            ? `Bonjour ! Je suis votre assistant financier IA.\n\nJ'ai accès au dossier **${activeDossier.nom}** et je suis sur la page **${pageCtx.icon} ${pageCtx.label}**.\n\nJe peux analyser vos indicateurs, **modifier les paramètres directement** et analyser les fichiers importés.${fileNote}`
+            : `Bonjour ! Je suis votre assistant financier IA.\n\nPage actuelle : **${pageCtx.icon} ${pageCtx.label}**\n\nChargez un dossier pour que je puisse analyser vos données.${fileNote}`,
         }]);
       }
     }
@@ -240,6 +283,25 @@ export function AiChatCore({ mode }: { mode: "float" | "dock" }) {
       ctx.bilan     = computed.bilan;
     }
     ctx.parametresActuels = params;
+    ctx.ventesActuelles = Object.fromEntries(
+      Object.entries(ventesData).map(([k, v]) => [k, {
+        label: v.label,
+        produits: v.produits.map(p => ({ label: p.label, qte: p.qte, pu: p.pu, montant: p.montant, unite: p.unite })),
+        totalAnnuel: v.produits.reduce((s, p) => s + p.qte * p.pu, 0),
+      }])
+    );
+    ctx.salairesActuels = salairesData.map(s => ({ poste: s.poste, qte: s.qte, salaire: s.salaire, montant: s.montant }));
+    ctx.investissementsActuels = investData.map(e => ({ intitule: e.intitule, global: e.global, an: e.an }));
+    ctx.amortissementsActuels = amortData.map(e => ({ intitule: e.intitule, valeurTotale: e.valeurTotale, taux: e.taux, annees: e.annees }));
+    if (lastImportedFile) {
+      const age = Math.round((Date.now() - lastImportedFile.importedAt) / 60000);
+      ctx.fichierImporte = {
+        nom: lastImportedFile.fileName,
+        type: lastImportedFile.fileType,
+        importeIlYA: age < 1 ? "à l'instant" : `il y a ${age} min`,
+        donnees_base: lastImportedFile.extracted,
+      };
+    }
     return ctx;
   };
 
@@ -280,8 +342,61 @@ export function AiChatCore({ mode }: { mode: "float" | "dock" }) {
   const handleApply = () => {
     if (!pendingPatch) return;
     let count = 0;
-    for (const [key, val] of Object.entries(pendingPatch.patch) as [keyof EditableParams, unknown][]) {
-      try { updateParam(key, val as EditableParams[typeof key]); count++; } catch { /* skip */ }
+    for (const [key, val] of Object.entries(pendingPatch.patch)) {
+      try {
+        if (key === "_ventes" && val && typeof val === "object") {
+          setVentesData(prev => {
+            const next = { ...prev };
+            for (const [poleKey, poleData] of Object.entries(val as Record<string, unknown>)) {
+              if (poleData && typeof poleData === "object") {
+                const pd = poleData as { label?: string; produits?: { label: string; qte: number; pu: number; montant: number; unite: string }[] };
+                next[poleKey as PoleKey] = {
+                  label: pd.label ?? prev[poleKey as PoleKey]?.label ?? poleKey,
+                  produits: (pd.produits ?? []).map(p => ({
+                    label: p.label || "Produit",
+                    qte: Number(p.qte) || 1,
+                    pu: Number(p.pu) || 0,
+                    montant: Number(p.montant) || (Number(p.qte) || 1) * (Number(p.pu) || 0),
+                    unite: p.unite || "unité",
+                  })),
+                };
+              }
+            }
+            return next;
+          });
+          count++;
+        } else if (key === "_salaires" && Array.isArray(val)) {
+          const sal: SalaryEntry[] = (val as { poste?: string; qte?: number; salaire?: number; montant?: number }[]).map(s => ({
+            poste: s.poste || "Poste",
+            qte: Number(s.qte) || 1,
+            salaire: Number(s.salaire) || 0,
+            montant: Number(s.montant) || (Number(s.qte) || 1) * (Number(s.salaire) || 0),
+          }));
+          setSalairesData(sal);
+          count++;
+        } else if (key === "_investissements" && Array.isArray(val)) {
+          const inv: InvEntry[] = (val as { intitule?: string; global?: number; an?: number[] }[]).map(e => ({
+            intitule: e.intitule || "Immobilisation",
+            global: Number(e.global) || 0,
+            an: (Array.isArray(e.an) && e.an.length === 5 ? e.an : [Number(e.global) || 0, 0, 0, 0, 0]) as [number,number,number,number,number],
+          }));
+          setInvestData(inv);
+          count++;
+        } else if (key === "_amortissements" && Array.isArray(val)) {
+          const amort: AmortEntry[] = (val as { intitule?: string; valeurTotale?: number; taux?: number; annees?: number[] }[]).map(e => ({
+            intitule: e.intitule || "Bien",
+            valeurTotale: Number(e.valeurTotale) || 0,
+            taux: Number(e.taux) || 0.20,
+            annees: (Array.isArray(e.annees) && e.annees.length === 5 ? e.annees : [0, 0, 0, 0, 0]) as [number,number,number,number,number],
+            isSubLine: false,
+          }));
+          setAmortData(amort);
+          count++;
+        } else if (!key.startsWith("_")) {
+          updateParam(key as keyof EditableParams, val as EditableParams[keyof EditableParams]);
+          count++;
+        }
+      } catch { /* skip invalid values */ }
     }
     setPending(null);
     setApplied(c => c + count);
@@ -397,6 +512,32 @@ export function AiChatCore({ mode }: { mode: "float" | "dock" }) {
       {/* ── Messages ────────────────────────────────────────────────────────── */}
       {!minimized && (
         <>
+          {/* ── Bannière : Adapter les données du fichier importé ────────── */}
+          {lastImportedFile && !pendingPatch && (
+            <div className="mx-3 mt-2 flex items-center gap-2 rounded-xl border border-accent/30 bg-accent/5 px-3 py-2 flex-shrink-0">
+              <Download className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+              <p className="flex-1 min-w-0 text-[10px] font-medium text-accent truncate">
+                📎 {lastImportedFile.fileName}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  const patch = buildPatchFromExtracted(lastImportedFile.extracted as Record<string, unknown>);
+                  if (Object.keys(patch).length === 0) return;
+                  const idx = history.length;
+                  setHistory(h => [...h, {
+                    role: "assistant",
+                    content: `📎 Adaptation des données de **${lastImportedFile.fileName}** — **${Object.keys(patch).length} catégorie${Object.keys(patch).length > 1 ? "s" : ""}** extraite${Object.keys(patch).length > 1 ? "s" : ""}. Vérifiez et confirmez les modifications ci-dessous.`,
+                  }]);
+                  setPending({ msgIndex: idx, patch });
+                }}
+                className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-accent text-white hover:bg-accent/80 transition-colors flex-shrink-0 whitespace-nowrap"
+              >
+                Adapter les données
+              </button>
+            </div>
+          )}
+
           <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 scroll-smooth">
             {history.map((msg, i) => (
               <div key={i}>

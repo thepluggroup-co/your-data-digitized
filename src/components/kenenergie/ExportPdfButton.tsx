@@ -40,7 +40,7 @@ export default function ExportPdfButton() {
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(13);
         doc.setFont("helvetica", "bold");
-        doc.text("THE PLUG FINANCE CO — KENENERGIE SARL — Business Plan 2027-2031", 23, 10);
+        doc.text(`THE PLUG FINANCE CO — ${params.companyName || "Nouveau Dossier"} — Business Plan`, 23, 10);
         doc.setFontSize(8);
         doc.setFont("helvetica", "normal");
         doc.text("Connexion that drives innovation", 23, 16);
@@ -54,7 +54,7 @@ export default function ExportPdfButton() {
         doc.setFontSize(7);
         doc.setTextColor(120);
         doc.text(`Page ${page}`, pageW - 10, pageH - 5, { align: "right" });
-        doc.text("Document généré automatiquement — Modèle Financier KENENERGIE | THE PLUG", 10, pageH - 5);
+        doc.text("Document généré automatiquement — THE PLUG FINANCE CO", 10, pageH - 5);
         doc.setTextColor(0);
       };
 
@@ -252,7 +252,8 @@ export default function ExportPdfButton() {
       });
       addFooter(pageNum++);
 
-      doc.save("KENENERGIE_Business_Plan_2027-2031.pdf");
+      const safeName = (params.companyName || "Business_Plan").replace(/[^a-zA-Z0-9_-]/g, "_");
+      doc.save(`${safeName}_Business_Plan.pdf`);
     } catch (err) {
       console.error("PDF export error:", err);
     } finally {

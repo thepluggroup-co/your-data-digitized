@@ -31,7 +31,7 @@ const codeColors: Record<string, string> = {
 };
 
 export default function PlanFinancement() {
-  const { computed } = useParametres();
+  const { computed, params } = useParametres();
   const planFinancement = computed.planFinancement;
 
   // ====== Plan de Financement Table ======
@@ -134,6 +134,7 @@ export default function PlanFinancement() {
       <PageHeader
         title="Plan de Financement & Ouverture du Capital"
         subtitle="Ressources & Emplois 5 ans — Valorisation des actifs en actions — Cartographie des parties prenantes"
+        aiPrompt="Analyse le plan de financement : équilibre ressources/emplois, soutenabilité de la dette, recommandations pour améliorer la bancabilité ?"
       />
 
       {/* KPIs */}
@@ -273,7 +274,7 @@ export default function PlanFinancement() {
               <div className="header-gradient px-5 py-3">
                 <h2 className="text-primary-foreground font-semibold text-sm">Tableau d'Actionnariat — Valorisation des Actifs en Actions</h2>
               </div>
-              <FinTable cols={actCols} rows={actRows} compact exportName="Actionnariat_KENENERGIE" />
+              <FinTable cols={actCols} rows={actRows} compact exportName={`Actionnariat_${(params.companyName || "Projet").replace(/[^a-zA-Z0-9_-]/g, "_")}`} />
             </div>
           </div>
 

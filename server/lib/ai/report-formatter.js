@@ -33,7 +33,7 @@ function markdownToPlainText(markdown) {
  * Génère un nom de fichier horodaté pour un rapport.
  * @param {'situation-client'|'synthese-bancaire'|'dashboard-mensuel'|string} reportType
  * @param {string} clientName
- * @returns {string} ex: "2026-04-13_situation-client_KENENERGIE.md"
+ * @returns {string} ex: "2026-04-13_situation-client_MON_PROJET.md"
  */
 function generateReportFilename(reportType, clientName = "client") {
   const date = new Date().toISOString().slice(0, 10);
@@ -73,7 +73,7 @@ function addReportHeader(content, metadata = {}) {
 
   const header = `---
 # THE PLUG FINANCE CO
-## KENENERGIE SARL — ${label}
+## ${clientName} — ${label}
 
 | Champ       | Valeur                              |
 |-------------|-------------------------------------|

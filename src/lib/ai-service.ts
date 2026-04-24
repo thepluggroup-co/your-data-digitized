@@ -157,6 +157,96 @@ export async function getRecommendations(
   return post("/recommendations", { dossierData, context });
 }
 
+// ── Extraction de paramètres depuis un document ───────────────────────────────
+
+export interface FeuilleDetectee {
+  libelle_source: string;
+  interpretation: string;
+  module_cible: string;
+  statut: "connu" | "nouveau" | "ambigu";
+}
+
+export interface ColonneDetectee {
+  libelle_source: string;
+  compte_ohada: string | null;
+  intitule_syscohada: string | null;
+  suggestion_renommage: string | null;
+  module_cible: string;
+  statut: "connu" | "nouveau" | "ambigu";
+}
+
+export interface ProjetContexte {
+  nom: string;
+  secteur?: string;
+  devise?: string;
+  exercice?: string;
+  libelles_personnalises?: Record<string, string>;
+  feuilles_connues?: string[];
+}
+
+export interface ExtractedParams {
+  confidence: number;
+  source: string;
+  source_type?: "TDR" | "business_plan" | "rapport_financier" | "devis_bordereau" | "planning" | "autre";
+  sheetsFound?: string[];
+  feuilles_detectees?: FeuilleDetectee[];
+  colonnes_detectees?: ColonneDetectee[];
+  identification: Partial<{
+    companyName: string; companyPromoter: string; companyFormeJuridique: string;
+    companyVille: string; companyPays: string; companyTelephone: string;
+    companyEmail: string; companyActivite: string; companyDateProjet: string;
+  }>;
+  finances: Partial<{
+    capitalSocial: number; augmentationCapital: number; endettementLT: number;
+    comptesCourantsAssocies: number; txInteretEmpruntLT: number;
+    tauxImpotSocietes: number; txDistributionBenefices: number;
+  }>;
+  activite: Partial<{
+    niveauxActivite: [number,number,number,number,number];
+    tauxAugmentationSalaires: number; tauxMatierePremiere: number;
+    tauxAutresAchats: number; tauxTransport: number;
+    tauxCommissionsVentes: number; tauxChargesSociales: number;
+  }>;
+  servicesExt: Partial<{
+    tauxLoyer: number; tauxAssurances: number; tauxMaintenance: number;
+    tauxHonoraires: number; tauxTelecom: number; tauxPublicite: number;
+    tauxFormation: number; tauxDeplacements: number;
+    tauxImpotsTaxes: number; tauxAutresCharges: number;
+  }>;
+  investissements: { intitule: string; global: number; an: [number,number,number,number,number] }[];
+  amortissements: { intitule: string; valeurTotale: number; taux: number; annees: [number,number,number,number,number] }[];
+  salaires: { poste: string; qte: number; salaire: number; montant: number }[];
+  ventes: {
+    poles?: {
+      nom: string;
+      cle: "poleInfrastructure" | "poleProduction" | "poleServices" | "poleInnovation";
+      produits: { label: string; qte: number; pu: number; montant: number; unite: string }[];
+    }[];
+    caTotal?: number[];
+  } | null;
+  summary: string;
+  alerts: { type: string; libelle_source?: string; message: string }[];
+}
+
+/**
+ * Extrait les paramètres d'un document business plan (PDF, Word, Excel, CSV).
+ * @param projetContexte Contexte du dossier actif pour cartographie des libellés
+ */
+export async function extractParamsFromDoc(
+  file: File,
+  projetContexte?: ProjetContexte,
+): Promise<{ success: boolean; fileName: string; fileType: string; extracted: ExtractedParams }> {
+  const form = new FormData();
+  form.append("file", file);
+  if (projetContexte) form.append("contexte", JSON.stringify(projetContexte));
+  const res = await fetch(`${BASE}/extract-params`, { method: "POST", body: form });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: res.statusText }));
+    throw new Error((err as { error?: string }).error ?? `Erreur ${res.status}`);
+  }
+  return res.json();
+}
+
 // ── Health check ──────────────────────────────────────────────────────────────
 export async function checkHealth(): Promise<{
   status: string; modules: string[]; version: string; model: string;

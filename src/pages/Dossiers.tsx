@@ -11,7 +11,7 @@ import {
   Sparkles, Loader2, AlertTriangle, X, FileUp,
   Cloud, CloudOff, CloudUpload, CloudDownload, Search,
   LayoutGrid, List, SortAsc, SortDesc, Package,
-  HardDrive, RefreshCw, Shield, Info,
+  HardDrive, RefreshCw, Shield, Info, Pencil,
 } from "lucide-react";
 import { analyzeDocument } from "@/lib/ai-service";
 import type { AnalysisResult } from "@/lib/ai-service";
@@ -84,7 +84,7 @@ function NewDossierDialog({ onClose, onCreate }: {
           <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">Nom du dossier *</label>
             <Input autoFocus value={nom} onChange={e => setNom(e.target.value)}
-              placeholder="ex: KENENERGIE SARL — BP 2027" className="h-9" />
+              placeholder="ex: Mon Projet SARL — BP 2027" className="h-9" />
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">Client / Promoteur</label>
@@ -109,10 +109,57 @@ function NewDossierDialog({ onClose, onCreate }: {
   );
 }
 
+// ── Dialog Renommer Dossier ───────────────────────────────────────────────────
+function RenameDossierDialog({ dossier, onClose, onRename }: {
+  dossier: Dossier;
+  onClose: () => void;
+  onRename: (nom: string, client: string, description: string) => void;
+}) {
+  const [nom, setNom]               = useState(dossier.nom);
+  const [client, setClient]         = useState(dossier.client ?? "");
+  const [description, setDescription] = useState(dossier.description ?? "");
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="glass-panel rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 animate-[slide-up-fade_0.2s_ease]">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="p-2.5 rounded-xl bg-primary/10">
+            <Pencil className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold">Renommer le dossier</h2>
+            <p className="text-xs text-muted-foreground truncate max-w-xs">{dossier.nom}</p>
+          </div>
+        </div>
+        <div className="space-y-3">
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Nom du dossier *</label>
+            <Input autoFocus value={nom} onChange={e => setNom(e.target.value)} placeholder="Nom du dossier" className="h-9" />
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Client / Promoteur</label>
+            <Input value={client} onChange={e => setClient(e.target.value)} placeholder="Client" className="h-9" />
+          </div>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Description</label>
+            <Input value={description} onChange={e => setDescription(e.target.value)} placeholder="Description" className="h-9" />
+          </div>
+        </div>
+        <div className="flex gap-2 mt-5">
+          <Button type="button" variant="outline" className="flex-1" onClick={onClose}>Annuler</Button>
+          <Button type="button" className="flex-1 gap-2" disabled={!nom.trim()}
+            onClick={() => onRename(nom.trim(), client.trim(), description.trim())}>
+            <Pencil className="w-4 h-4" /> Enregistrer
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Carte dossier (grid) ──────────────────────────────────────────────────────
 function DossierCard({
   dossier, isActive, cloudStatus, syncLoading,
-  onLoad, onDelete, onDuplicate, onExport, onPushCloud, onPullCloud,
+  onLoad, onDelete, onDuplicate, onExport, onPushCloud, onPullCloud, onRename,
 }: {
   dossier: Dossier;
   isActive: boolean;
@@ -124,6 +171,7 @@ function DossierCard({
   onExport: () => void;
   onPushCloud: () => void;
   onPullCloud: () => void;
+  onRename: () => void;
 }) {
   return (
     <div className={`kpi-depth rounded-xl border p-4 flex flex-col gap-3 transition-all ${
@@ -176,6 +224,9 @@ function DossierCard({
             <ChevronRight className="w-3 h-3" /> Ouvrir
           </Button>
         )}
+        <Button type="button" size="sm" variant="outline" className="text-xs px-2 h-7" onClick={onRename} title="Renommer">
+          <Pencil className="w-3.5 h-3.5" />
+        </Button>
         <Button type="button" size="sm" variant="outline" className="text-xs px-2 h-7" onClick={onDuplicate} title="Dupliquer">
           <Copy className="w-3.5 h-3.5" />
         </Button>
@@ -205,7 +256,7 @@ function DossierCard({
 // ── Ligne dossier (list view) ─────────────────────────────────────────────────
 function DossierRow({
   dossier, isActive, cloudStatus, syncLoading,
-  onLoad, onDelete, onDuplicate, onExport, onPushCloud,
+  onLoad, onDelete, onDuplicate, onExport, onPushCloud, onRename,
 }: {
   dossier: Dossier;
   isActive: boolean;
@@ -216,6 +267,7 @@ function DossierRow({
   onDuplicate: () => void;
   onExport: () => void;
   onPushCloud: () => void;
+  onRename: () => void;
 }) {
   return (
     <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-all ${
@@ -236,6 +288,7 @@ function DossierRow({
         {!isActive && (
           <Button type="button" size="sm" variant="ghost" className="h-7 text-xs px-2" onClick={onLoad}>Ouvrir</Button>
         )}
+        <Button type="button" size="sm" variant="ghost" className="h-7 px-1.5" onClick={onRename} title="Renommer"><Pencil className="w-3.5 h-3.5" /></Button>
         <Button type="button" size="sm" variant="ghost" className="h-7 px-1.5" onClick={onDuplicate} title="Dupliquer"><Copy className="w-3.5 h-3.5" /></Button>
         <Button type="button" size="sm" variant="ghost" className="h-7 px-1.5" onClick={onExport} title="Exporter JSON"><Download className="w-3.5 h-3.5" /></Button>
         <Button type="button" size="sm" variant="ghost" className="h-7 px-1.5" onClick={onPushCloud} disabled={syncLoading} title="Sauvegarder dans le cloud">
@@ -255,12 +308,13 @@ export default function Dossiers() {
   const {
     activeDossier, isDirty, allDossiers,
     createAndLoadDossier, saveCurrentDossier, loadDossier,
-    removeDossier, duplicateDossier, exportDossier, importDossierFile, refreshDossiers,
+    removeDossier, duplicateDossier, renameDossier, exportDossier, importDossierFile, refreshDossiers,
   } = useParametres();
 
   // ── UI state ──────────────────────────────────────────────────────────────
   const [showNew, setShowNew]           = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [renamingDossier, setRenamingDossier] = useState<Dossier | null>(null);
   const [query, setQuery]               = useState("");
   const [sortKey, setSortKey]           = useState<SortKey>("updatedAt");
   const [sortAsc, setSortAsc]           = useState(false);
@@ -333,6 +387,12 @@ export default function Dossiers() {
   const handleDuplicate = (id: string) => {
     const src = allDossiers.find(d => d.id === id);
     if (src) duplicateDossier(id, `${src.nom} (copie)`);
+  };
+
+  const handleRename = (nom: string, client: string, description: string) => {
+    if (!renamingDossier) return;
+    renameDossier(renamingDossier.id, nom, client, description);
+    setRenamingDossier(null);
   };
 
   const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -427,6 +487,14 @@ export default function Dossiers() {
   return (
     <div className="space-y-5">
       {showNew && <NewDossierDialog onClose={() => setShowNew(false)} onCreate={handleCreate} />}
+
+      {renamingDossier && (
+        <RenameDossierDialog
+          dossier={renamingDossier}
+          onClose={() => setRenamingDossier(null)}
+          onRename={handleRename}
+        />
+      )}
 
       {/* Confirm delete */}
       {confirmDelete && (
@@ -663,6 +731,7 @@ export default function Dossiers() {
               onExport={() => exportDossier(d.id)}
               onPushCloud={() => handlePushCloud(d)}
               onPullCloud={() => handlePullCloud(d.id)}
+              onRename={() => setRenamingDossier(d)}
             />
           ))}
         </div>
@@ -686,6 +755,7 @@ export default function Dossiers() {
               onDuplicate={() => handleDuplicate(d.id)}
               onExport={() => exportDossier(d.id)}
               onPushCloud={() => handlePushCloud(d)}
+              onRename={() => setRenamingDossier(d)}
             />
           ))}
         </div>

@@ -52,7 +52,8 @@ export default function Resultats() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Comptes de Résultats Prévisionnels" subtitle="Résultats nets et ratios de rentabilité 2027–2031" badge="TIR: 34.87%" />
+      <PageHeader title="Comptes de Résultats Prévisionnels" subtitle="Résultats nets et ratios de rentabilité 2027–2031" badge="TIR: 34.87%"
+        aiPrompt="Analyse les comptes de résultats prévisionnels : tendance de rentabilité, marges, progression du bénéfice net. Points forts et risques ?" />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <KpiCard label="TIR du projet" value="34.87%" sub="Taux interne de rentabilité" icon={Target} color="accent" />

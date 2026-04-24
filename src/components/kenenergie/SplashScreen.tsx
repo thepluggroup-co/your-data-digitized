@@ -35,7 +35,7 @@ function NewDossierPanel({ onClose, onCreate }: {
           <div>
             <label className="text-xs font-medium text-white/60 block mb-1">Nom du dossier *</label>
             <Input autoFocus value={nom} onChange={e => setNom(e.target.value)}
-              placeholder="ex: KENENERGIE SARL — BP 2027" className="h-9 bg-white/10 border-white/20 text-white placeholder:text-white/30" />
+              placeholder="ex: Mon Projet SARL — BP 2027" className="h-9 bg-white/10 border-white/20 text-white placeholder:text-white/30" />
           </div>
           <div>
             <label className="text-xs font-medium text-white/60 block mb-1">Client / Promoteur</label>
@@ -114,7 +114,7 @@ export default function SplashScreen({ onDismiss }: SplashScreenProps) {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-white tracking-widest uppercase">THE PLUG FINANCE CO</h1>
-            <p className="text-sm text-white/50 mt-1 tracking-wide">Modèle financier KENENERGIE SARL • 2027–2031</p>
+            <p className="text-sm text-white/50 mt-1 tracking-wide">Application de gestion financière professionnelle</p>
           </div>
           <div className="flex items-center justify-center gap-2 text-accent/80 text-xs">
             <Zap className="w-3.5 h-3.5" />

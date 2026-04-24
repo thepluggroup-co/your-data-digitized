@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useParametres } from "@/contexts/ParametresContext";
-import { YEARS, companyInfo, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
@@ -62,7 +62,7 @@ function setMerges(ws: XLSX.WorkSheet, merges: XLSX.Range[]) {
 
 // ── Sheet builders ────────────────────────────────────────────────────────────
 
-function buildMenuSheet(computed: ReturnType<typeof useParametres>["computed"], dossierNom: string): XLSX.WorkSheet {
+function buildMenuSheet(computed: ReturnType<typeof useParametres>["computed"], dossierNom: string, params: ReturnType<typeof useParametres>["params"]): XLSX.WorkSheet {
   const { resultats, vanTirMetrics, banking } = computed;
   const ws: XLSX.WorkSheet = {};
 
@@ -79,9 +79,9 @@ function buildMenuSheet(computed: ReturnType<typeof useParametres>["computed"], 
 
   title(0, "THE PLUG FINANCE CO — MENU DU DOSSIER");
   row(1, "Dossier", dossierNom);
-  row(2, "Entreprise", companyInfo.name);
-  row(3, "Promoteur", companyInfo.promoteur);
-  row(4, "Activité", companyInfo.activite);
+  row(2, "Entreprise", params.companyName);
+  row(3, "Promoteur", params.companyPromoter);
+  row(4, "Activité", params.companyActivite);
   row(5, "Période", `${YEARS[0]}–${YEARS[YEARS.length - 1]}`);
   row(6, "TIR Projet", (vanTirMetrics.irr * 100).toFixed(2) + "%");
   row(7, "VAN (8%)", formatFcfa(vanTirMetrics.van8, true));
@@ -291,11 +291,11 @@ function exportDossierComplet(
   wb.Props = {
     Title: "Dossier Financier THE PLUG FINANCE CO",
     Author: "THE PLUG FINANCE CO",
-    Company: companyInfo.name,
+    Company: params.companyName,
     CreatedDate: new Date(),
   };
 
-  XLSX.utils.book_append_sheet(wb, buildMenuSheet(computed, dossierNom), "MENU");
+  XLSX.utils.book_append_sheet(wb, buildMenuSheet(computed, dossierNom, params), "MENU");
   XLSX.utils.book_append_sheet(wb, buildResultatsSheet(computed), "CEP");
   XLSX.utils.book_append_sheet(wb, buildBilanSheet(computed), "BILANS");
   XLSX.utils.book_append_sheet(wb, buildFinancementSheet(computed), "FINANCEMENT");

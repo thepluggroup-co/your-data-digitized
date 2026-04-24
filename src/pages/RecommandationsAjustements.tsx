@@ -297,7 +297,7 @@ export default function RecommandationsAjustements() {
 
       <PageHeader
         title="Recommandations & Ajustements"
-        subtitle="Algorithme d'analyse des points critiques — KENENERGIE SARL (projet de référence)"
+        subtitle={`Algorithme d'analyse des points critiques — ${params.companyName || "votre projet"}`}
         badge={`${recommandations.length} recommandations`}
       />
 
@@ -340,7 +340,7 @@ export default function RecommandationsAjustements() {
         <div className="kpi-depth rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-8 text-center">
           <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
           <p className="text-base font-bold text-emerald-400">Aucun point critique détecté</p>
-          <p className="text-sm text-muted-foreground mt-1">Le projet KENENERGIE satisfait tous les ratios de référence sur la période 2027–2031.</p>
+          <p className="text-sm text-muted-foreground mt-1">{`Le projet ${params.companyName || "en cours"} satisfait tous les ratios de référence.`}</p>
         </div>
       )}
 
@@ -411,7 +411,7 @@ export default function RecommandationsAjustements() {
       <div className="kpi-depth rounded-xl border border-border p-5">
         <div className="flex items-center gap-2 mb-4">
           <Info className="w-4 h-4 text-accent" />
-          <h3 className="text-sm font-bold text-foreground">Analyse contextuelle KENENERGIE</h3>
+          <h3 className="text-sm font-bold text-foreground">{`Analyse contextuelle — ${params.companyName || "votre projet"}`}</h3>
         </div>
         <div className="space-y-2">
           {notes.map((note, i) => (

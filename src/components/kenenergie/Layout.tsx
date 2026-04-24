@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, TrendingUp, BarChart3, Settings, FileText,
   Building2, PiggyBank, Wallet, CreditCard, Users, ChevronLeft, ChevronRight, Landmark, Target,
-  GitCompare, ShieldAlert, FolderOpen, BellRing, ClipboardList, Lightbulb, Keyboard, Bot,
+  GitCompare, ShieldAlert, FolderOpen, BellRing, ClipboardList, Lightbulb, Keyboard, Bot, SlidersHorizontal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logoThePlug from "@/assets/logo-the-plug.png";
@@ -12,6 +12,7 @@ import { useAiPanel }    from "@/contexts/AiPanelContext";
 import AiChat, { AiChatCore } from "./AiChat";
 import SaveBar from "./SaveBar";
 import ShortcutsHelp from "./ShortcutsHelp";
+import DossierConfigModal from "./DossierConfigModal";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 const navItems = [
@@ -37,8 +38,9 @@ const navItems = [
 ];
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const [showHelp,  setShowHelp]  = useState(false);
+  const [collapsed,   setCollapsed]  = useState(false);
+  const [showHelp,    setShowHelp]   = useState(false);
+  const [showConfig,  setShowConfig] = useState(false);
   const { activeDossier, isDirty, resetParams } = useParametres();
   const { open, pinned, toggle, setOpen }       = useAiPanel();
   const navigate = useNavigate();
@@ -75,10 +77,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className={cn("absolute inset-0 rounded-full bg-sidebar-primary/20 blur-md scale-150 -z-10 opacity-0 transition-opacity", !collapsed && "opacity-100")} />
           </div>
           {!collapsed && (
-            <div className="relative z-10">
+            <div className="relative z-10 min-w-0">
               <div className="text-white font-bold text-sm leading-tight tracking-widest">THE PLUG</div>
               <div className="text-sidebar-primary font-semibold text-[11px] leading-tight tracking-wider">FINANCE CO</div>
-              <div className="text-sidebar-foreground/40 text-[9px] mt-0.5 tracking-wide">KENENERGIE SARL</div>
+              <div className="text-sidebar-foreground/60 text-[9px] mt-0.5 tracking-wide truncate max-w-[120px]" title={activeDossier?.nom ?? "Aucun dossier"}>
+                {activeDossier?.nom ?? "Aucun dossier"}
+              </div>
             </div>
           )}
         </div>
@@ -125,6 +129,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Footer + AI toggle button */}
         <div className={cn("px-3 py-2 border-t border-sidebar-border/50 space-y-1", collapsed && "px-2")}>
+          {/* Bouton Configuration dossier */}
+          <button type="button" onClick={() => setShowConfig(true)}
+            title="Configurer le dossier"
+            className={cn(
+              "w-full flex items-center justify-center gap-2 py-2 rounded-lg transition-all text-xs font-semibold",
+              "bg-sidebar-accent/40 text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-white border border-transparent",
+              collapsed ? "px-1" : "px-3"
+            )}>
+            <SlidersHorizontal className="w-4 h-4 flex-shrink-0" />
+            {!collapsed && <span>Configurer dossier</span>}
+          </button>
           {/* Bouton Claude IA */}
           <button type="button" onClick={toggle}
             title="Claude IA (Ctrl+I)"
@@ -195,6 +210,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Raccourcis overlay */}
       {showHelp && <ShortcutsHelp onClose={() => setShowHelp(false)} />}
+
+      {/* Configuration dossier modal */}
+      {showConfig && <DossierConfigModal onClose={() => setShowConfig(false)} />}
     </div>
   );
 }

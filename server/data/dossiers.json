@@ -5,40 +5,40 @@
     "client": "PIERRE PROMBO",
     "description": "BUSINESS PLAN 2027 - 2031",
     "createdAt": "2026-04-15T10:24:42.002Z",
-    "updatedAt": "2026-04-17T17:11:28.864Z",
+    "updatedAt": "2026-04-19T17:54:33.403Z",
     "data": {
       "params": {
-        "capitalSocial": 10000000,
-        "augmentationCapital": 400000000,
-        "endettementLT": 5000000000,
-        "comptesCourantsAssocies": 1000000000,
-        "txInteretEmpruntLT": 0.08,
+        "capitalSocial": 750000000,
+        "augmentationCapital": 1500000000,
+        "endettementLT": 3500000000,
+        "comptesCourantsAssocies": 300000000,
+        "txInteretEmpruntLT": 0.07,
         "tauxImpotSocietes": 0.33,
         "txDistributionBenefices": 0,
         "niveauxActivite": [
-          0.4,
-          0.5,
-          0.63,
+          0.55,
+          0.68,
           0.8,
+          0.92,
           1
         ],
         "tauxAugmentationSalaires": 0.02,
-        "tauxMatierePremiere": 0.0311,
-        "tauxAutresAchats": 0.00146,
-        "tauxTransport": 0.0173,
-        "tauxServicesExt": 0.1815,
-        "tauxLoyer": 0.045,
-        "tauxAssurances": 0.018,
-        "tauxMaintenance": 0.032,
-        "tauxHonoraires": 0.035,
-        "tauxTelecom": 0.015,
-        "tauxPublicite": 0.022,
-        "tauxFormation": 0.008,
-        "tauxDeplacements": 0.0065,
-        "tauxImpotsTaxes": 0.0069,
-        "tauxAutresCharges": 0.0294,
-        "tauxCommissionsVentes": 0.05,
-        "tauxChargesSociales": 0.2,
+        "tauxMatierePremiere": 0.025,
+        "tauxAutresAchats": 0.011,
+        "tauxTransport": 0.014,
+        "tauxServicesExt": 0.105,
+        "tauxLoyer": 0.008,
+        "tauxAssurances": 0.006,
+        "tauxMaintenance": 0.022,
+        "tauxHonoraires": 0.016,
+        "tauxTelecom": 0.005,
+        "tauxPublicite": 0.013,
+        "tauxFormation": 0,
+        "tauxDeplacements": 0.0045,
+        "tauxImpotsTaxes": 0.007,
+        "tauxAutresCharges": 0.01,
+        "tauxCommissionsVentes": 0.0005,
+        "tauxChargesSociales": 0.165,
         "fixedAchatsMP": 0,
         "fixedAutresAchats": 0,
         "fixedTransport": 0,
@@ -51,7 +51,10 @@
         "fixedFormation": 0,
         "fixedDeplacements": 0,
         "fixedImpotsTaxes": 0,
-        "fixedAutresCharges": 0
+        "fixedAutresCharges": 0,
+        "companyName": "LA REFERENCE DOCUMENTAIRE",
+        "companyPromoter": "Pièrre PROMBO",
+        "companyVille": "D"
       },
       "salairesData": [
         {
@@ -725,7 +728,7 @@
         }
       ]
     },
-    "syncedAt": "2026-04-17T17:12:33.608Z"
+    "syncedAt": "2026-04-19T18:13:56.509Z"
   },
   {
     "id": "d_1776236903376_0nxfgg",
@@ -1453,6 +1456,6 @@
         }
       ]
     },
-    "syncedAt": "2026-04-17T17:07:44.314Z"
+    "syncedAt": "2026-04-19T18:13:56.509Z"
   }
 ]

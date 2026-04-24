@@ -1,19 +1,19 @@
-// KENENERGIE SARL - Données du modèle financier
+// THE PLUG FINANCE CO - Données du modèle financier
 
 export const YEARS = [2027, 2028, 2029, 2030, 2031] as const;
 export type Year = typeof YEARS[number];
 
 export const companyInfo = {
-  name: "KENENERGIE SARL",
+  name: "",
   platform: "THE PLUG FINANCE CO",
-  promoteur: "KENGOUM NGASSA",
-  formeJuridique: "SARL",
-  telephone: "237 6 90 58 54 26",
-  email: "info@kenenergies.com",
-  ville: "Douala",
-  pays: "Cameroun",
-  dateProjet: "27/02/2026",
-  activite: "Construction & Aménagement d'Infrastructures Électriques BT, HTA et HTB",
+  promoteur: "",
+  formeJuridique: "",
+  telephone: "",
+  email: "",
+  ville: "",
+  pays: "",
+  dateProjet: "",
+  activite: "",
 };
 
 // ======= PARAMETRES =======

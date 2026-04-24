@@ -87,7 +87,8 @@ export default function Investissements() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <PageHeader title="Plan des Investissements" subtitle="Répartition des immobilisations sur 5 ans" />
+        <PageHeader title="Plan des Investissements" subtitle="Répartition des immobilisations sur 5 ans"
+          aiPrompt="Analyse le plan d'investissement : allocation par poste, cohérence avec l'activité, risques de dépassement ?" />
         <div className="flex gap-2">
           <Button
             type="button"

@@ -122,6 +122,19 @@ function buildDefaultInvest(): InvEntry[] {
 
 // ======= Editable Parameters Type =======
 export interface EditableParams {
+  // ── Identification de l'entreprise ──
+  anneeDepart: number;
+  devise: string;
+  companyName: string;
+  companyPromoter: string;
+  companyFormeJuridique: string;
+  companyVille: string;
+  companyPays: string;
+  companyTelephone: string;
+  companyEmail: string;
+  companyActivite: string;
+  companyDateProjet: string;
+  // ── Finances ──
   capitalSocial: number;
   augmentationCapital: number;
   endettementLT: number;
@@ -165,6 +178,17 @@ export interface EditableParams {
 }
 
 const defaultParams: EditableParams = {
+  anneeDepart: 2027,
+  devise: "FCFA",
+  companyName: "",
+  companyPromoter: "",
+  companyFormeJuridique: "SARL",
+  companyVille: "",
+  companyPays: "Cameroun",
+  companyTelephone: "",
+  companyEmail: "",
+  companyActivite: "",
+  companyDateProjet: "",
   capitalSocial: 10_000_000,
   augmentationCapital: 400_000_000,
   endettementLT: 5_000_000_000,
@@ -588,22 +612,29 @@ interface ParametresContextType {
   removeSalaire: (index: number) => void;
   // Ventes
   ventesData: VentesData;
+  setVentesData: React.Dispatch<React.SetStateAction<VentesData>>;
   updateVenteProduit: (pole: PoleKey, idx: number, field: keyof VenteProduit, value: string | number) => void;
   addVenteProduit: (pole: PoleKey) => void;
   removeVenteProduit: (pole: PoleKey, idx: number) => void;
+  updatePoleLabel: (pole: PoleKey, label: string) => void;
   resetVentes: () => void;
   // Investissements
   investData: InvEntry[];
+  setInvestData: React.Dispatch<React.SetStateAction<InvEntry[]>>;
   updateInvEntry: (idx: number, field: "intitule" | "global" | number, value: string | number) => void;
   addInvEntry: () => void;
   removeInvEntry: (idx: number) => void;
   resetInvest: () => void;
   // Amortissements
   amortData: AmortEntry[];
+  setAmortData: React.Dispatch<React.SetStateAction<AmortEntry[]>>;
   updateAmortEntry: (idx: number, field: "intitule" | "valeurTotale" | "taux" | number, value: string | number) => void;
   addAmortEntry: () => void;
   removeAmortEntry: (idx: number) => void;
   resetAmort: () => void;
+  // Fichier importé (lié au chat IA)
+  lastImportedFile: { fileName: string; fileType: string; extracted: Record<string, unknown>; importedAt: number } | null;
+  setLastImportedFile: (data: { fileName: string; fileType: string; extracted: Record<string, unknown>; importedAt: number } | null) => void;
   // Dossiers
   activeDossier: Dossier | null;
   isDirty: boolean;
@@ -653,6 +684,7 @@ export function ParametresProvider({ children }: { children: React.ReactNode }) 
   const [ventesData, setVentesData] = useState<VentesData>(initial?.ventesData ?? buildDefaultVentes());
   const [investData, setInvestData] = useState<InvEntry[]>(initial?.investData ?? buildDefaultInvest());
   const [amortData, setAmortData] = useState<AmortEntry[]>(initial?.amortData ?? buildDefaultAmort());
+  const [lastImportedFile, setLastImportedFile] = useState<{ fileName: string; fileType: string; extracted: Record<string, unknown>; importedAt: number } | null>(null);
 
   // ── Dossier state ──
   const [activeDossierId, setActiveDossierIdState] = useState<string | null>(getActiveDossierId());
@@ -680,6 +712,7 @@ export function ParametresProvider({ children }: { children: React.ReactNode }) 
       updated[index] = entry;
       return updated;
     });
+    markDirty();
   };
   const addSalaire = () => { setSalairesData(prev => [...prev, { poste: "Nouveau poste", qte: 1, salaire: 150_000, montant: 150_000 }]); markDirty(); };
   const removeSalaire = (index: number) => { setSalairesData(prev => prev.filter((_, i) => i !== index)); markDirty(); };
@@ -696,15 +729,22 @@ export function ParametresProvider({ children }: { children: React.ReactNode }) 
       });
       return { ...prev, [pole]: { ...poleData, produits } };
     });
+    markDirty();
   };
   const addVenteProduit = (pole: PoleKey) => {
     setVentesData(prev => ({
       ...prev,
       [pole]: { ...prev[pole], produits: [...prev[pole].produits, { label: "Nouveau produit", qte: 1, pu: 1_000_000, montant: 1_000_000, unite: "unité" }] },
     }));
+    markDirty();
   };
   const removeVenteProduit = (pole: PoleKey, idx: number) => {
     setVentesData(prev => ({ ...prev, [pole]: { ...prev[pole], produits: prev[pole].produits.filter((_, i) => i !== idx) } }));
+    markDirty();
+  };
+  const updatePoleLabel = (pole: PoleKey, label: string) => {
+    setVentesData(prev => ({ ...prev, [pole]: { ...prev[pole], label } }));
+    markDirty();
   };
   const resetVentes = () => { setVentesData(buildDefaultVentes()); markDirty(); };
 
@@ -718,6 +758,7 @@ export function ParametresProvider({ children }: { children: React.ReactNode }) 
       an[field as number] = Number(value);
       return { ...entry, an };
     }));
+    markDirty();
   };
   const addInvEntry = () => { setInvestData(prev => [...prev, { intitule: "Nouveau poste", global: 0, an: [0, 0, 0, 0, 0] }]); markDirty(); };
   const removeInvEntry = (idx: number) => { setInvestData(prev => prev.filter((_, i) => i !== idx)); markDirty(); };
@@ -734,6 +775,7 @@ export function ParametresProvider({ children }: { children: React.ReactNode }) 
       annees[field as number] = Number(value);
       return { ...entry, annees };
     }));
+    markDirty();
   };
   const addAmortEntry = () => { setAmortData(prev => [...prev, { intitule: "Nouveau bien", valeurTotale: 0, taux: 0.20, annees: [0, 0, 0, 0, 0], isSubLine: false }]); markDirty(); };
   const removeAmortEntry = (idx: number) => { setAmortData(prev => prev.filter((_, i) => i !== idx)); markDirty(); };
@@ -770,18 +812,32 @@ export function ParametresProvider({ children }: { children: React.ReactNode }) 
     setActiveDossierIdState(id);
     setActiveDossierId(id);
     setIsDirty(false);
+    setDossierList(listDossiers());
   }, []);
 
   const removeDossier = useCallback((id: string) => {
     storeDeleteDossier(id);
     if (activeDossierId === id) {
       setActiveDossierIdState(null);
+      setActiveDossierId(null);
+      setParams(defaultParams);
+      setSalairesData(defaultSalaires.map(s => ({ ...s })));
+      setVentesData(buildDefaultVentes());
+      setInvestData(buildDefaultInvest());
+      setAmortData(buildDefaultAmort());
+      setIsDirty(false);
     }
     setDossierList(listDossiers());
   }, [activeDossierId]);
 
-  const duplicateDossier = useCallback((id: string, newNom: string) => {
-    storeDuplicateDossier(id, newNom);
+  const duplicateDossier = useCallback((id: string, newNom: string): Dossier | null => {
+    const d = storeDuplicateDossier(id, newNom);
+    setDossierList(listDossiers());
+    return d;
+  }, []);
+
+  const renameDossier = useCallback((id: string, nom: string, client?: string, description?: string) => {
+    storeRenameDossier(id, nom, client, description);
     setDossierList(listDossiers());
   }, []);
 
@@ -790,9 +846,19 @@ export function ParametresProvider({ children }: { children: React.ReactNode }) 
     if (d) exportDossierJson(d);
   }, []);
 
-  const importDossierFile = useCallback(async (file: File) => {
-    await importDossierJson(file);
+  const importDossierFile = useCallback(async (file: File): Promise<Dossier> => {
+    const imported = await importDossierJson(file);
     setDossierList(listDossiers());
+    return imported;
+  }, []);
+
+  // Cross-tab sync: when another tab saves/deletes a dossier, refresh the list
+  useEffect(() => {
+    const handler = (e: StorageEvent) => {
+      if (e.key === "theplug_dossiers") setDossierList(listDossiers());
+    };
+    window.addEventListener("storage", handler);
+    return () => window.removeEventListener("storage", handler);
   }, []);
 
   const resetParams = () => {
@@ -813,12 +879,13 @@ export function ParametresProvider({ children }: { children: React.ReactNode }) 
     <ParametresContext.Provider value={{
       params, setParams, updateParam, computed, resetParams,
       salairesData, setSalairesData, updateSalaire, addSalaire, removeSalaire,
-      ventesData, updateVenteProduit, addVenteProduit, removeVenteProduit, resetVentes,
-      investData, updateInvEntry, addInvEntry, removeInvEntry, resetInvest,
-      amortData, updateAmortEntry, addAmortEntry, removeAmortEntry, resetAmort,
+      ventesData, setVentesData, updateVenteProduit, addVenteProduit, removeVenteProduit, updatePoleLabel, resetVentes,
+      investData, setInvestData, updateInvEntry, addInvEntry, removeInvEntry, resetInvest,
+      amortData, setAmortData, updateAmortEntry, addAmortEntry, removeAmortEntry, resetAmort,
+      lastImportedFile, setLastImportedFile,
       activeDossier, isDirty, allDossiers: dossierList,
       createAndLoadDossier, saveCurrentDossier, loadDossier,
-      removeDossier, duplicateDossier, exportDossier, importDossierFile, refreshDossiers,
+      removeDossier, duplicateDossier, renameDossier, exportDossier, importDossierFile, refreshDossiers,
     }}>
       {children}
     </ParametresContext.Provider>

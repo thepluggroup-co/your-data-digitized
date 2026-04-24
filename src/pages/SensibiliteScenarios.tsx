@@ -196,7 +196,7 @@ export default function SensibiliteScenarios() {
     <div className="space-y-6">
       <PageHeader
         title="Analyse de Sensibilité Multi-Scénarios"
-        subtitle="Comparaison TIR / VAN — THE PLUG FINANCE CO · KENENERGIE SARL"
+        subtitle={`Comparaison TIR / VAN — THE PLUG FINANCE CO · ${params.companyName || "votre projet"}`}
         badge="Sensibilité"
       />
 

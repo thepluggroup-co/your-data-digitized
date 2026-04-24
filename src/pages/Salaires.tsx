@@ -37,7 +37,8 @@ export default function Salaires() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Objectif des Salaires" subtitle={`En activité normale (${effectifTotal} employés)`} />
+      <PageHeader title="Objectif des Salaires" subtitle={`En activité normale (${effectifTotal} employés)`}
+        aiPrompt="Analyse la masse salariale : grille cohérente avec le secteur énergétique ? Ratio charges sociales optimal ?" />
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-card rounded-xl border border-border p-4 shadow-sm text-center">
