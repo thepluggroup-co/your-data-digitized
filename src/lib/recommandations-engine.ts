@@ -4,7 +4,7 @@
  * adaptés dynamiquement au projet actif
  */
 
-import { YEARS } from "@/lib/kenenergie-data";
+import { YEARS, formatPct } from "@/lib/kenenergie-data";
 import type { ComputedModel, EditableParams } from "@/contexts/ParametresContext";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -354,7 +354,7 @@ export function analyzeAndRecommend(
       priority: 3,
       issueIds: ["GROWTH_LOW"],
       titre: "Réviser les niveaux d'activité pour une montée en charge plus rapide",
-      detail: `Les niveaux d'activité actuels (${params.niveauxActivite.map(v => (v * 100).toFixed(0) + "%").join(" → ")}) génèrent une progression trop lente. Pour ${params.companyName || "ce projet"} : (1) activer le pôle Innovation dès N+1 avec des contrats-cadres signés, (2) déployer le pôle Production à 70% dès N+2, (3) viser une saturation à 90% dès N+3 plutôt que N+4.`,
+      detail: `Les niveaux d'activité actuels (${params.niveauxActivite.map(v => formatPct(v, 0)).join(" → ")}) génèrent une progression trop lente. Pour ${params.companyName || "ce projet"} : (1) activer le pôle Innovation dès N+1 avec des contrats-cadres signés, (2) déployer le pôle Production à 70% dès N+2, (3) viser une saturation à 90% dès N+3 plutôt que N+4.`,
       impactAttendu: "Croissance CA portée à 15%-25% p.a., seuil de rentabilité atteint dès N+1",
       effort: "court terme",
       categorie: "croissance",

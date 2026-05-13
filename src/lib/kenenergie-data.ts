@@ -585,9 +585,15 @@ export function formatFcfa(val: number, compact = false): string {
   return val < 0 ? `(${str})` : str;
 }
 
-export function formatPct(val: number): string {
-  if (val === 0 || Number.isNaN(val)) return "-";
-  return (val * 100).toFixed(1).replace(".", ",") + `${NBSP}%`;
+export function formatPct(val: number, decimals = 1): string {
+  if (val === 0 || Number.isNaN(val) || val == null) return "-";
+  return (val * 100).toFixed(decimals).replace(".", ",") + `${NBSP}%`;
+}
+
+// Pour valeurs déjà exprimées en pourcentage (ex: 45.97 → "45,97 %")
+export function formatPctValue(val: number, decimals = 1): string {
+  if (val === 0 || Number.isNaN(val) || val == null) return "-";
+  return val.toFixed(decimals).replace(".", ",") + `${NBSP}%`;
 }
 
 export function formatNumber(val: number): string {

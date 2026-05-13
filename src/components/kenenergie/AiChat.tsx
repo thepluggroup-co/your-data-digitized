@@ -14,6 +14,8 @@
  */
 
 import { useState, useRef, useEffect } from "react";
+import { formatFcfa } from "@/lib/kenenergie-data";
+
 import { useLocation } from "react-router-dom";
 import {
   Bot, X, Send, Loader2, Minimize2, ChevronDown, Sparkles,
@@ -90,7 +92,7 @@ function fmtVal(v: unknown, key: string): string {
   if (Array.isArray(v)) return (v as number[]).map(x => `${(x * 100).toFixed(0)}%`).join(" · ");
   if (typeof v === "number") {
     if (Math.abs(v) < 2 && (key.startsWith("taux") || key.startsWith("tx"))) return `${(v * 100).toFixed(2)}%`;
-    return v.toLocaleString("fr-FR") + " FCFA";
+    return formatFcfa(v) + " FCFA";
   }
   return String(v);
 }

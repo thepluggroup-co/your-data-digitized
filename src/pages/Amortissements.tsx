@@ -1,6 +1,6 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
-import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,7 @@ export default function Amortissements() {
     return {
       intitule: a.intitule,
       valeurTotale: formatFcfa(a.valeurTotale),
-      taux: a.taux > 0 ? (a.taux * 100).toFixed(0) + "%" : "—",
+      taux: a.taux > 0 ? formatPct(a.taux, 0) : "—",
       a0: a.annees[0] ? formatFcfa(a.annees[0]) : "—",
       a1: a.annees[1] ? formatFcfa(a.annees[1]) : "—",
       a2: a.annees[2] ? formatFcfa(a.annees[2]) : "—",

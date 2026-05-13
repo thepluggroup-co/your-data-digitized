@@ -1,7 +1,7 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
 import KpiCard from "@/components/kenenergie/KpiCard";
-import { YEARS, formatFcfa, yearLabel } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPctValue, yearLabel } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import { TrendingUp, PiggyBank, Activity, Target } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
@@ -24,7 +24,7 @@ export default function Resultats() {
 
   const makeRow = (label: string, keyFn: (y: number) => number, opts?: { total?: boolean; sub?: boolean; pct?: boolean }) => ({
     label,
-    ...Object.fromEntries(YEARS.map((y) => [y.toString(), opts?.pct ? keyFn(y).toFixed(2) + "%" : formatFcfa(keyFn(y))])),
+    ...Object.fromEntries(YEARS.map((y) => [y.toString(), opts?.pct ? formatPctValue(keyFn(y), 2) : formatFcfa(keyFn(y))])),
     _total: opts?.total,
     _sub: opts?.sub,
   });

@@ -1,10 +1,6 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
-import {
-  besoinsDurables, structureFinancement,
-  actionnaires, categoriesActions, apportsProgressifs, gouvernance, roiParProfil,
-  capitalConfig, YEARS, formatFcfa,
-} from "@/lib/kenenergie-data";
+import { YEARS, actionnaires, apportsProgressifs, besoinsDurables, capitalConfig, categoriesActions, formatFcfa, formatPct, formatPctValue, gouvernance, roiParProfil, structureFinancement } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import {
@@ -85,7 +81,7 @@ export default function PlanFinancement() {
     numeraire: a.apportNumeraire > 0 ? formatFcfa(a.apportNumeraire) : "—",
     nature: a.apportNature > 0 ? formatFcfa(a.apportNature) : "—",
     actions: a.nbActions > 0 ? a.nbActions.toLocaleString("fr-FR") : "—",
-    pct: a.pctCapital > 0 ? a.pctCapital.toFixed(2) + "%" : "—",
+    pct: a.pctCapital > 0 ? formatPctValue(a.pctCapital, 2) : "—",
     type: a.typeActions,
     _total: a.profil === "Créancier",
   }));
@@ -203,8 +199,8 @@ export default function PlanFinancement() {
               </div>
               <div className="space-y-1.5 mt-3">
                 {[
-                  { label: "Ratio endettement", val: (structureFinancement.ratioEndettement * 100).toFixed(0) + "%" },
-                  { label: "Ratio fonds propres", val: (structureFinancement.ratioFondsPropres * 100).toFixed(0) + "%" },
+                  { label: "Ratio endettement", val: formatPct(structureFinancement.ratioEndettement, 0) },
+                  { label: "Ratio fonds propres", val: formatPct(structureFinancement.ratioFondsPropres, 0) },
                 ].map(({ label, val }) => (
                   <div key={label} className="flex justify-between text-xs">
                     <span className="text-muted-foreground">{label}</span>

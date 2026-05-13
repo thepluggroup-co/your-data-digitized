@@ -4,7 +4,7 @@ import PageHeader from "@/components/kenenergie/PageHeader";
 import { useParametres } from "@/contexts/ParametresContext";
 import { analyzeAndRecommend } from "@/lib/recommandations-engine";
 import type { Recommandation, Issue, Severity, Category } from "@/lib/recommandations-engine";
-import { formatFcfa, YEARS } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct } from "@/lib/kenenergie-data";
 import {
   AlertTriangle, AlertOctagon, Info, CheckCircle2, ChevronDown, ChevronRight,
   Sliders, ArrowRight, TrendingUp, Landmark, ShieldCheck, Zap, Lightbulb,
@@ -144,19 +144,19 @@ function RecCard({ rec, onApply }: { rec: Recommandation; onApply: (rec: Recomma
                 <div>
                   <p className="text-muted-foreground mb-0.5">Valeur actuelle</p>
                   <p className="font-mono font-bold text-amber-300">
-                    {rec.parametre === "txInteretEmpruntLT" ? (rec.valeurActuelle * 100).toFixed(2) + "%" :
-                     rec.parametre === "tauxServicesExt"    ? (rec.valeurActuelle * 100).toFixed(2) + "%" :
-                     rec.parametre === "niveauxActivite"    ? (rec.valeurActuelle * 100).toFixed(0) + "%" :
-                     rec.valeurActuelle.toLocaleString("fr-FR") + " FCFA"}
+                    {rec.parametre === "txInteretEmpruntLT" ? formatPct(rec.valeurActuelle, 2) :
+                     rec.parametre === "tauxServicesExt"    ? formatPct(rec.valeurActuelle, 2) :
+                     rec.parametre === "niveauxActivite"    ? formatPct(rec.valeurActuelle, 0) :
+                     formatFcfa(rec.valeurActuelle) + " FCFA"}
                   </p>
                 </div>
                 <div>
                   <p className="text-muted-foreground mb-0.5">Valeur suggérée</p>
                   <p className="font-mono font-bold text-emerald-400">
-                    {rec.parametre === "txInteretEmpruntLT" ? (rec.valeurSuggeree * 100).toFixed(2) + "%" :
-                     rec.parametre === "tauxServicesExt"    ? (rec.valeurSuggeree * 100).toFixed(2) + "%" :
-                     rec.parametre === "niveauxActivite"    ? (rec.valeurSuggeree * 100).toFixed(0) + "%" :
-                     rec.valeurSuggeree.toLocaleString("fr-FR") + " FCFA"}
+                    {rec.parametre === "txInteretEmpruntLT" ? formatPct(rec.valeurSuggeree, 2) :
+                     rec.parametre === "tauxServicesExt"    ? formatPct(rec.valeurSuggeree, 2) :
+                     rec.parametre === "niveauxActivite"    ? formatPct(rec.valeurSuggeree, 0) :
+                     formatFcfa(rec.valeurSuggeree) + " FCFA"}
                     {rec.deltaPct !== undefined && (
                       <span className="ml-1.5 text-[10px]">({rec.deltaPct > 0 ? "+" : ""}{rec.deltaPct}%)</span>
                     )}

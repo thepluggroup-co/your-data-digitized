@@ -1,6 +1,6 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import { useParametres } from "@/contexts/ParametresContext";
-import { YEARS } from "@/lib/kenenergie-data";
+import { YEARS, formatPctValue } from "@/lib/kenenergie-data";
 import { CheckCircle2, AlertTriangle, XCircle, Info } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -104,7 +104,7 @@ function computeCovenantYear(
     }
     case "CV2": {
       value = bk.autonomie * 100;
-      display = value.toFixed(1) + "%";
+      display = formatPctValue(value, 1);
       status = value >= 25 ? "compliant" : value >= 20 ? "watch" : "breach";
       break;
     }
