@@ -282,6 +282,26 @@ export default function Parametres() {
         </Section>
       </div>
 
+      {/* Hypothèses Excel PARAMETRES (THE PLUG) */}
+      <Section title="🧮 Hypothèses Excel PARAMETRES (THE PLUG)">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
+          <MoneyInput label="Cours USD/FCFA" value={params.tauxUsd} onChange={(v) => updateParam("tauxUsd", v)} step={1} />
+          <div className="flex flex-col gap-1.5 py-2 border-b border-border/40">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">CC/CPTAL — Multiplicateur capacité d'endettement</span>
+              <span className="text-xs font-mono text-foreground/60">×{params.ccCaptalMultiplier}</span>
+            </div>
+            <Input type="number" value={params.ccCaptalMultiplier} onChange={e => updateParam("ccCaptalMultiplier", Number(e.target.value))} step={0.5} className="h-8 text-sm font-mono" />
+          </div>
+          <PctSlider label="Tx d'intérêt statutaire" value={params.tauxInteretStatutaire} onChange={(v) => updateParam("tauxInteretStatutaire", v)} min={0} max={0.20} step={0.005} />
+          <PctSlider label="Tx d'intérêt CC Associé" value={params.tauxInteretCC} onChange={(v) => updateParam("tauxInteretCC", v)} min={0} max={0.15} step={0.005} />
+          <PctSlider label="Tx d'intérêt Fournisseur Immo" value={params.tauxInteretFournImmo} onChange={(v) => updateParam("tauxInteretFournImmo", v)} min={0} max={0.30} step={0.005} />
+          <PctSlider label="Taux de douanes" value={params.tauxDouanes} onChange={(v) => updateParam("tauxDouanes", v)} min={0} max={1} step={0.01} />
+          <PctSlider label="Taux de risque" value={params.tauxRisque} onChange={(v) => updateParam("tauxRisque", v)} min={0} max={0.30} step={0.005} />
+        </div>
+        <CapaciteEndettementPreview />
+      </Section>
+
       {/* Live preview of key computed metrics */}
       <Section title="🔄 Aperçu des projections recalculées">
         <LivePreview />
