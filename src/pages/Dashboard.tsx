@@ -145,11 +145,14 @@ export default function Dashboard() {
       </div>
 
       <div className="kpi-primary-depth rounded-xl px-5 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Promoteur</p><p className="font-semibold">{params.companyPromoter}</p></div>
+        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Promoteur</p><p className="font-semibold">{params.companyPromoter || "—"}</p></div>
         <div><p className="text-primary-foreground/60 text-xs mb-0.5">Forme juridique</p><p className="font-semibold">{params.companyFormeJuridique}</p></div>
-        <div><p className="text-primary-foreground/60 text-xs mb-0.5">TIR du projet</p><p className="font-semibold text-accent">34.87%</p></div>
-        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Délai de remboursement</p><p className="font-semibold">4 ans</p></div>
+        <div><p className="text-primary-foreground/60 text-xs mb-0.5">TIR du projet</p><p className="font-semibold text-accent">{tirPct}</p></div>
+        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Délai de remboursement</p><p className="font-semibold">{paybackYears} ans</p></div>
       </div>
+
+      {/* ── TABLEAU DE BORD BANQUIER (réplique Excel) ── */}
+      <TableauDeBordBanquier />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
         <KpiCard label="CA N+4" value={formatFcfa(lastYear.ventes, true)} sub="Pleine capacité" icon={TrendingUp} color="primary"
@@ -160,10 +163,10 @@ export default function Dashboard() {
           aiPrompt="Analyse la progression du bénéfice net sur 5 ans et propose des optimisations fiscales." />
         <KpiCard label="CAF Cumul" value={formatFcfa(cafCumul, true)} sub="5 ans" icon={Activity} color="accent"
           aiPrompt="La CAF cumulée sur 5 ans est-elle suffisante pour rembourser les emprunts ?" />
-        <KpiCard label="TIR" value="34.87%" sub="Taux interne" icon={Target} color="warning"
-          aiPrompt="Le TIR de 34.87% est-il attractif ? Comment l'améliorer ?" />
-        <KpiCard label="Seuil rentabilité" value="45.97%" sub="Du CA" icon={Zap} color="primary"
-          aiPrompt="Le seuil de rentabilité à 45.97% du CA — est-ce sûr ? Comment le réduire ?" />
+        <KpiCard label="TIR" value={tirPct} sub="Taux interne" icon={Target} color="warning"
+          aiPrompt="Le TIR est-il attractif ? Comment l'améliorer ?" />
+        <KpiCard label="Seuil rentabilité" value={`${seuilPct}%`} sub={`Du CA en N+4`} icon={Zap} color="primary"
+          aiPrompt="Le seuil de rentabilité — est-ce sûr ? Comment le réduire ?" />
       </div>
 
       {/* ── Widget Score IA ── */}
