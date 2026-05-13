@@ -175,6 +175,14 @@ export interface EditableParams {
   fixedDeplacements: number;
   fixedImpotsTaxes: number;
   fixedAutresCharges: number;
+  // ── Hypothèses Excel PARAMETRES (THE PLUG) ──
+  tauxUsd: number;                 // Cours USD/FCFA (PARAMETRES!B3)
+  ccCaptalMultiplier: number;      // CC/CPTAL (PARAMETRES!B8) — capacité d'endettement = (Capital+CCA)×N
+  tauxInteretStatutaire: number;   // PARAMETRES!B11
+  tauxInteretCC: number;           // PARAMETRES!B13
+  tauxInteretFournImmo: number;    // PARAMETRES!B14
+  tauxDouanes: number;             // PARAMETRES!B18
+  tauxRisque: number;              // PARAMETRES!B17
 }
 
 const defaultParams: EditableParams = {
