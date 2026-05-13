@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useParametres } from "@/contexts/ParametresContext";
-import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, yearLabel } from "@/lib/kenenergie-data";
 import logoUrl from "@/assets/logo-the-plug.png";
 
 async function loadImageAsDataUrl(url: string): Promise<string> {
@@ -75,7 +75,10 @@ export default function ExportPdfButton() {
         head: [["Paramètre", "Valeur"]],
         body: paramRows,
         styles: { fontSize: 9 },
-        headStyles: { fillColor: [27, 42, 71] },
+        headStyles: { fillColor: [27, 42, 71], textColor: 255, fontStyle: "bold", halign: "center" },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        bodyStyles: { halign: "right" },
+        columnStyles: { 0: { halign: "left", fontStyle: "bold", textColor: [40, 50, 70] } },
         theme: "grid",
       });
       addFooter(pageNum++);
@@ -91,7 +94,10 @@ export default function ExportPdfButton() {
         head: [["Poste", "Qté", "Salaire", "Montant"]],
         body: salRows,
         styles: { fontSize: 8 },
-        headStyles: { fillColor: [27, 42, 71] },
+        headStyles: { fillColor: [27, 42, 71], textColor: 255, fontStyle: "bold", halign: "center" },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        bodyStyles: { halign: "right" },
+        columnStyles: { 0: { halign: "left", fontStyle: "bold", textColor: [40, 50, 70] } },
         theme: "grid",
       });
       addFooter(pageNum++);
@@ -108,7 +114,10 @@ export default function ExportPdfButton() {
         head: [["Année", "Infrastructure", "Production", "Services", "Innovation", "TOTAL"]],
         body: ventesRows,
         styles: { fontSize: 8 },
-        headStyles: { fillColor: [27, 42, 71] },
+        headStyles: { fillColor: [27, 42, 71], textColor: 255, fontStyle: "bold", halign: "center" },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        bodyStyles: { halign: "right" },
+        columnStyles: { 0: { halign: "left", fontStyle: "bold", textColor: [40, 50, 70] } },
         theme: "grid",
       });
       addFooter(pageNum++);
@@ -139,10 +148,13 @@ export default function ExportPdfButton() {
       });
       autoTable(doc, {
         startY: 26,
-        head: [["Charge", ...YEARS.map(String)]],
+        head: [["Charge", ...YEARS.map(y => yearLabel(y))]],
         body: chargeRows,
         styles: { fontSize: 7 },
-        headStyles: { fillColor: [27, 42, 71] },
+        headStyles: { fillColor: [27, 42, 71], textColor: 255, fontStyle: "bold", halign: "center" },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        bodyStyles: { halign: "right" },
+        columnStyles: { 0: { halign: "left", fontStyle: "bold", textColor: [40, 50, 70] } },
         theme: "grid",
         didParseCell: (data) => {
           if (data.section === "body") {
@@ -173,10 +185,13 @@ export default function ExportPdfButton() {
       );
       autoTable(doc, {
         startY: 26,
-        head: [["Rubrique", ...YEARS.map(String)]],
+        head: [["Rubrique", ...YEARS.map(y => yearLabel(y))]],
         body: resRows,
         styles: { fontSize: 8 },
-        headStyles: { fillColor: [27, 42, 71] },
+        headStyles: { fillColor: [27, 42, 71], textColor: 255, fontStyle: "bold", halign: "center" },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        bodyStyles: { halign: "right" },
+        columnStyles: { 0: { halign: "left", fontStyle: "bold", textColor: [40, 50, 70] } },
         theme: "grid",
       });
       addFooter(pageNum++);
@@ -200,10 +215,13 @@ export default function ExportPdfButton() {
       });
       autoTable(doc, {
         startY: 26,
-        head: [["Indicateur", ...YEARS.map(String)]],
+        head: [["Indicateur", ...YEARS.map(y => yearLabel(y))]],
         body: srRows,
         styles: { fontSize: 8 },
-        headStyles: { fillColor: [27, 42, 71] },
+        headStyles: { fillColor: [27, 42, 71], textColor: 255, fontStyle: "bold", halign: "center" },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        bodyStyles: { halign: "right" },
+        columnStyles: { 0: { halign: "left", fontStyle: "bold", textColor: [40, 50, 70] } },
         theme: "grid",
       });
       addFooter(pageNum++);
@@ -221,10 +239,13 @@ export default function ExportPdfButton() {
       );
       autoTable(doc, {
         startY: 26,
-        head: [["Rubrique", ...YEARS.map(String)]],
+        head: [["Rubrique", ...YEARS.map(y => yearLabel(y))]],
         body: bilanRows,
         styles: { fontSize: 8 },
-        headStyles: { fillColor: [27, 42, 71] },
+        headStyles: { fillColor: [27, 42, 71], textColor: 255, fontStyle: "bold", halign: "center" },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        bodyStyles: { halign: "right" },
+        columnStyles: { 0: { halign: "left", fontStyle: "bold", textColor: [40, 50, 70] } },
         theme: "grid",
       });
       addFooter(pageNum++);
@@ -244,10 +265,13 @@ export default function ExportPdfButton() {
       );
       autoTable(doc, {
         startY: 26,
-        head: [["Rubrique", ...YEARS.map(String)]],
+        head: [["Rubrique", ...YEARS.map(y => yearLabel(y))]],
         body: pfRows,
         styles: { fontSize: 8 },
-        headStyles: { fillColor: [27, 42, 71] },
+        headStyles: { fillColor: [27, 42, 71], textColor: 255, fontStyle: "bold", halign: "center" },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        bodyStyles: { halign: "right" },
+        columnStyles: { 0: { halign: "left", fontStyle: "bold", textColor: [40, 50, 70] } },
         theme: "grid",
       });
       addFooter(pageNum++);

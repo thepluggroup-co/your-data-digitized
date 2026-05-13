@@ -36,7 +36,11 @@ function exportToExcel(cols: Col[], rows: Row[], name: string) {
     }
     return obj;
   });
-  const ws = XLSX.utils.json_to_sheet(data);
+  const ws = XLSX.utils.json_to_sheet(data, { header: cols.map((c) => c.label) });
+  // Largeurs de colonnes type Excel : 1ère large (libellés), suivantes étroites (valeurs)
+  ws["!cols"] = cols.map((c, i) => ({ wch: i === 0 ? 42 : 16 }));
+  // Figer la 1ère ligne (en-tête) et 1ère colonne (libellés)
+  ws["!freeze"] = { xSplit: 1, ySplit: 1 } as never;
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, name.slice(0, 31));
   const buf = XLSX.write(wb, { bookType: "xlsx", type: "array" });
