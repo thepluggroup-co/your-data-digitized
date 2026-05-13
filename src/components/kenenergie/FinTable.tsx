@@ -27,23 +27,78 @@ interface FinTableProps {
   exportName?: string;
 }
 
+// Formats Excel conformes au fichier source
+const FMT_NUMBER = '#,##0;(#,##0);"-"';        // 1 234 / (1 234) / -
+const FMT_PCT    = '0.0%;(0.0%);"-"';           // 12,3 % / (12,3 %) / -
+const FMT_RATIO  = '0.00"\u00d7"';              // 1,25×
+
+// Tente de re-parser une chaîne formatée FR vers un nombre brut + son format Excel
+function parseFormatted(v: unknown): { num: number; fmt: string } | null {
+  if (typeof v === "number") return { num: v, fmt: FMT_NUMBER };
+  if (typeof v !== "string") return null;
+  let s = v.trim();
+  if (s === "" || s === "-" || s === "—") return null;
+  let isPct = false, isRatio = false, neg = false;
+  if (/[×x]$/.test(s)) { isRatio = true; s = s.slice(0, -1); }
+  if (/%$/.test(s))    { isPct = true;   s = s.slice(0, -1); }
+  if (/^\(.*\)$/.test(s)) { neg = true; s = s.slice(1, -1); }
+  // retire suffixes connus (FCFA, F, Mrd, M)
+  s = s.replace(/\s*(FCFA|Mrd|Mds|M|F)$/i, "");
+  // espaces (incl. NBSP) = séparateur milliers ; virgule = décimale
+  s = s.replace(/[\s\u00A0]/g, "").replace(",", ".");
+  const n = Number(s);
+  if (!Number.isFinite(n)) return null;
+  const num = neg ? -n : n;
+  if (isPct)   return { num: num / 100, fmt: FMT_PCT };
+  if (isRatio) return { num, fmt: FMT_RATIO };
+  return { num, fmt: FMT_NUMBER };
+}
+
 function exportToExcel(cols: Col[], rows: Row[], name: string) {
-  const data = rows.map((row) => {
-    if (row._section) return { [cols[0].label]: row._label };
-    const obj: Record<string, string | number | boolean | undefined> = {};
-    for (const col of cols) {
-      obj[col.label] = row[col.key];
+  const headerLabels = cols.map(c => c.label);
+  const aoa: (string | number | null)[][] = [headerLabels];
+  // Mémorise les méta (format, gras pour totaux/sections) par cellule
+  const meta: { fmt?: string; bold?: boolean }[][] = [headerLabels.map(() => ({ bold: true }))];
+
+  for (const row of rows) {
+    if (row._section) {
+      const line: (string | number | null)[] = [String(row._label ?? "")];
+      const m: { fmt?: string; bold?: boolean }[] = [{ bold: true }];
+      for (let i = 1; i < cols.length; i++) { line.push(null); m.push({}); }
+      aoa.push(line); meta.push(m);
+      continue;
     }
-    return obj;
+    const isTotal = !!row._total;
+    const line: (string | number | null)[] = [];
+    const m: { fmt?: string; bold?: boolean }[] = [];
+    cols.forEach((col, i) => {
+      const raw = row[col.key];
+      if (i === 0) { line.push(raw == null ? "" : String(raw)); m.push({ bold: isTotal }); return; }
+      const parsed = parseFormatted(raw);
+      if (parsed) { line.push(parsed.num); m.push({ fmt: parsed.fmt, bold: isTotal }); }
+      else        { line.push(raw == null ? null : String(raw)); m.push({ bold: isTotal }); }
+    });
+    aoa.push(line); meta.push(m);
+  }
+
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  // Applique formats numériques cellule par cellule
+  meta.forEach((rowMeta, r) => {
+    rowMeta.forEach((cellMeta, c) => {
+      if (!cellMeta.fmt) return;
+      const addr = XLSX.utils.encode_cell({ r, c });
+      const cell = ws[addr];
+      if (cell && cell.t === "n") cell.z = cellMeta.fmt;
+    });
   });
-  const ws = XLSX.utils.json_to_sheet(data, { header: cols.map((c) => c.label) });
-  // Largeurs de colonnes type Excel : 1ère large (libellés), suivantes étroites (valeurs)
-  ws["!cols"] = cols.map((c, i) => ({ wch: i === 0 ? 42 : 16 }));
-  // Figer la 1ère ligne (en-tête) et 1ère colonne (libellés)
+  // Largeurs colonnes : 1ère large (libellés), suivantes étroites (valeurs)
+  ws["!cols"] = cols.map((_, i) => ({ wch: i === 0 ? 42 : 16 }));
+  // Figer en-tête et colonne libellé
   ws["!freeze"] = { xSplit: 1, ySplit: 1 } as never;
+
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, name.slice(0, 31));
-  const buf = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const buf = XLSX.write(wb, { bookType: "xlsx", type: "array", cellStyles: true });
   saveAs(new Blob([buf], { type: "application/octet-stream" }), `${name}.xlsx`);
 }
 
