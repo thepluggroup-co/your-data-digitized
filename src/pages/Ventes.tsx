@@ -45,7 +45,7 @@ export default function Ventes() {
     { label: ventesData.poleServices.label, ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].services)])), _sub: true },
     { label: ventesData.poleInnovation.label, ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].innovation)])), _sub: true },
     { label: "CHIFFRE D'AFFAIRES GLOBAL", ...Object.fromEntries(YEARS.map(y => [y.toString(), formatFcfa(ventesParAnnee[y].total)])), _total: true },
-    { label: "Taux d'activité", ...Object.fromEntries(YEARS.map(y => [y.toString(), (ventesParAnnee[y].txActivite * 100).toFixed(0) + "%"])) },
+    { label: "Taux d'activité", ...Object.fromEntries(YEARS.map(y => [y.toString(), formatPct(ventesParAnnee[y].txActivite, 0)])) },
   ];
 
   // ── Read-only detail table ──

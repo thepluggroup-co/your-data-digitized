@@ -104,7 +104,7 @@ function computeCovenantYear(
     }
     case "CV2": {
       value = bk.autonomie * 100;
-      display = value.toFixed(1) + "%";
+      display = formatPctValue(value, 1);
       status = value >= 25 ? "compliant" : value >= 20 ? "watch" : "breach";
       break;
     }

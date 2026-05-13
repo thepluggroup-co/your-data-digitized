@@ -43,7 +43,7 @@ export default function Amortissements() {
     return {
       intitule: a.intitule,
       valeurTotale: formatFcfa(a.valeurTotale),
-      taux: a.taux > 0 ? (a.taux * 100).toFixed(0) + "%" : "—",
+      taux: a.taux > 0 ? formatPct(a.taux, 0) : "—",
       a0: a.annees[0] ? formatFcfa(a.annees[0]) : "—",
       a1: a.annees[1] ? formatFcfa(a.annees[1]) : "—",
       a2: a.annees[2] ? formatFcfa(a.annees[2]) : "—",

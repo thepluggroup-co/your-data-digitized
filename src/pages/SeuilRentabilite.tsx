@@ -35,12 +35,12 @@ export default function SeuilRentabilite() {
     { key: "ca", label: "Chiffre d'Affaires", format: (v: number) => formatFcfa(v) },
     { key: "chargesFixes", label: "Charges Fixes", format: (v: number) => formatFcfa(v) },
     { key: "chargesVariables", label: "Charges Variables", format: (v: number) => formatFcfa(v) },
-    { key: "tauxMargeCV", label: "Taux Marge sur CV", format: (v: number) => (v * 100).toFixed(2) + "%" },
+    { key: "tauxMargeCV", label: "Taux Marge sur CV", format: (v: number) => formatPct(v, 2) },
     { key: "seuilCA", label: "Seuil de Rentabilité (FCFA)", format: (v: number) => formatFcfa(v), total: true },
-    { key: "seuilPct", label: "Seuil de Rentabilité (%CA)", format: (v: number) => v.toFixed(2) + "%" },
+    { key: "seuilPct", label: "Seuil de Rentabilité (%CA)", format: (v: number) => formatPctValue(v, 2) },
     { key: "pointMortJours", label: "Point Mort (jours)", format: (v: number) => v + " j" },
     { key: "pointMortMois", label: "Point Mort (mois)", format: (v: number) => v.toFixed(1) + " mois" },
-    { key: "margeSecurite", label: "Marge de Sécurité (%)", format: (v: number) => v.toFixed(2) + "%" },
+    { key: "margeSecurite", label: "Marge de Sécurité (%)", format: (v: number) => formatPctValue(v, 2) },
   ];
 
   const rows = indicators.map(ind => ({

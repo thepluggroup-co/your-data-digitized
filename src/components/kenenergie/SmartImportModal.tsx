@@ -72,7 +72,7 @@ function formatValue(key: string, val: unknown): string {
   if (Array.isArray(val)) return val.map((v: unknown) => `${((v as number)*100).toFixed(0)}%`).join(" · ");
   if (typeof val === "number") {
     if (key.startsWith("taux") || key.startsWith("tx")) return `${(val * 100).toFixed(2)}%`;
-    return val.toLocaleString("fr-FR") + " FCFA";
+    return formatFcfa(val) + " FCFA";
   }
   return String(val);
 }

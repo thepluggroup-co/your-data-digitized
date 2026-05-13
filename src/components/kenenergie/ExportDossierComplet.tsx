@@ -83,7 +83,7 @@ function buildMenuSheet(computed: ReturnType<typeof useParametres>["computed"], 
   row(3, "Promoteur", params.companyPromoter);
   row(4, "Activité", params.companyActivite);
   row(5, "Période", `${YEARS[0]}–${YEARS[YEARS.length - 1]}`);
-  row(6, "TIR Projet", (vanTirMetrics.irr * 100).toFixed(2) + "%");
+  row(6, "TIR Projet", formatPct(vanTirMetrics.irr, 2));
   row(7, "VAN (8%)", formatFcfa(vanTirMetrics.van8, true));
   row(8, "Payback", vanTirMetrics.paybackYears.toFixed(1) + " ans");
   row(9, "CA N+4", formatFcfa(resultats[YEARS[YEARS.length - 1]].ventes, true));
@@ -251,13 +251,13 @@ function buildBankingSheet(computed: ReturnType<typeof useParametres>["computed"
   const ratioRows: [string, (y: number) => string, (y: number) => boolean, string][] = [
     ["DSCR (EBE/Service dette)", y => banking[y].dscrEbe.toFixed(2) + "×", y => banking[y].dscrEbe >= 1.3, "≥ 1,3×"],
     ["ICR (Bénéf.expl./Intérêts)", y => (vanTirMetrics.icr[y] ?? 0).toFixed(2) + "×", y => (vanTirMetrics.icr[y] ?? 0) >= 3, "≥ 3×"],
-    ["Autonomie financière", y => (banking[y].autonomie * 100).toFixed(1) + "%", y => banking[y].autonomie >= 0.25, "≥ 25%"],
-    ["Marge EBE", y => banking[y].margeEbe.toFixed(1) + "%", y => banking[y].margeEbe >= 20, "≥ 20%"],
+    ["Autonomie financière", y => formatPct(banking[y].autonomie, 1), y => banking[y].autonomie >= 0.25, "≥ 25%"],
+    ["Marge EBE", y => formatPctValue(banking[y].margeEbe, 1), y => banking[y].margeEbe >= 20, "≥ 20%"],
     ["Levier (Dettes/EBITDA)", y => vanTirMetrics.levier[y].toFixed(2) + "×", y => vanTirMetrics.levier[y] <= 3, "≤ 3×"],
     ["Dettes LT / CAF", y => banking[y].dettesCaf.toFixed(2) + " ans", y => banking[y].dettesCaf <= 4, "≤ 4 ans"],
     ["Liquidité générale", y => vanTirMetrics.liquidite[y].toFixed(2) + "×", y => vanTirMetrics.liquidite[y] >= 1.5, "≥ 1,5×"],
-    ["ROA", y => banking[y].roa.toFixed(1) + "%", y => banking[y].roa >= 5, "≥ 5%"],
-    ["Croissance CA", y => banking[y].croissanceCA.toFixed(1) + "%", y => banking[y].croissanceCA >= 10, "≥ 10%"],
+    ["ROA", y => formatPctValue(banking[y].roa, 1), y => banking[y].roa >= 5, "≥ 5%"],
+    ["Croissance CA", y => formatPctValue(banking[y].croissanceCA, 1), y => banking[y].croissanceCA >= 10, "≥ 10%"],
   ];
 
   ratioRows.forEach(([label, fmt, isOk, norme], ri) => {
@@ -307,7 +307,7 @@ function exportDossierComplet(
   const hS = headerStyle();
   ["Indicateur", "Valeur", "Statut"].forEach((h, c) => { synthWs[XLSX.utils.encode_cell({ r: 0, c })] = cell(h, hS); });
   const synthRows = [
-    ["TIR Projet", (computed.vanTirMetrics.irr * 100).toFixed(2) + "%", computed.vanTirMetrics.irr >= 0.15 ? "OK" : "À revoir"],
+    ["TIR Projet", formatPct(computed.vanTirMetrics.irr, 2), computed.vanTirMetrics.irr >= 0.15 ? "OK" : "À revoir"],
     ["VAN (8%)", formatFcfa(computed.vanTirMetrics.van8, true), computed.vanTirMetrics.van8 > 0 ? "OK" : "Négatif"],
     ["Payback", computed.vanTirMetrics.paybackYears.toFixed(1) + " ans", computed.vanTirMetrics.paybackYears <= 5 ? "OK" : "Long"],
     ["DSCR moyen", (YEARS.reduce((s, y) => s + computed.banking[y].dscrEbe, 0) / YEARS.length).toFixed(2) + "×", "—"],
@@ -333,12 +333,12 @@ function exportDossierComplet(
     ["Augmentation capital", params.augmentationCapital],
     ["Endettement LT", params.endettementLT],
     ["Comptes courants associés", params.comptesCourantsAssocies],
-    ["Taux intérêt emprunt LT", (params.txInteretEmpruntLT * 100).toFixed(1) + "%"],
-    ["Taux IS", (params.tauxImpotSocietes * 100).toFixed(0) + "%"],
-    ["Taux matière première", (params.tauxMatierePremiere * 100).toFixed(2) + "%"],
-    ["Taux services ext.", (params.tauxServicesExt * 100).toFixed(2) + "%"],
-    ["Taux commissions ventes", (params.tauxCommissionsVentes * 100).toFixed(0) + "%"],
-    ["Taux charges sociales", (params.tauxChargesSociales * 100).toFixed(0) + "%"],
+    ["Taux intérêt emprunt LT", formatPct(params.txInteretEmpruntLT, 1)],
+    ["Taux IS", formatPct(params.tauxImpotSocietes, 0)],
+    ["Taux matière première", formatPct(params.tauxMatierePremiere, 2)],
+    ["Taux services ext.", formatPct(params.tauxServicesExt, 2)],
+    ["Taux commissions ventes", formatPct(params.tauxCommissionsVentes, 0)],
+    ["Taux charges sociales", formatPct(params.tauxChargesSociales, 0)],
   ];
   paramRows.forEach(([k, v], ri) => {
     const r = ri + 1;

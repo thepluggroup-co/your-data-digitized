@@ -62,7 +62,7 @@ export default function Dashboard() {
   const lastYear = resultats[2031];
   const firstYear = resultats[2027];
   const cafCumul = YEARS.reduce((s, y) => s + resultats[y].caf, 0);
-  const tirPct = (computed.vanTirMetrics.irr * 100).toFixed(2) + "%";
+  const tirPct = formatPct(computed.vanTirMetrics.irr, 2);
   const seuilPct = computed.seuilRentabilite[2031]?.seuilPct?.toFixed(1) ?? "—";
   const paybackYears = isFinite(computed.vanTirMetrics.paybackYears) ? computed.vanTirMetrics.paybackYears.toFixed(1) : "—";
   const companyDisplay = params.companyName?.trim() || "VOTRE PROJET";

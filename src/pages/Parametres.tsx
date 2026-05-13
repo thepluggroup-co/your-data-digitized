@@ -88,8 +88,8 @@ function SyncReportModal({ onClose }: { onClose: () => void }) {
         { k: `CA N+4 (${lastY})`, v: formatFcfa(resultats[lastY].ventes, true) },
         { k: "Bénéfice net N+4", v: formatFcfa(resultats[lastY].beneficeNet, true) },
         { k: "CAF cumulée 5 ans", v: formatFcfa(cafCumul, true) },
-        { k: "Marge nette N+4", v: resultats[lastY].resultatNetVentes.toFixed(1) + "%" },
-        { k: "Marge EBE N+4", v: banking[lastY].margeEbe.toFixed(1) + "%" },
+        { k: "Marge nette N+4", v: formatPctValue(resultats[lastY].resultatNetVentes, 1) },
+        { k: "Marge EBE N+4", v: formatPctValue(banking[lastY].margeEbe, 1) },
       ],
     },
     {
@@ -99,7 +99,7 @@ function SyncReportModal({ onClose }: { onClose: () => void }) {
         { k: "Capitaux propres N+4", v: formatFcfa(bilan[lastY].capitauxPropres, true) },
         { k: "Dettes LT N+4", v: formatFcfa(bilan[lastY].dettesFinancieres, true) },
         { k: "FRN N+4", v: formatFcfa(banking[lastY].frn, true) },
-        { k: "Autonomie N+4", v: (banking[lastY].autonomie * 100).toFixed(1) + "%" },
+        { k: "Autonomie N+4", v: formatPct(banking[lastY].autonomie, 1) },
         { k: "Trésorerie nette N+4", v: formatFcfa(banking[lastY].tresoNette, true) },
       ],
     },
@@ -118,7 +118,7 @@ function SyncReportModal({ onClose }: { onClose: () => void }) {
       icon: ShieldCheck,
       label: "Indicateurs Projet",
       items: [
-        { k: "TIR Projet", v: (vanTirMetrics.irr * 100).toFixed(2) + "%" },
+        { k: "TIR Projet", v: formatPct(vanTirMetrics.irr, 2) },
         { k: "VAN (8%)", v: formatFcfa(vanTirMetrics.van8, true) },
         { k: "VAN (10%)", v: formatFcfa(vanTirMetrics.van10, true) },
         { k: "Payback", v: vanTirMetrics.paybackYears.toFixed(1) + " ans" },

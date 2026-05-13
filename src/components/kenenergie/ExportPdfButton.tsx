@@ -66,9 +66,9 @@ export default function ExportPdfButton() {
         ["Capital Social", formatFcfa(params.capitalSocial)],
         ["Augmentation de Capital", formatFcfa(params.augmentationCapital)],
         ["Endettement LT", formatFcfa(params.endettementLT)],
-        ["Taux d'intérêt", (params.txInteretEmpruntLT * 100).toFixed(1) + "%"],
-        ["Taux IS", (params.tauxImpotSocietes * 100).toFixed(0) + "%"],
-        ["Niveaux d'activité", params.niveauxActivite.map(n => (n * 100).toFixed(0) + "%").join(" → ")],
+        ["Taux d'intérêt", formatPct(params.txInteretEmpruntLT, 1)],
+        ["Taux IS", formatPct(params.tauxImpotSocietes, 0)],
+        ["Niveaux d'activité", params.niveauxActivite.map(n => formatPct(n, 0)).join(" → ")],
       ];
       autoTable(doc, {
         startY: 26,
@@ -207,7 +207,7 @@ export default function ExportPdfButton() {
       const srRows = srKeys.map(([k, label]) => {
         return [label, ...YEARS.map(y => {
           const v = (computed.seuilRentabilite[y] as any)[k];
-          if (k === "seuilPct" || k === "margeSecurite") return v.toFixed(2) + "%";
+          if (k === "seuilPct" || k === "margeSecurite") return formatPctValue(v, 2);
           if (k === "pointMortJours") return v + " j";
           if (k === "pointMortMois") return v.toFixed(1) + " mois";
           return formatFcfa(v);

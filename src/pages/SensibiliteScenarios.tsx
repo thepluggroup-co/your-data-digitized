@@ -128,7 +128,7 @@ function fmt(v: number): string {
 }
 
 function pct(v: number): string {
-  return (v * 100).toFixed(1) + "%";
+  return formatPct(v, 1);
 }
 
 const tooltipStyle = { fontSize: 11, borderRadius: 8, border: "1px solid #e2e8f0" };
