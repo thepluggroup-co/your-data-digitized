@@ -149,7 +149,7 @@ export default function Charges() {
       if (i === 0) return [y.toString(), "—"];
       const prev = chargesExploitation[YEARS[i - 1]].total;
       const curr = chargesExploitation[y].total;
-      return [y.toString(), ((curr - prev) / prev * 100).toFixed(1) + "%"];
+      return [y.toString(), formatPctValue((curr - prev) / prev * 100, 1)];
     })),
   });
 
