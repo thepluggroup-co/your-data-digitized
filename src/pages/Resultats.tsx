@@ -18,8 +18,8 @@ export default function Resultats() {
   }));
 
   const cols = [
-    { key: "label", label: "Rubrique", align: "left" as const },
-    ...YEARS.map((y) => ({ key: y.toString(), label: y.toString(), align: "right" as const })),
+    { key: "label", label: "Rubrique (FCFA)", align: "left" as const },
+    ...YEARS.map((y) => ({ key: y.toString(), label: yearLabel(y), align: "right" as const })),
   ];
 
   const makeRow = (label: string, keyFn: (y: number) => number, opts?: { total?: boolean; sub?: boolean; pct?: boolean }) => ({
