@@ -62,14 +62,18 @@ export default function Dashboard() {
   const lastYear = resultats[2031];
   const firstYear = resultats[2027];
   const cafCumul = YEARS.reduce((s, y) => s + resultats[y].caf, 0);
+  const tirPct = (computed.vanTirMetrics.irr * 100).toFixed(2) + "%";
+  const seuilPct = computed.seuilRentabilite[2031]?.seuilPct?.toFixed(1) ?? "—";
+  const paybackYears = isFinite(computed.vanTirMetrics.paybackYears) ? computed.vanTirMetrics.paybackYears.toFixed(1) : "—";
+  const companyDisplay = params.companyName?.trim() || "VOTRE PROJET";
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <PageHeader
-          title="Tableau de Bord — THE PLUG FINANCE CO"
-          subtitle={`${params.companyName} • ${params.companyActivite} • ${params.companyVille}, ${params.companyPays}`}
-          badge="Modèle 2027–2031"
+          title={`Tableau de Bord — ${companyDisplay}`}
+          subtitle={`${params.companyActivite || "Activité"} • ${params.companyVille || "Ville"}, ${params.companyPays || "Pays"}`}
+          badge={`Modèle ${YEARS[0]}–${YEARS[YEARS.length - 1]}`}
         />
         <ExportPdfButton />
       </div>
