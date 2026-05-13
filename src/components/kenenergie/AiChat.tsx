@@ -179,7 +179,7 @@ function ApplyCard({ patch, params, onApply, onDismiss }: {
           <div key={key} className="rounded-lg bg-muted/30 border border-border/40 px-2.5 py-1.5">
             <p className="text-[10px] font-semibold">{PARAM_LABELS[key] ?? key}</p>
             <p className="text-[10px] text-muted-foreground font-mono">
-              {fmtVal((params as Record<string, unknown>)[key as string], key as string)} → {fmtVal(val, key as string)}
+              {fmtVal((params as unknown as Record<string, unknown>)[key as string], key as string)} → {fmtVal(val, key as string)}
             </p>
           </div>
         ))}
