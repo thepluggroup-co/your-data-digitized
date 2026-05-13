@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useParametres } from "@/contexts/ParametresContext";
-import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct, formatPctValue } from "@/lib/kenenergie-data";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 

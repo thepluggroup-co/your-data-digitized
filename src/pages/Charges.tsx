@@ -1,6 +1,6 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
-import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPctValue } from "@/lib/kenenergie-data";
 import { useParametres, EditableParams } from "@/contexts/ParametresContext";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";

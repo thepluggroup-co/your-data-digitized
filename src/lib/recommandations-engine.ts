@@ -4,7 +4,7 @@
  * adaptés dynamiquement au projet actif
  */
 
-import { YEARS } from "@/lib/kenenergie-data";
+import { YEARS, formatPct } from "@/lib/kenenergie-data";
 import type { ComputedModel, EditableParams } from "@/contexts/ParametresContext";
 
 // ── Types ─────────────────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import { useParametres } from "@/contexts/ParametresContext";
-import { YEARS } from "@/lib/kenenergie-data";
+import { YEARS, formatPctValue } from "@/lib/kenenergie-data";
 import { CheckCircle2, AlertTriangle, XCircle, Info } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────

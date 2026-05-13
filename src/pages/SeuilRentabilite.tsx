@@ -1,6 +1,6 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
-import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct, formatPctValue } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Legend, BarChart, Bar, Cell } from "recharts";
 

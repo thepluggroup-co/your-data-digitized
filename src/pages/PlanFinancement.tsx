@@ -1,10 +1,6 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
-import {
-  besoinsDurables, structureFinancement,
-  actionnaires, categoriesActions, apportsProgressifs, gouvernance, roiParProfil,
-  capitalConfig, YEARS, formatFcfa,
-} from "@/lib/kenenergie-data";
+import { YEARS, actionnaires, apportsProgressifs, besoinsDurables, capitalConfig, categoriesActions, formatFcfa, formatPct, formatPctValue, gouvernance, roiParProfil, structureFinancement } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import {

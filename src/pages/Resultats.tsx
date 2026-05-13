@@ -1,7 +1,7 @@
 import PageHeader from "@/components/kenenergie/PageHeader";
 import FinTable from "@/components/kenenergie/FinTable";
 import KpiCard from "@/components/kenenergie/KpiCard";
-import { YEARS, formatFcfa, yearLabel } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPctValue, yearLabel } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import { TrendingUp, PiggyBank, Activity, Target } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";

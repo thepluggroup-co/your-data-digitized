@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { TrendingUp, DollarSign, PiggyBank, Target, Zap, Activity, FolderOpen, FolderPlus, ChevronRight, Save, Sparkles, Loader2, RefreshCw, AlertTriangle, ShieldCheck, ShieldAlert, ShieldX } from "lucide-react";
 import KpiCard from "@/components/kenenergie/KpiCard";
 import PageHeader from "@/components/kenenergie/PageHeader";
-import { formatFcfa, scenarios, YEARS } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct, scenarios } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import ExportPdfButton from "@/components/kenenergie/ExportPdfButton";
 import TableauDeBordBanquier from "@/components/kenenergie/TableauDeBordBanquier";

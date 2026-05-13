@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParametres } from "@/contexts/ParametresContext";
 import PageHeader from "@/components/kenenergie/PageHeader";
-import { YEARS, formatFcfa } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct, formatPctValue } from "@/lib/kenenergie-data";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";

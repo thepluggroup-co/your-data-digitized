@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useParametres } from "@/contexts/ParametresContext";
-import { YEARS, formatFcfa, yearLabel } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct, formatPctValue, yearLabel } from "@/lib/kenenergie-data";
 import logoUrl from "@/assets/logo-the-plug.png";
 
 async function loadImageAsDataUrl(url: string): Promise<string> {

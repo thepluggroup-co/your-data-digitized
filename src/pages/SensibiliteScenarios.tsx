@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import PageHeader from "@/components/kenenergie/PageHeader";
 import { useParametres } from "@/contexts/ParametresContext";
 import { computeNPV, computeIRR } from "@/contexts/ParametresContext";
-import { YEARS, formatFcfa, totalInvestissement } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct, totalInvestissement } from "@/lib/kenenergie-data";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   Legend, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,

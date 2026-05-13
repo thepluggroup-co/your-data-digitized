@@ -4,7 +4,7 @@ import PageHeader from "@/components/kenenergie/PageHeader";
 import { useParametres } from "@/contexts/ParametresContext";
 import { analyzeAndRecommend } from "@/lib/recommandations-engine";
 import type { Recommandation, Issue, Severity, Category } from "@/lib/recommandations-engine";
-import { formatFcfa, YEARS } from "@/lib/kenenergie-data";
+import { YEARS, formatFcfa, formatPct } from "@/lib/kenenergie-data";
 import {
   AlertTriangle, AlertOctagon, Info, CheckCircle2, ChevronDown, ChevronRight,
   Sliders, ArrowRight, TrendingUp, Landmark, ShieldCheck, Zap, Lightbulb,

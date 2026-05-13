@@ -14,6 +14,8 @@
  */
 
 import { useState, useRef, useEffect } from "react";
+import { formatFcfa } from "@/lib/kenenergie-data";
+
 import { useLocation } from "react-router-dom";
 import {
   Bot, X, Send, Loader2, Minimize2, ChevronDown, Sparkles,

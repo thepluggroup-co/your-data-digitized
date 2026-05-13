@@ -3,6 +3,8 @@
  * Upload n'importe quel document → Claude extrait les paramètres → preview → appliquer
  */
 import { useState, useRef, useCallback } from "react";
+import { formatFcfa } from "@/lib/kenenergie-data";
+
 import { useParametres } from "@/contexts/ParametresContext";
 import type { EditableParams, SalaryEntry, VentesData, PoleKey, InvEntry, AmortEntry } from "@/contexts/ParametresContext";
 import { extractParamsFromDoc } from "@/lib/ai-service";
