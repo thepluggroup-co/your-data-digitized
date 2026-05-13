@@ -6,6 +6,7 @@ import PageHeader from "@/components/kenenergie/PageHeader";
 import { formatFcfa, scenarios, YEARS } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import ExportPdfButton from "@/components/kenenergie/ExportPdfButton";
+import TableauDeBordBanquier from "@/components/kenenergie/TableauDeBordBanquier";
 import { useNavigate } from "react-router-dom";
 import { scoreDossier } from "@/lib/ai-service";
 import type { ScoreResult } from "@/lib/ai-service";
