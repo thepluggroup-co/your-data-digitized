@@ -139,7 +139,7 @@ export default function ExportPdfButton() {
       });
       autoTable(doc, {
         startY: 26,
-        head: [["Charge", ...YEARS.map(String)]],
+        head: [["Charge", ...YEARS.map(y => yearLabel(y))]],
         body: chargeRows,
         styles: { fontSize: 7 },
         headStyles: { fillColor: [27, 42, 71] },
@@ -173,7 +173,7 @@ export default function ExportPdfButton() {
       );
       autoTable(doc, {
         startY: 26,
-        head: [["Rubrique", ...YEARS.map(String)]],
+        head: [["Rubrique", ...YEARS.map(y => yearLabel(y))]],
         body: resRows,
         styles: { fontSize: 8 },
         headStyles: { fillColor: [27, 42, 71] },
@@ -200,7 +200,7 @@ export default function ExportPdfButton() {
       });
       autoTable(doc, {
         startY: 26,
-        head: [["Indicateur", ...YEARS.map(String)]],
+        head: [["Indicateur", ...YEARS.map(y => yearLabel(y))]],
         body: srRows,
         styles: { fontSize: 8 },
         headStyles: { fillColor: [27, 42, 71] },
@@ -221,7 +221,7 @@ export default function ExportPdfButton() {
       );
       autoTable(doc, {
         startY: 26,
-        head: [["Rubrique", ...YEARS.map(String)]],
+        head: [["Rubrique", ...YEARS.map(y => yearLabel(y))]],
         body: bilanRows,
         styles: { fontSize: 8 },
         headStyles: { fillColor: [27, 42, 71] },
@@ -244,7 +244,7 @@ export default function ExportPdfButton() {
       );
       autoTable(doc, {
         startY: 26,
-        head: [["Rubrique", ...YEARS.map(String)]],
+        head: [["Rubrique", ...YEARS.map(y => yearLabel(y))]],
         body: pfRows,
         styles: { fontSize: 8 },
         headStyles: { fillColor: [27, 42, 71] },
