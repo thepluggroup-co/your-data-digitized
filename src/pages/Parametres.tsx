@@ -346,3 +346,27 @@ function LivePreview() {
     </div>
   );
 }
+
+function CapaciteEndettementPreview() {
+  const { computed, params } = useParametres();
+  const fmt = (v: number) => (v / 1e9).toFixed(3) + " Mds FCFA";
+  return (
+    <div className="mt-4 pt-4 border-t border-border/40 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+      <div className="rounded-lg bg-muted/40 px-3 py-2">
+        <p className="text-muted-foreground">Capacité d'endettement</p>
+        <p className="font-mono font-bold text-accent">{fmt(computed.capaciteEndettement)}</p>
+        <p className="text-[10px] text-muted-foreground">(Capital + CCA) × {params.ccCaptalMultiplier}</p>
+      </div>
+      <div className="rounded-lg bg-muted/40 px-3 py-2">
+        <p className="text-muted-foreground">Total Financement</p>
+        <p className="font-mono font-bold text-foreground">{fmt(computed.totalFinancement)}</p>
+        <p className="text-[10px] text-muted-foreground">Capital + Augmentation + CCA + Endettement</p>
+      </div>
+      <div className="rounded-lg bg-muted/40 px-3 py-2">
+        <p className="text-muted-foreground">Taux d'apport personnel</p>
+        <p className="font-mono font-bold text-positive">{(computed.tauxApportPersonnel * 100).toFixed(1)}%</p>
+        <p className="text-[10px] text-muted-foreground">(Capital + CCA) / Total</p>
+      </div>
+    </div>
+  );
+}
