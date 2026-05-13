@@ -235,6 +235,14 @@ const defaultParams: EditableParams = {
   fixedDeplacements: 0,
   fixedImpotsTaxes: 0,
   fixedAutresCharges: 0,
+  // ── Hypothèses Excel PARAMETRES ──
+  tauxUsd: 578,
+  ccCaptalMultiplier: 4,
+  tauxInteretStatutaire: 0.05,
+  tauxInteretCC: 0,
+  tauxInteretFournImmo: 0.14,
+  tauxDouanes: 0.56,
+  tauxRisque: 0.05,
 };
 
 // ======= Computed Financial Model =======
