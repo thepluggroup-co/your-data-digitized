@@ -615,7 +615,13 @@ function computeModel(p: EditableParams, salairesData: SalaryEntry[], ventesData
     banking[y] = { ebe, valeurAjoutee, frn, tresoNette, serviceDette, dscrEbe, dettesCaf, cafSurDettes, croissanceCA, autonomie, dettesCp, roa, margeEbe, margeVa, ecartBilan };
   });
 
-  return { ventesParAnnee, chargesExploitation, resultats, bilan, planFinancement, empruntDetails: empruntDetailsComputed, seuilRentabilite, salairesTotaux, vanTirMetrics, banking };
+  // ---- INDICATEURS PARAMETRES (formules Excel THE PLUG) ----
+  const apportPersonnel = p.capitalSocial + p.comptesCourantsAssocies;
+  const totalFinancement = apportPersonnel + p.augmentationCapital + p.endettementLT;
+  const capaciteEndettement = apportPersonnel * p.ccCaptalMultiplier;
+  const tauxApportPersonnel = totalFinancement > 0 ? apportPersonnel / totalFinancement : 0;
+
+  return { ventesParAnnee, chargesExploitation, resultats, bilan, planFinancement, empruntDetails: empruntDetailsComputed, seuilRentabilite, salairesTotaux, vanTirMetrics, banking, capaciteEndettement, totalFinancement, tauxApportPersonnel };
 }
 
 // ======= Context =======
