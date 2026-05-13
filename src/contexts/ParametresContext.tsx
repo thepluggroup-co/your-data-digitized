@@ -175,6 +175,14 @@ export interface EditableParams {
   fixedDeplacements: number;
   fixedImpotsTaxes: number;
   fixedAutresCharges: number;
+  // ── Hypothèses Excel PARAMETRES (THE PLUG) ──
+  tauxUsd: number;                 // Cours USD/FCFA (PARAMETRES!B3)
+  ccCaptalMultiplier: number;      // CC/CPTAL (PARAMETRES!B8) — capacité d'endettement = (Capital+CCA)×N
+  tauxInteretStatutaire: number;   // PARAMETRES!B11
+  tauxInteretCC: number;           // PARAMETRES!B13
+  tauxInteretFournImmo: number;    // PARAMETRES!B14
+  tauxDouanes: number;             // PARAMETRES!B18
+  tauxRisque: number;              // PARAMETRES!B17
 }
 
 const defaultParams: EditableParams = {
@@ -227,6 +235,14 @@ const defaultParams: EditableParams = {
   fixedDeplacements: 0,
   fixedImpotsTaxes: 0,
   fixedAutresCharges: 0,
+  // ── Hypothèses Excel PARAMETRES ──
+  tauxUsd: 578,
+  ccCaptalMultiplier: 4,
+  tauxInteretStatutaire: 0.05,
+  tauxInteretCC: 0,
+  tauxInteretFournImmo: 0.14,
+  tauxDouanes: 0.56,
+  tauxRisque: 0.05,
 };
 
 // ======= Computed Financial Model =======
@@ -271,6 +287,10 @@ export interface ComputedModel {
     margeVa: number;
     ecartBilan: number;
   }>;
+  // ── Indicateurs PARAMETRES (formules Excel THE PLUG) ──
+  capaciteEndettement: number;        // (Capital + CCA) × ccCaptalMultiplier — PARAMETRES!C7
+  totalFinancement: number;           // Capital + Augmentation + CCA + Endettement
+  tauxApportPersonnel: number;        // (Capital + CCA) / Total Financement — PARAMETRES!C10
 }
 
 function computeModel(p: EditableParams, salairesData: SalaryEntry[], ventesData: VentesData, investData: InvEntry[], amortData: AmortEntry[]): ComputedModel {
@@ -595,7 +615,13 @@ function computeModel(p: EditableParams, salairesData: SalaryEntry[], ventesData
     banking[y] = { ebe, valeurAjoutee, frn, tresoNette, serviceDette, dscrEbe, dettesCaf, cafSurDettes, croissanceCA, autonomie, dettesCp, roa, margeEbe, margeVa, ecartBilan };
   });
 
-  return { ventesParAnnee, chargesExploitation, resultats, bilan, planFinancement, empruntDetails: empruntDetailsComputed, seuilRentabilite, salairesTotaux, vanTirMetrics, banking };
+  // ---- INDICATEURS PARAMETRES (formules Excel THE PLUG) ----
+  const apportPersonnel = p.capitalSocial + p.comptesCourantsAssocies;
+  const totalFinancement = apportPersonnel + p.augmentationCapital + p.endettementLT;
+  const capaciteEndettement = apportPersonnel * p.ccCaptalMultiplier;
+  const tauxApportPersonnel = totalFinancement > 0 ? apportPersonnel / totalFinancement : 0;
+
+  return { ventesParAnnee, chargesExploitation, resultats, bilan, planFinancement, empruntDetails: empruntDetailsComputed, seuilRentabilite, salairesTotaux, vanTirMetrics, banking, capaciteEndettement, totalFinancement, tauxApportPersonnel };
 }
 
 // ======= Context =======

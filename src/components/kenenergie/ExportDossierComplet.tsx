@@ -16,7 +16,7 @@ const GREEN       = "16A34A";
 const RED_        = "DC2626";
 const AMBER       = "D97706";
 
-function headerStyle(bgHex: string = BRAND_DARK): XLSX.CellStyle {
+function headerStyle(bgHex: string = BRAND_DARK): Record<string, unknown> {
   return {
     fill: { fgColor: { rgb: bgHex }, patternType: "solid" } as any,
     font: { bold: true, color: { rgb: WHITE }, sz: 10, name: "Calibri" },
@@ -30,7 +30,7 @@ function headerStyle(bgHex: string = BRAND_DARK): XLSX.CellStyle {
   };
 }
 
-function dataStyle(bgHex: string = WHITE, bold = false, numFmt?: string, align: "left" | "right" | "center" = "right"): XLSX.CellStyle {
+function dataStyle(bgHex: string = WHITE, bold = false, numFmt?: string, align: "left" | "right" | "center" = "right"): Record<string, unknown> {
   return {
     fill: { fgColor: { rgb: bgHex }, patternType: "solid" } as any,
     font: { bold, sz: 9, name: "Calibri" },
@@ -45,7 +45,7 @@ function dataStyle(bgHex: string = WHITE, bold = false, numFmt?: string, align: 
   };
 }
 
-function cell(v: unknown, style: XLSX.CellStyle): XLSX.CellObject {
+function cell(v: unknown, style: Record<string, unknown>): XLSX.CellObject {
   const t: XLSX.ExcelDataType =
     typeof v === "number" ? "n" :
     v instanceof Date     ? "d" : "s";
@@ -266,7 +266,7 @@ function buildBankingSheet(computed: ReturnType<typeof useParametres>["computed"
     ws[XLSX.utils.encode_cell({ r, c: 0 })] = cell(label, dataStyle(rowBg, true, "@", "left"));
     YEARS.forEach((y, ci) => {
       const ok = isOk(y);
-      const style: XLSX.CellStyle = {
+      const style: Record<string, unknown> = {
         ...dataStyle(ok ? "DCFCE7" : "FEE2E2", true, "@", "center"),
         font: { bold: true, sz: 9, color: { rgb: ok ? GREEN : RED_ }, name: "Calibri" },
       } as any;

@@ -261,25 +261,25 @@ export default function AlertesBancaires() {
         title="Section A — Équilibre du Bilan"
         subtitle="Structure financière : FRN, trésorerie, immobilisations"
         rows={sectionA}
-        years={YEARS}
+        years={[...YEARS]}
       />
       <SectionCard
         title="Section B — CEP / Rentabilité"
         subtitle="Compte de résultat : marges, croissance, retour sur actifs"
         rows={sectionB}
-        years={YEARS}
+        years={[...YEARS]}
       />
       <SectionCard
         title="Section C — DSCR / Solvabilité"
         subtitle="Capacité de remboursement et couverture de la dette"
         rows={sectionC}
-        years={YEARS}
+        years={[...YEARS]}
       />
       <SectionCard
         title="Section D — Conformité OHADA"
         subtitle="Indicateurs réglementaires SYSCOHADA : autonomie, liquidité, viabilité"
         rows={sectionD}
-        years={YEARS}
+        years={[...YEARS]}
       />
 
       {/* Methodology note */}

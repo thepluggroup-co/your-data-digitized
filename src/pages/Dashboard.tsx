@@ -6,6 +6,7 @@ import PageHeader from "@/components/kenenergie/PageHeader";
 import { formatFcfa, scenarios, YEARS } from "@/lib/kenenergie-data";
 import { useParametres } from "@/contexts/ParametresContext";
 import ExportPdfButton from "@/components/kenenergie/ExportPdfButton";
+import TableauDeBordBanquier from "@/components/kenenergie/TableauDeBordBanquier";
 import { useNavigate } from "react-router-dom";
 import { scoreDossier } from "@/lib/ai-service";
 import type { ScoreResult } from "@/lib/ai-service";
@@ -61,14 +62,18 @@ export default function Dashboard() {
   const lastYear = resultats[2031];
   const firstYear = resultats[2027];
   const cafCumul = YEARS.reduce((s, y) => s + resultats[y].caf, 0);
+  const tirPct = (computed.vanTirMetrics.irr * 100).toFixed(2) + "%";
+  const seuilPct = computed.seuilRentabilite[2031]?.seuilPct?.toFixed(1) ?? "—";
+  const paybackYears = isFinite(computed.vanTirMetrics.paybackYears) ? computed.vanTirMetrics.paybackYears.toFixed(1) : "—";
+  const companyDisplay = params.companyName?.trim() || "VOTRE PROJET";
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <PageHeader
-          title="Tableau de Bord — THE PLUG FINANCE CO"
-          subtitle={`${params.companyName} • ${params.companyActivite} • ${params.companyVille}, ${params.companyPays}`}
-          badge="Modèle 2027–2031"
+          title={`Tableau de Bord — ${companyDisplay}`}
+          subtitle={`${params.companyActivite || "Activité"} • ${params.companyVille || "Ville"}, ${params.companyPays || "Pays"}`}
+          badge={`Modèle ${YEARS[0]}–${YEARS[YEARS.length - 1]}`}
         />
         <ExportPdfButton />
       </div>
@@ -140,11 +145,14 @@ export default function Dashboard() {
       </div>
 
       <div className="kpi-primary-depth rounded-xl px-5 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Promoteur</p><p className="font-semibold">{params.companyPromoter}</p></div>
+        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Promoteur</p><p className="font-semibold">{params.companyPromoter || "—"}</p></div>
         <div><p className="text-primary-foreground/60 text-xs mb-0.5">Forme juridique</p><p className="font-semibold">{params.companyFormeJuridique}</p></div>
-        <div><p className="text-primary-foreground/60 text-xs mb-0.5">TIR du projet</p><p className="font-semibold text-accent">34.87%</p></div>
-        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Délai de remboursement</p><p className="font-semibold">4 ans</p></div>
+        <div><p className="text-primary-foreground/60 text-xs mb-0.5">TIR du projet</p><p className="font-semibold text-accent">{tirPct}</p></div>
+        <div><p className="text-primary-foreground/60 text-xs mb-0.5">Délai de remboursement</p><p className="font-semibold">{paybackYears} ans</p></div>
       </div>
+
+      {/* ── TABLEAU DE BORD BANQUIER (réplique Excel) ── */}
+      <TableauDeBordBanquier />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
         <KpiCard label="CA N+4" value={formatFcfa(lastYear.ventes, true)} sub="Pleine capacité" icon={TrendingUp} color="primary"
@@ -155,10 +163,10 @@ export default function Dashboard() {
           aiPrompt="Analyse la progression du bénéfice net sur 5 ans et propose des optimisations fiscales." />
         <KpiCard label="CAF Cumul" value={formatFcfa(cafCumul, true)} sub="5 ans" icon={Activity} color="accent"
           aiPrompt="La CAF cumulée sur 5 ans est-elle suffisante pour rembourser les emprunts ?" />
-        <KpiCard label="TIR" value="34.87%" sub="Taux interne" icon={Target} color="warning"
-          aiPrompt="Le TIR de 34.87% est-il attractif ? Comment l'améliorer ?" />
-        <KpiCard label="Seuil rentabilité" value="45.97%" sub="Du CA" icon={Zap} color="primary"
-          aiPrompt="Le seuil de rentabilité à 45.97% du CA — est-ce sûr ? Comment le réduire ?" />
+        <KpiCard label="TIR" value={tirPct} sub="Taux interne" icon={Target} color="warning"
+          aiPrompt="Le TIR est-il attractif ? Comment l'améliorer ?" />
+        <KpiCard label="Seuil rentabilité" value={`${seuilPct}%`} sub={`Du CA en N+4`} icon={Zap} color="primary"
+          aiPrompt="Le seuil de rentabilité — est-ce sûr ? Comment le réduire ?" />
       </div>
 
       {/* ── Widget Score IA ── */}
