@@ -564,21 +564,49 @@ export const structureFinancement = {
 };
 
 // ======= UTILS =======
+// Format Excel-style français : séparateur milliers (espace insécable),
+// parenthèses pour négatifs, "-" pour zéro, sans suffixe FCFA (mis en en-tête).
+const NBSP = "\u00A0";
+function frThousands(n: number): string {
+  return Math.round(n).toLocaleString("fr-FR").replace(/\s/g, NBSP);
+}
+
 export function formatFcfa(val: number, compact = false): string {
+  if (val === 0 || val === undefined || val === null || Number.isNaN(val)) return "-";
+  const abs = Math.abs(val);
+  let str: string;
   if (compact) {
-    if (Math.abs(val) >= 1_000_000_000) return (val / 1_000_000_000).toFixed(2) + " Mds";
-    if (Math.abs(val) >= 1_000_000) return (val / 1_000_000).toFixed(1) + " M";
-    return val.toLocaleString("fr-FR");
+    if (abs >= 1_000_000_000) str = (abs / 1_000_000_000).toFixed(2).replace(".", ",") + `${NBSP}Mrd`;
+    else if (abs >= 1_000_000) str = (abs / 1_000_000).toFixed(1).replace(".", ",") + `${NBSP}M`;
+    else str = frThousands(abs);
+  } else {
+    str = frThousands(abs);
   }
-  if (val === 0) return "-";
-  return val.toLocaleString("fr-FR") + " FCFA";
+  return val < 0 ? `(${str})` : str;
 }
 
 export function formatPct(val: number): string {
-  return (val * 100).toFixed(1) + "%";
+  if (val === 0 || Number.isNaN(val)) return "-";
+  return (val * 100).toFixed(1).replace(".", ",") + `${NBSP}%`;
 }
 
 export function formatNumber(val: number): string {
   if (val === 0) return "-";
-  return val.toLocaleString("fr-FR");
+  const abs = Math.abs(val);
+  const str = frThousands(abs);
+  return val < 0 ? `(${str})` : str;
+}
+
+// ===== Libellés d'années conformes au fichier Excel (N, N+1, …) =====
+export const YEAR_LABELS: Record<number, string> = {
+  2027: "N",
+  2028: "N+1",
+  2029: "N+2",
+  2030: "N+3",
+  2031: "N+4",
+};
+
+export function yearLabel(y: number, withYear = true): string {
+  const lbl = YEAR_LABELS[y] ?? String(y);
+  return withYear ? `${lbl} (${y})` : lbl;
 }
