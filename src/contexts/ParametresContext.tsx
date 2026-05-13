@@ -287,6 +287,10 @@ export interface ComputedModel {
     margeVa: number;
     ecartBilan: number;
   }>;
+  // ── Indicateurs PARAMETRES (formules Excel THE PLUG) ──
+  capaciteEndettement: number;        // (Capital + CCA) × ccCaptalMultiplier — PARAMETRES!C7
+  totalFinancement: number;           // Capital + Augmentation + CCA + Endettement
+  tauxApportPersonnel: number;        // (Capital + CCA) / Total Financement — PARAMETRES!C10
 }
 
 function computeModel(p: EditableParams, salairesData: SalaryEntry[], ventesData: VentesData, investData: InvEntry[], amortData: AmortEntry[]): ComputedModel {
