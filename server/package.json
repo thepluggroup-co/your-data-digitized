@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "THE PLUG FINANCE CO — Backend IA (Express + Anthropic)",
   "main": "index.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js"

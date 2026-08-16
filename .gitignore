@@ -3,6 +3,11 @@ server/.env
 server/node_modules
 server/uploads
 
+# Base de données SQLite (données clients — pas de binaire en git ; utiliser /api/dossiers/export pour un backup versionnable)
+server/data/*.db
+server/data/*.db-wal
+server/data/*.db-shm
+
 # Logs
 logs
 *.log
