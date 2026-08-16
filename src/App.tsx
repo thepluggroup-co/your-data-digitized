@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ParametresProvider } from "@/contexts/ParametresContext";
+import { ParametresProvider, useParametres } from "@/contexts/ParametresContext";
 import { AiPanelProvider }   from "@/contexts/AiPanelContext";
 import Layout from "@/components/kenenergie/Layout";
 import SplashScreen from "@/components/kenenergie/SplashScreen";
@@ -31,7 +31,8 @@ import NotFound from "./pages/NotFound.tsx";
 const queryClient = new QueryClient();
 
 function AppInner() {
-  const [splashDone, setSplashDone] = useState(false);
+  const { activeDossier } = useParametres();
+  const [splashDone, setSplashDone] = useState(() => !!activeDossier);
   return (
     <>
       {!splashDone && <SplashScreen onDismiss={() => setSplashDone(true)} />}
