@@ -38,17 +38,23 @@ function parseFormatted(v: unknown): { num: number; fmt: string } | null {
   if (typeof v !== "string") return null;
   let s = v.trim();
   if (s === "" || s === "-" || s === "—") return null;
-  let isPct = false, isRatio = false, neg = false;
+  let isPct = false, isRatio = false, neg = false, scale = 1;
   if (/[×x]$/.test(s)) { isRatio = true; s = s.slice(0, -1); }
   if (/%$/.test(s))    { isPct = true;   s = s.slice(0, -1); }
   if (/^\(.*\)$/.test(s)) { neg = true; s = s.slice(1, -1); }
-  // retire suffixes connus (FCFA, F, Mrd, M)
-  s = s.replace(/\s*(FCFA|Mrd|Mds|M|F)$/i, "");
+  // retire suffixes connus (FCFA, F, Mrd, M) et applique le facteur d'échelle correspondant
+  const suffixMatch = s.match(/\s*(FCFA|Mrd|Mds|M|F)$/i);
+  if (suffixMatch) {
+    const suf = suffixMatch[1].toLowerCase();
+    if (suf === "mrd" || suf === "mds") scale = 1_000_000_000;
+    else if (suf === "m") scale = 1_000_000;
+    s = s.slice(0, -suffixMatch[0].length);
+  }
   // espaces (incl. NBSP) = séparateur milliers ; virgule = décimale
   s = s.replace(/[\s\u00A0]/g, "").replace(",", ".");
   const n = Number(s);
   if (!Number.isFinite(n)) return null;
-  const num = neg ? -n : n;
+  const num = (neg ? -n : n) * scale;
   if (isPct)   return { num: num / 100, fmt: FMT_PCT };
   if (isRatio) return { num, fmt: FMT_RATIO };
   return { num, fmt: FMT_NUMBER };
@@ -56,39 +62,42 @@ function parseFormatted(v: unknown): { num: number; fmt: string } | null {
 
 function exportToExcel(cols: Col[], rows: Row[], name: string) {
   const headerLabels = cols.map(c => c.label);
-  const aoa: (string | number | null)[][] = [headerLabels];
+  const aoa: (string | number | boolean | null)[][] = [headerLabels];
   // Mémorise les méta (format, gras pour totaux/sections) par cellule
   const meta: { fmt?: string; bold?: boolean }[][] = [headerLabels.map(() => ({ bold: true }))];
 
   for (const row of rows) {
     if (row._section) {
-      const line: (string | number | null)[] = [String(row._label ?? "")];
+      const line: (string | number | boolean | null)[] = [String(row._label ?? "")];
       const m: { fmt?: string; bold?: boolean }[] = [{ bold: true }];
       for (let i = 1; i < cols.length; i++) { line.push(null); m.push({}); }
       aoa.push(line); meta.push(m);
       continue;
     }
     const isTotal = !!row._total;
-    const line: (string | number | null)[] = [];
+    const line: (string | number | boolean | null)[] = [];
     const m: { fmt?: string; bold?: boolean }[] = [];
     cols.forEach((col, i) => {
       const raw = row[col.key];
       if (i === 0) { line.push(raw == null ? "" : String(raw)); m.push({ bold: isTotal }); return; }
       const parsed = parseFormatted(raw);
-      if (parsed) { line.push(parsed.num); m.push({ fmt: parsed.fmt, bold: isTotal }); }
-      else        { line.push(raw == null ? null : String(raw)); m.push({ bold: isTotal }); }
+      if (parsed)                        { line.push(parsed.num); m.push({ fmt: parsed.fmt, bold: isTotal }); }
+      else if (typeof raw === "boolean") { line.push(raw); m.push({ bold: isTotal }); }
+      else                                { line.push(raw == null ? null : String(raw)); m.push({ bold: isTotal }); }
     });
     aoa.push(line); meta.push(m);
   }
 
   const ws = XLSX.utils.aoa_to_sheet(aoa);
-  // Applique formats numériques cellule par cellule
+  // Applique formats numériques et mise en gras cellule par cellule
   meta.forEach((rowMeta, r) => {
     rowMeta.forEach((cellMeta, c) => {
-      if (!cellMeta.fmt) return;
+      if (!cellMeta.fmt && !cellMeta.bold) return;
       const addr = XLSX.utils.encode_cell({ r, c });
       const cell = ws[addr];
-      if (cell && cell.t === "n") cell.z = cellMeta.fmt;
+      if (!cell) return;
+      if (cellMeta.fmt && cell.t === "n") cell.z = cellMeta.fmt;
+      if (cellMeta.bold) cell.s = { font: { bold: true } };
     });
   });
   // Largeurs colonnes : 1ère large (libellés), suivantes étroites (valeurs)
